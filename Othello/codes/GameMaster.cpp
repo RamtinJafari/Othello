@@ -1,0 +1,1 @@
+// Player name should not have a | character within
