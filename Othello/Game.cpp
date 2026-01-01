@@ -2,10 +2,11 @@
 #include "/codes/Structures/Config.h"
 #include "/codes/ConfigModifier.h"
 #include <conio.h>
+#include <windows.h>
 
 int main()
 {
-    clrscr();
+    system("cls");
     
     Config::initialize();
 
@@ -13,7 +14,7 @@ int main()
 
     while (true)
     {
-        clrscr();
+        system("cls");
 
         cout << "Welcome to Othello game!" << endl
             << (chosenOption == 0 ? "■":"□") << " new game" << endl

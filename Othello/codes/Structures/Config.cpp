@@ -1,6 +1,7 @@
 #include "ConfigManager.h"
 #include "Config.h"
 #include <string>
+#include <windows.h>
 
 struct Config
 {
@@ -33,19 +34,19 @@ struct Config
         { 
             if (errorCode == 1) 
             { 
-                clrscr(); 
+                system("cls"); 
                 cout << "An error acoured while opening Config.txt \nPerhaps another program is using it\nPress any key to continue"; 
                 getchar(); 
             } 
             else if (int errorCode == 2) 
             { 
-                clrscr(); 
+                system("cls"); 
                 cout << "the inputed index is out of the bond of Config, the last index is 7\nPress any key to continue"; 
                 getChar(); 
             } 
             else 
             { 
-                clrscr(); 
+                system("cls"); 
                 cout << "Unexpected error acoured\nPress any key to continue"; 
                 getChar(); 
             } 

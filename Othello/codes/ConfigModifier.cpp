@@ -1,6 +1,7 @@
 #include "ConfigModifier.h"
 #include "/Database/ConfigManager.h"
 #include <conio.h>
+#include <windows.h>
 
 
 
@@ -19,7 +20,7 @@ void execute()
 
     while (true)
     {
-        clrscr();
+        system("cls");
 
         cout << "curent setting are:" << endl
         << "The number of games inside game history: " << ConfigManager::getGameHistoryLimit() << endl
@@ -72,7 +73,7 @@ void execute()
     else if (madeChanges == true) cout << "Please restart the game for changes to be applied to the game\nPress any key to continue"
 
     getch();
-    clrscr();
+    system("cls");
     return 0;
 }
 
@@ -80,7 +81,7 @@ void execute()
 
 void handleGameHistoryLimit()
 {
-    clrscr();
+    system("cls");
 
     cout << "the current value of the number of games inside game history is "
         << ConfigManager::getGameHistoryLimit() << eld
@@ -128,7 +129,7 @@ void handleGameHistoryLimit()
 
 void handleBoardSize()
 {
-    clrscr();
+    system("cls");
 
     cout << "the current value of the size of the board is "
         << ConfigManager::getBoardSize() << eld
