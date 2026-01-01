@@ -28,9 +28,9 @@ void execute()
 
         cout << "Which of these properties do you wish to change?" << endl;
 
-        cout << (chosenOption == 0 ? "■":"□") << "The number of games inside game history" << endl
-            << (chosenOption == 1 ? "■":"□") << "□ The size of the board" << endl
-            << (chosenOption == 2 ? "■":"□") << "□ apply the changes and exit" << endl;
+        cout << (chosenOption == 0 ? "■":"□") << " The number of games inside game history" << endl
+            << (chosenOption == 1 ? "■":"□") << " The size of the board" << endl
+            << (chosenOption == 2 ? "■":"□") << " apply the changes and exit" << endl;
 
         int userInput = getch();
 
@@ -155,6 +155,15 @@ void handleBoardSize()
     if (newValue > 50)
     {
         cout << "Inputed number is too big, please set a number lower than or equal to 50\nPress any key to continue" << endl;
+
+        getch();
+
+        return handleBoardSize();
+    }
+
+    if (newValue % 2 == 1)
+    {
+        cout << "Board size cannot be an odd number, please set an even number\nPress any key to continue";
 
         getch();
 

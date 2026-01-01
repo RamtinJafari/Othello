@@ -27,7 +27,10 @@ struct Board
 
     void flip(int x, int y)
     {
-        
+        char piece = grid[y][x];
+
+        if (piece == '■') grid[y][x] = '□';
+        else if (piece == '□') grid[y][x] = '■';
     }
 
 
