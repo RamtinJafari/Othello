@@ -1,10 +1,15 @@
+#include "ConfigManager.h"
+#include "Config.h"
+#include <string>
+
 struct Config
 {
-    bool instanceCreated = false;
+    static Config* instance;
+
     int GAME_HISTORY_LIMIT;
     int BOARD_SIZE;
-    string BOARD_COLOR;
-    string BOARD_BORDER_COLOR;
+    std::string BOARD_COLOR;
+    std::string BOARD_BORDER_COLOR;
     bool SOUND;
     bool SHOW_AVAILABLE_PLACES_FOR_PIECES;
     bool HINT;
@@ -13,18 +18,33 @@ struct Config
     private:
         Config()
         {
-            
+            GAME_HISTORY_LIMIT = ConfigManager::getGameHistoryLimit();
+            BOARD_SIZE = ConfigManager::getBoardSize();
+            BOARD_COLOR = ConfigManager::getBoardColor();
+            BOARD_BORDER_COLOR = ConfigManager::getBoardBorderColor();
+            SOUND = ConfigManager::getSound();
+            SHOW_AVAILABLE_PLACES_FOR_PIECES = ConfigManager::getShowAvailablePlacesForPieces();
+            HINT = ConfigManager::getHint();
+            HINT_LIMIT = ConfigManager::getHintLimit();
         }
 
-    void intializeConfig() 
+    static Config* getInstance()
     {
-
+        if (!instance)
+            throw 3; // config not initialized
+        return instance;
     }
 
-    Config createCostumConfig() 
+    static void initialize()
     {
+        if (!instance)
+            instance = new Config();
+    }
 
+    static void customizeBoardSize(int boardSize)
+    {
+        instance -> BOARD_SIZE = boardSize;
     }
 };
 
-static Config config;
+Config* Config::instance = nullptr;
