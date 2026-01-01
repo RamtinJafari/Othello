@@ -20,7 +20,7 @@ struct Move
         return std::to_string(x) + " " + std::to_string(y) + " " + std::string(1, color);
     }
 
-    Move loadMove(std::string move)
+    void loadMove(std::string move)
     {
         int xLastIndex = move.find(" ") - 1;
         std::string x = move.substr(0, xLastIndex);
@@ -32,8 +32,8 @@ struct Move
 
         std::string color = move.substr(0, move.size());
 
-        Move object{StrToInt::strToInt(x), StrToInt::strToInt(y), static_cast<char>(color[0])};
-
-        return object;
-    }
-}
+        this -> x = StrToInt::strToInt(x);
+        this -> y = StrToInt::strToInt(y);
+        this -> color = static_cast<char>(color[0])
+    };
+};

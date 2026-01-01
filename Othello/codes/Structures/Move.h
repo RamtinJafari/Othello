@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 struct Move
 {
     int x;
@@ -9,5 +11,5 @@ struct Move
 public:
     Move(int x, int y, char color);
     std::string retrieveMove();
-    Move loadMove(std::string move);
-}
+    void loadMove(std::string move);
+};

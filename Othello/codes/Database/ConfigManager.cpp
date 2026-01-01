@@ -21,7 +21,7 @@ string getElementOfConfig(int index)
 
     string line;
 
-    for (int i{0}; i <= index + 1;)
+    for (int i{0}; i <= index + 1; i++)
     {
         getline(file, line);
     }
