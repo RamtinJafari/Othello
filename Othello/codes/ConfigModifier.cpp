@@ -33,7 +33,7 @@ void execute()
 
         int userInput = getch();
 
-        if (userInput == static_cast<int>('w') || userInput == static_cast<int>('↑'))
+        if (userInput == static_cast<int>('w') || userInput == 72)
         {
             if (chosenOption > 0)
             {
@@ -42,7 +42,7 @@ void execute()
             }
         }
 
-        if (userInput == static_cast<int>('s') || userInput == static_cast<int>('↓'))
+        if (userInput == static_cast<int>('s') || userInput == 80)
         {
             if (chosenOption < 2)
             {
@@ -51,7 +51,7 @@ void execute()
             }
         }
 
-        if (userInput == static_cast<int>('⏎'))
+        if (userInput == 13)
         {
             if (chosenOption == 0)
             {
