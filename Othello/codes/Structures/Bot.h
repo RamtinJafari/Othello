@@ -8,6 +8,7 @@ struct Bot
     int difficulty;
 
     public:
+    Bot(std::string name, int difficulty);
     void decide(Board board);
     std::string retrieveBot();
     void loadBot(std::string bot);

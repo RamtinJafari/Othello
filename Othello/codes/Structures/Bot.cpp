@@ -11,6 +11,13 @@ struct Bot
     int difficulty;
 
     public:
+    Bot(std::string name, int difficulty)
+    {
+        this -> name = name;
+        this -> difficulty = difficulty;
+    }
+
+    public:
     void decide(Board board, char color)
     // the fucntion called by GameMaster when it's bot's turn to move
     // this function should be called when prepareBoardForMove is called
