@@ -104,6 +104,8 @@ struct Bot
 
     public:
     std::string retrieveBot()
+    // turns Bot structure into a string to be saved inside database
+    // this string will be loaded using loadBot method
     {
         return name + "\"" + intToStr(difficulty);
     } 
@@ -111,6 +113,9 @@ struct Bot
 
     public:
     void loadBot(std::string bot)
+    // fills Bot's properties according to the given string 
+    // this string is bot's informating saved inside database
+    // this string was made using retrieveBot method
     {
         int seperatorIndex = bot.find("\"");
         name = bot.substr(0, seperatorIndex - 1);
