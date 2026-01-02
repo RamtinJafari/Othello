@@ -13,6 +13,7 @@ bool madeChanges = false;
 
 void handleGameHistoryLimit();
 void handleBoardSize();
+void handlShowAvailablePlacesToPieces();
 
 
 
@@ -26,13 +27,15 @@ void executeConfigModifier()
 
         std::cout << "curent setting are:" << std::endl
         << "The number of games inside game history: " << getGameHistoryLimit() << std::endl
-        << "The size of the board: " << getBoardSize() << std::endl << std::endl;
+        << "The size of the board: " << getBoardSize() << std::endl
+        << "Show available places for pieces: " << getShowAvailablePlacesForPieces() << std::endl << std::endl;
 
         std::cout << "Which of these properties do you wish to change?" << std::endl;
 
         std::cout << (chosenOption == 0 ? "■":"□") << " The number of games inside game history" << std::endl
             << (chosenOption == 1 ? "■":"□") << " The size of the board" << std::endl
-            << (chosenOption == 2 ? "■":"□") << " apply the changes and exit" << std::endl;
+            << (chosenOption == 2 ? "■":"□") << " Showing avaibale places for pieces" << std::endl
+            << (chosenOption == 3 ? "■":"□") << " apply the changes and exit" << std::endl;
 
         int userInput = getch();
 
@@ -47,7 +50,7 @@ void executeConfigModifier()
 
         if (userInput == static_cast<int>('s') || userInput == 80)
         {
-            if (chosenOption < 2)
+            if (chosenOption < 3)
             {
                 chosenOption++;
                 continue;
@@ -65,6 +68,10 @@ void executeConfigModifier()
                 handleBoardSize();
             }
             else if (chosenOption == 2)
+            {
+                handlShowAvailablePlacesToPieces();
+            }
+            else if (chosenOption == 3)
             {
                 break;
             }
@@ -180,6 +187,44 @@ void handleBoardSize()
     }
 
     modifyBoardSize(newValue);
+    std::cout << "Change has been made\nPress any key to continue";
+    getch();
+
+    return;
+}
+
+
+
+void handlShowAvailablePlacesToPieces()
+{
+    system("cls");
+    
+    bool curValue = getShowAvailablePlacesForPieces();
+
+    std::cout << (curValue ?
+        "Currently, you will see available places for putting your piece durning the game":
+        "Currently, you won't see available places for putting your piece durning the game"
+    ) << std::endl;
+
+    std::cout << "Do you proceed to change the behavour? [Y/N]" << std::endl;
+
+    char procceded;
+    std::cin >> procceded;
+    
+    if (!(procceded == 'Y' || procceded == 'y'))
+    {
+        return;
+    }
+
+    if (curValue)
+    {
+        modifyShowAvailablePlacesForPieces(false);
+    }
+    else
+    {
+        modifyShowAvailablePlacesForPieces(true);
+    }
+
     std::cout << "Change has been made\nPress any key to continue";
     getch();
 
