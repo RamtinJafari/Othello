@@ -1,1 +1,1 @@
-// Player name should not have a | character within
+// Player name should not have a | or [ or ] character within
