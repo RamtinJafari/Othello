@@ -1,6 +1,6 @@
+#include "codes/Structures/Config.h"
+#include "codes/ConfigModifier.h"
 #include <iostream>
-#include "/codes/Structures/Config.h"
-#include "/codes/ConfigModifier.h"
 #include <conio.h>
 #include <windows.h>
 
@@ -16,13 +16,13 @@ int main()
     {
         system("cls");
 
-        cout << "Welcome to Othello game!" << endl
-            << (chosenOption == 0 ? "■":"□") << " new game" << endl
-            << (chosenOption == 1 ? "■":"□") << " load game" << endl
-            << (chosenOption == 2 ? "■":"□") << " help" << endl
-            << (chosenOption == 3 ? "■":"□") << " games history" << endl
-            << (chosenOption == 4 ? "■":"□") << " settings" << endl
-            << (chosenOption == 5 ? "■":"□") << " exit" << endl;
+        std::cout << "Welcome to Othello game!" << std::endl
+            << (chosenOption == 0 ? "■":"□") << " new game" << std::endl
+            << (chosenOption == 1 ? "■":"□") << " load game" << std::endl
+            << (chosenOption == 2 ? "■":"□") << " help" << std::endl
+            << (chosenOption == 3 ? "■":"□") << " games history" << std::endl
+            << (chosenOption == 4 ? "■":"□") << " settings" << std::endl
+            << (chosenOption == 5 ? "■":"□") << " exit" << std::endl;
 
         int userInput = getch();
 
@@ -64,7 +64,7 @@ int main()
             }
             else if (chosenOption == 4)
             {
-                ConfigModifier::execute();
+                executeConfigModifier();
             }
             else if (chosenOption == 5)
             {

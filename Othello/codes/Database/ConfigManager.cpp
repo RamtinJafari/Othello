@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "../Utilities/StrToInt.h"
+#include "../utilities/IntToStr.h"
 #include "ConfigManager.h"
 
 using namespace std;
@@ -35,144 +36,144 @@ string getElementOfConfig(int index)
 }
 
 
-string modifyElementOfConfig(int index, string newValue)
+void modifyElementOfConfig(int index, string newValue)
 {
     if (index > 7)
     {
         throw 2; // out of bounds
     }
 
-    ifstream file("Config.txt");
-    if (!file.is_open())
+    std::ifstream fileToRead("Config.txt");
+    if (!fileToRead.is_open())
     {
         throw 1; // failed to read the file
     }
 
-    string[8] lines;
+    std::string lines[8];
 
-    for (int i{0}; i <= index + 3;)
+    for (int i{0}; i <= index + 3; i++)
     {
-        lines[i] = getline(file, line);
+        getline(fileToRead, lines[i]);
     }
     
-    file.close();
+    fileToRead.close();
 
     string targetLine = lines[index + 1];
     int startingIndex = targetLine.find("=") + 2;
-    targetLine = line.substr(0, startingIndex) + newValue;
+    targetLine = targetLine.substr(0, startingIndex) + newValue;
     lines[index + 1] = targetLine;
 
-    ofstream file ("Config.txt")
-    if (!file.is_open())
+    std::ofstream fileToWrite ("Config.txt");
+    if (!fileToWrite.is_open())
     {
         throw 1; // failed to read the file
     }
 
-    for (l : lines)
+    for (std::string l : lines)
     {
-        file << l << endl;
+        fileToWrite << l << std::endl;
     }
-    file.close();
+    fileToWrite.close();
 }
 
 
 int getGameHistoryLimit() 
 {
-    return StrToInt::strToInt(getElementOfConfig(0));
+    return strToInt(getElementOfConfig(0));
 }
 
 
 int getBoardSize() 
 {
-    return StrToInt::strToInt(getElementOfConfig(1));
+    return strToInt(getElementOfConfig(1));
 }
 
 
 string getBoardColor() 
 {
-    return getElementOfConfig(2)
+    return getElementOfConfig(2);
 }
 
 
 string getBoardBorderColor() 
 {
-    return getElementOfConfig(3)
+    return getElementOfConfig(3);
 }
 
 
 bool getSound() 
 {
-    int intBool = StrToInt::strToInt(getElementOfConfig(4));
+    int intBool = strToInt(getElementOfConfig(4));
     return static_cast<bool>(intBool);
 }
 
 
 bool getShowAvailablePlacesForPieces() 
 {
-    int intBool = StrToInt::strToInt(getElementOfConfig(5));
+    int intBool = strToInt(getElementOfConfig(5));
     return static_cast<bool>(intBool);
 }
 
 
 bool getHint() 
 {
-    int intBool = StrToInt::strToInt(getElementOfConfig(6));
+    int intBool = strToInt(getElementOfConfig(6));
     return static_cast<bool>(intBool);
 }
 
 
 int getHintLimit() 
 {
-    return StrToInt::strToInt(getElementOfConfig(7));
+    return strToInt(getElementOfConfig(7));
 }
 
 
 void modifyGameHistoryLimit(int gameHistoryLimit) 
 {
-    modifyElementOfConfig(0, static_cast<string>(gameHistoryLimit));
+    modifyElementOfConfig(0, intToStr(gameHistoryLimit));
 }
 
 
 void modifyBoardSize(int boardSize) 
 {
-    modifyElementOfConfig(1, static_cast<string>(boardSize));
+    modifyElementOfConfig(1, intToStr(boardSize));
 }
 
 
 void modifyBoardColor(string color) 
 {
-    return modifyElementOfConfig(2, color)
+    modifyElementOfConfig(2, color);
 }
 
 
 void modifyBoardBorderColor(string color) 
 {
-    return modifyElementOfConfig(3, color)
+    modifyElementOfConfig(3, color);
 }
 
 
 void modifySound(bool sound) 
 {
     int sound = static_cast<int>(sound);
-    modifyElementOfConfig(4, static_cast<string>(sound));
+    modifyElementOfConfig(4, intToStr(sound));
 }
 
 
 void modifyShowAvailablePlacesForPieces(bool newValue) 
 {
     int newValue = static_cast<int>(newValue);
-    modifyElementOfConfig(5, static_cast<string>(newValue));
+    modifyElementOfConfig(5, intToStr(newValue));
 }
 
 
 void modifyHint(bool hint) 
 {
     int hint = static_cast<int>(hint);
-    modifyElementOfConfig(6, static_cast<string>(hint));
+    modifyElementOfConfig(6, intToStr(hint));
 }
 
 
 void modifyHintLimit(int hintLimit) 
 {
-    modifyElementOfConfig(7, static_cast<string>(hintLimit));
+    modifyElementOfConfig(7, intToStr(hintLimit));
 }

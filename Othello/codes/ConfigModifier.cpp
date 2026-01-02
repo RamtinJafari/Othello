@@ -1,7 +1,9 @@
 #include "ConfigModifier.h"
-#include "/Database/ConfigManager.h"
+#include "../Database/ConfigManager.h"
 #include <conio.h>
 #include <windows.h>
+#include <limits>
+#include <iostream>
 
 
 
@@ -14,7 +16,7 @@ void handleBoardSize();
 
 
 
-void execute()
+void executeConfigModifier()
 {
     int chosenOption = 0;
 
@@ -22,15 +24,15 @@ void execute()
     {
         system("cls");
 
-        cout << "curent setting are:" << endl
-        << "The number of games inside game history: " << ConfigManager::getGameHistoryLimit() << endl
-        << "The size of the board: " << ConfigManager::getBoardSize() << endl << endl;
+        std::cout << "curent setting are:" << std::endl
+        << "The number of games inside game history: " << getGameHistoryLimit() << std::endl
+        << "The size of the board: " << getBoardSize() << std::endl << std::endl;
 
-        cout << "Which of these properties do you wish to change?" << endl;
+        std::cout << "Which of these properties do you wish to change?" << std::endl;
 
-        cout << (chosenOption == 0 ? "■":"□") << " The number of games inside game history" << endl
-            << (chosenOption == 1 ? "■":"□") << " The size of the board" << endl
-            << (chosenOption == 2 ? "■":"□") << " apply the changes and exit" << endl;
+        std::cout << (chosenOption == 0 ? "■":"□") << " The number of games inside game history" << std::endl
+            << (chosenOption == 1 ? "■":"□") << " The size of the board" << std::endl
+            << (chosenOption == 2 ? "■":"□") << " apply the changes and exit" << std::endl;
 
         int userInput = getch();
 
@@ -69,12 +71,12 @@ void execute()
         }
     }
 
-    if (madeChanges == false) cout << "No changes has been made\nPress any key to continue"
-    else if (madeChanges == true) cout << "Please restart the game for changes to be applied to the game\nPress any key to continue"
+    if (madeChanges == false) std::cout << "No changes has been made\nPress any key to continue";
+    else if (madeChanges == true) std::cout << "Please restart the game for changes to be applied to the game\nPress any key to continue";
 
-    getch();
+    getchar();
     system("cls");
-    return 0;
+    return;
 }
 
 
@@ -83,34 +85,38 @@ void handleGameHistoryLimit()
 {
     system("cls");
 
-    cout << "the current value of the number of games inside game history is "
-        << ConfigManager::getGameHistoryLimit() << eld
-        << "Please set the new value: " << endl;
+    std::cout << "the current value of the number of games inside game history is "
+        << getGameHistoryLimit() << std::endl
+        << "Please set the new value: " << std::endl;
 
-    try
+    int newValue;
+
+    if (!std::cin >> newValue)
     {
-        int newValue;
-        cin >> newValue;
-    }
-    catch
-    {
-        cout << "invalid number inputed, please set a number\nPress any key to continue";
+        // Failed: non-numeric input
+        std::cout << "Invalid number inputted, please enter a valid number.\n";
+        std::cout << "Press any key to continue...";
+        
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        
         getch();
+        
         return handleGameHistoryLimit();
     }
 
-    if (ConfigManager::getGameHistoryLimit == newValue)
+    if (getGameHistoryLimit() == newValue)
     {
         return handleGameHistoryLimit();
     }
 
     if (newValue > 100)
     {
-        cout << "Inputed number is too big, you might face slow loading when recieving reports or loading games"
-            << endl << "Do you procced? [Y/N]" << endl;
+        std::cout << "Inputed number is too big, you might face slow loading when recieving reports or loading games"
+            << std::endl << "Do you procced? [Y/N]" << std::endl;
 
         char procceded;
-        cin >> procceded;
+        std::cin >> procceded;
         
         if (!(procceded == 'Y' || procceded == 'y'))
         {
@@ -118,11 +124,11 @@ void handleGameHistoryLimit()
         }
     }
 
-    ConfigManager::modifyGameHistoryLimit(newValue);
-    cout << "Change has been made\nPress any key to continue";
+    modifyGameHistoryLimit(newValue);
+    std::cout << "Change has been made\nPress any key to continue";
     getch();
 
-    return 0;
+    return;
 }
 
 
@@ -131,30 +137,33 @@ void handleBoardSize()
 {
     system("cls");
 
-    cout << "the current value of the size of the board is "
-        << ConfigManager::getBoardSize() << eld
-        << "Please set the new value: " << endl;
+    std::cout << "the current value of the size of the board is "
+        << getBoardSize() << std::endl
+        << "Please set the new value: " << std::endl;
 
-    try
+    int newValue;
+    if (!std::cin >> newValue)
     {
-        int newValue;
-        cin >> newValue;
-    }
-    catch
-    {
-        cout << "invalid number inputed, please set a number\nPress any key to continue";
+        // Failed: non-numeric input
+        std::cout << "Invalid number inputted, please enter a valid number.\n";
+        std::cout << "Press any key to continue...";
+        
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        
         getch();
-        return handleBoardSize();
+        
+        return handleGameHistoryLimit();
     }
 
-    if (ConfigManager::getBoardSize() == newValue)
+    if (getBoardSize() == newValue)
     {
         return handleBoardSize();
     }
 
     if (newValue > 50)
     {
-        cout << "Inputed number is too big, please set a number lower than or equal to 50\nPress any key to continue" << endl;
+        std::cout << "Inputed number is too big, please set a number lower than or equal to 50\nPress any key to continue" << std::endl;
 
         getch();
 
@@ -163,16 +172,16 @@ void handleBoardSize()
 
     if (newValue % 2 == 1)
     {
-        cout << "Board size cannot be an odd number, please set an even number\nPress any key to continue";
+        std::cout << "Board size cannot be an odd number, please set an even number\nPress any key to continue";
 
         getch();
 
         return handleBoardSize();
     }
 
-    ConfigManager::modifyBoardSize(newValue);
-    cout << "Change has been made\nPress any key to continue";
+    modifyBoardSize(newValue);
+    std::cout << "Change has been made\nPress any key to continue";
     getch();
 
-    return 0;
+    return;
 }

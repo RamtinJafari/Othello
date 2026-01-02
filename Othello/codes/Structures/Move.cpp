@@ -32,8 +32,8 @@ struct Move
 
         std::string color = move.substr(0, move.size());
 
-        this -> x = StrToInt::strToInt(x);
-        this -> y = StrToInt::strToInt(y);
-        this -> color = static_cast<char>(color[0])
+        this -> x = strToInt(x);
+        this -> y = strToInt(y);
+        this -> color = static_cast<char>(color[0]);
     };
 };

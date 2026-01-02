@@ -1,13 +1,16 @@
-#include <string>
 #pragma once
+
+#include <string>
+
 int getGameHistoryLimit();
 int getBoardSize();
-string getBoardColor();
-string getBoardBorderColor();
+std::string getBoardColor();
+std::string getBoardBorderColor();
 bool getSound();
 bool getShowAvailablePlacesForPieces();
 bool getHint();
 int getHintLimit();
+
 void modifyGameHistoryLimit(int);
 void modifyBoardSize(int);
 void modifyBoardColor(std::string);

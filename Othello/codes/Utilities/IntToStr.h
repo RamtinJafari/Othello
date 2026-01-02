@@ -2,4 +2,4 @@
 
 #include <string>
 
-int strToInt(std::string number);
+std::string intToStr(int);

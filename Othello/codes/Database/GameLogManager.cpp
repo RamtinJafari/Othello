@@ -63,7 +63,7 @@ Move getLog(int logIndex)
 
     Move move{0, 0, '0'};
     
-    move.loadMove(line)
+    move.loadMove(line);
 
     return move;
 }

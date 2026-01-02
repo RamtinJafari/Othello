@@ -5,4 +5,4 @@
 void clearGameLog();
 void addLog(Move move);
 int countLogs();
-Move::Move getLog(int logIndex);
+Move getLog(int logIndex);

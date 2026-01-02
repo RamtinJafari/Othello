@@ -1,19 +1,18 @@
 #include <string>
-#include "StrTiInt.h"
-using namespace std;
+#include "StrToInt.h"
 
 // turns a string containing digits into a integer
-int strToInt(string number)
+int strToInt(std::string number)
 {
-    int result {0};
+    int result = 0;
 
     while (number != "")
     {
-        result = result*10 + getNumber((char) number[0])
-        number = number.substr(1, line.size())
+        result = result*10 + getNumber((char) number[0]);
+        number = number.substr(1, number.size());
     }
 
-    return number;
+    return result;
 }
 
 int getNumber(char digit)
