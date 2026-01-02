@@ -114,7 +114,7 @@ struct Bot
     // turns Bot structure into a string to be saved inside database
     // this string will be loaded using loadBot method
     {
-        return name + "\"" + intToStr(difficulty);
+        return name + "|" + intToStr(difficulty);
     } 
 
 
@@ -124,7 +124,7 @@ struct Bot
     // this string is bot's informating saved inside database
     // this string was made using retrieveBot method
     {
-        int seperatorIndex = bot.find("\"");
+        int seperatorIndex = bot.find("|");
         name = bot.substr(0, seperatorIndex - 1);
         difficulty = strToInt(bot.substr(seperatorIndex + 1, bot.size()));
     }
