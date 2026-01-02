@@ -13,7 +13,12 @@ struct Board
 
 
 //------------------------------- Constructor & deconstructor ----------------------------------------
+public:
     Board() 
+    // gets BoardSize from Config and allocates memort for matrixes
+    // intializes ValidMoves only, since grid will be intializes by GameMaster
+    // using newGameSetup or loadBoard methods
+    // also displayGrid is updated with grid before being diplayed
     {
         BoardSize = Config::getInstance() -> BOARD_SIZE;
 
@@ -35,8 +40,9 @@ struct Board
         resetValidMovesGrid();
     }
 
-
+public:
     void deleteBoardMemory()
+    // when the game is over, this method has to be called to free up memory
     {
         for (int i = 0; i < BoardSize; ++i) 
         {
@@ -59,7 +65,10 @@ struct Board
 
 
 //-------------------------------- Database & pre-game operations ------------------------------------
+public:
     std::string retrieveBoard()
+    // turns grid into string format to be saved inside database
+    // this string can be used to create a grid using loadBoard method
     {
         int index = 0;
         int size = BoardSize * BoardSize + BoardSize; 
@@ -86,8 +95,9 @@ struct Board
         return result;
     }
 
-
+public:
     void newGameSetup()
+    // sets all grid elements to white-space except the four in center
     {
         for (int y = 0; y < BoardSize; y++)
         {
@@ -103,8 +113,10 @@ struct Board
         grid[BoardSize/2][BoardSize/2 + 1] = '⬤';
     }
 
-
+public:
     void loadBoard(std::string Board)
+    // recreates grid based on a string inside database
+    // this string is created by retrieveBoard method
     {
         int index = 0;
 
@@ -120,15 +132,23 @@ struct Board
 
 
 // ------------------------------------- grid and game operations -----------------------------------------
+public:
     void prepareBoardForMove()
+    // this method has to be called when a valid move is made
+    // updated displayGrid with the latest changes in grid
+    // validMovesGrid will find valid moves based on the new grid
+    // if user has chosen to see valid moves inside the board (SHOW_AVAILABLE_PLACES_FOR_PIECES is set to true)
+    // then they are putted inside the displayGrid
     {
         updateDisplayGrid();
         prepareValidMovesGrid();
-        putValidMoves();
+        if (Config::getInstance() -> SHOW_AVAILABLE_PLACES_FOR_PIECES)
+            putValidMoves();
     } 
 
-
+private:
     void flip(int x, int y)
+    // simply changes the color of the piece inside the given coordinates (flips it)
     {
         char piece = grid[y][x];
 
@@ -136,8 +156,9 @@ struct Board
         else if (piece == '○') grid[y][x] = '⬤';
     }
 
-
+private:
     void verticalflip(int x, int y, char color)
+    // flips the surrounded pieces in vertical directions (up and down)
     {
         if (verticalNeighbour(x, y, color) == 0)
         {
@@ -169,8 +190,9 @@ struct Board
         }
     }
 
-
+private:
     void horazinalflip(int x, int y, char color)
+    // flips the surrounded pieces in horazinal directions (left and right)
     {
         if (horazinalNeighbour(x, y, color))
         {
@@ -202,8 +224,9 @@ struct Board
         }
     }
 
-
+private:
     void diagonalflip(int x, int y, char color)
+    // flips the surrounded pieces in diagonal directions
     {
         // check right-up
         for (int i = x + 2, j = y - 2; i < BoardSize && j > 0; i++, j--)
@@ -254,16 +277,37 @@ struct Board
         }
     }
 
-
+public:
     void putPiece(int x, int y, char color)
+    // puts the piece inside grid and flips the pieces that are surounded now
+    // caution - this function considers that putting a piece in that coordination is valid
+    // since validation should be done in GameMaster
     {
+        grid[y][x] == color;
+
         horazinalflip(x, y, color);
         verticalflip(x, y, color);
         diagonalflip(x, y, color);
     }
 
-
+public:
     int countBlack()
+    // counts the number of black pieces inside the grid
+    {
+        int count = 0;
+
+        for (int y = 0; y < BoardSize; y++)
+        {
+            for (int x = 0; x < BoardSize; x++)
+            {
+                if (grid[y][x] == '○') count++;
+            }
+        }
+    }
+
+public:
+    int countWhite()
+    // counts the number of white pieces inside the grid
     {
         int count = 0;
 
@@ -277,7 +321,13 @@ struct Board
     }
 
 
-    int countWhite()
+//------------------------------------------ validGrid operations --------------------------------------------
+public:
+    int countValidMoves()
+    // returns the number of valid moves that can be made for the current turn
+    // should be called when validMovesGrid is created for the round
+    // in a nutshell, after preparedBoardForMove method is called
+    // used to see if the player has a move to make
     {
         int count = 0;
 
@@ -285,14 +335,17 @@ struct Board
         {
             for (int x = 0; x < BoardSize; x++)
             {
-                if (grid[y][x] == '○') count++;
+                if (validMovesGrid[y][x] == '⦻') count++;
             }
         }
+
+        return count;
     }
 
 
-//------------------------------------------ validGrid operations --------------------------------------------
+public:
     bool isValid(int x, int y, char color)
+    // check if putting a piece with the given color inside the given coordination is valid or not
     {
         if (grid[y][x] == '○' || grid[y][x] == '⬤')
             return false;
@@ -301,13 +354,21 @@ struct Board
     }
 
 
+private:
     int verticalNeighbour(int x, int y, char color)
+    // returns the number of pieces that will be surounded in vertical directions
+    // if a piece with the given color is put in the given coordination
     {
         int gain = 0;
 
         // check up
         for (int i = y - 2; i > 0; i--)
         {
+            if (grid[i][x] == ' ')
+            {
+                break;
+            }
+
             if (grid[i][x] == color)
             {
                 gain += i - y - 1;
@@ -317,6 +378,11 @@ struct Board
         // check down
         for (int i = y + 2; i < BoardSize; i++)
         {
+            if (grid[i][x] == ' ')
+            {
+                break;
+            }
+
             if (grid[i][x] == color)
             {
                 gain += y - i - 1;
@@ -326,14 +392,21 @@ struct Board
         return gain;
     }
 
-
+private:
     int horazinalNeighbour(int x, int y, char color)
+    // returns the number of pieces that will be surounded in horazinal directions
+    // if a piece with the given color is put in the given coordination
     {
         int gain = 0;
 
         // check left
         for (int i = x - 2; i > 0; i--)
         {
+            if (grid[y][i] == ' ')
+            {
+                break;
+            }
+
             if (grid[y][i] == color)
             {
                 gain += i - x - 1;
@@ -343,6 +416,11 @@ struct Board
         // check right
         for (int i = x + 2; i < BoardSize; i++)
         {
+            if (grid[y][i] == ' ')
+            {
+                break;
+            }
+
             if (grid[y][i] == color)
             {
                 gain += x - i - 1;
@@ -352,14 +430,21 @@ struct Board
         return gain;
     }
 
-
+private:
     int diagonalNeighbour(int x, int y, char color)
+    // returns the number of pieces that will be surounded in diagonal directions
+    // if a piece with the given color is put in the given coordination
     {
         int gain = 0;
 
         // check right-up
         for (int i = x + 2, j = y - 2; i < BoardSize && j > 0; i++, j--)
         {
+            if (grid[j][i] == ' ')
+            {
+                break;
+            }
+
             if (grid[j][i] == color)
             {
                 gain += i - x - 1;
@@ -369,6 +454,11 @@ struct Board
         // check right-down
         for (int i = x + 2, j = y + 2; i < BoardSize && j < BoardSize; i++, j++)
         {
+            if (grid[j][i] == ' ')
+            {
+                break;
+            }
+
             if (grid[j][i] == color)
             {
                 gain += i - x - 1;
@@ -378,6 +468,11 @@ struct Board
         // check left-up
         for (int i = x - 2, j = y - 2; i > 0 && j > 0; i--, j--)
         {
+            if (grid[j][i] == ' ')
+            {
+                break;
+            }
+
             if (grid[j][i] == color)
             {
                 gain += x - i - 1;
@@ -387,6 +482,11 @@ struct Board
         // check left-down
         for (int i = x - 2, j = y + 2; i > 0 && j < BoardSize; i--, j++)
         {
+            if (grid[j][i] == ' ')
+            {
+                break;
+            }
+
             if (grid[j][i] == color)
             {
                 gain += x - i - 1;
@@ -396,8 +496,9 @@ struct Board
         return gain;
     }
 
-
+private:
     void resetValidMovesGrid()
+    // clears validGrid elements to white-space
     {
         for (int y = 0; y < BoardSize; y++)
         {
@@ -408,8 +509,10 @@ struct Board
         }
     }
 
-
+private:
     void prepareValidMovesGrid()
+    // first ValidMovesGrid resets itself so previous data won't interupt the process
+    // then check each place in grid, if it's valid, it'll put ⦻ inside the coresponding coordinations inside itself
     {
         resetValidMovesGrid();
 
@@ -425,13 +528,21 @@ struct Board
 
 
 //----------------------------------- display and displayGrid operations -----------------------------------------
-    void placeCursor(int x, int y)
+public:
+    char placeCursor(int x, int y)
+    // puts ⊙ as the cursor regardless of the element inside displayGrid
+    // returns the element that was in the coordination, so when the cursor
+    // moves, the previous element can be recovered
     {
+        char curElement = displayGrid[y][x];
         displayGrid[y][x] = '⊙';
+        return curElement;
     }
 
-
+private:
     void updateDisplayGrid()
+    // displayGrid be copied based on the elements (pieces) inside grid
+    // displayGrid will be a copy of grid, in a nutshell
     {
         for (int y = 0; y < BoardSize; y++)
         {
@@ -442,8 +553,11 @@ struct Board
         }
     }
 
-
+private:
     void putValidMoves()
+    // validMovesGrid has the valid moves coordinations inside itself
+    // by calling this method, displayGrid will mark valid moves which
+    // validMovesGrid marks
     {
         for (int y = 0; y < BoardSize; y++)
         {
@@ -457,11 +571,10 @@ struct Board
         }
     }
 
-
+public:
     void display(int cursorX, int cursorY)
+    // outputs displayGrid with viasual decorations
     {
-        placeCursor(cursorX, cursorY);
-
         print("―", BoardSize * 2 + 2);
         std::cout << std::endl;
 
@@ -472,6 +585,9 @@ struct Board
             {
                 std::cout << displayGrid[y][x] << "|";
             }
+
+            std::cout << std::endl;
+            print("―", BoardSize * 2 + 2);
             std::cout << std::endl;
         }
 
