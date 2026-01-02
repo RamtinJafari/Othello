@@ -1,3 +1,4 @@
+#include "codes/Database/GameHistoryManager.h"
 #include "codes/Structures/Config.h"
 #include "codes/ConfigModifier.h"
 #include <iostream>
@@ -9,6 +10,8 @@ int main()
     system("cls");
     
     Config::initialize();
+    syncWithNewLimit();
+
 
     int chosenOption = 0;
 
