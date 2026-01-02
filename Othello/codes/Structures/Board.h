@@ -19,7 +19,7 @@ public:
     void putPiece(int x, int y, char color);
     int countBlack();
     int countWhite();
-    bool isValid(int x, int y, char color);
+    int isValid(int x, int y, char color);
     int countValidMoves();
     void display(int cursorX, int cursorY);
     char placeCursor(int x, int y);

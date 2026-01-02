@@ -344,13 +344,14 @@ public:
 
 
 public:
-    bool isValid(int x, int y, char color)
-    // check if putting a piece with the given color inside the given coordination is valid or not
+    int isValid(int x, int y, char color)
+    // returns the number of gains if a piece with the given color inside the given coordinations is placed
+    // if the number returns is bigger than zero, then the move is valid (legal)
     {
         if (grid[y][x] == '○' || grid[y][x] == '⬤')
-            return false;
+            return 0;
 
-        return (diagonalNeighbour(x, y, color) != 0 || horazinalNeighbour(x, y, color) != 0 || verticalNeighbour(x, y, color) != 0);
+        return diagonalNeighbour(x, y, color) + horazinalNeighbour(x, y, color) + verticalNeighbour(x, y, color);
     }
 
 
@@ -520,7 +521,7 @@ private:
         {
             for (int x = 0; x < BoardSize; x++)
             {
-                if (isValid(x, y, grid[y][x]))
+                if (isValid(x, y, grid[y][x]) != 0)
                     validMovesGrid[y][x] = '⦻';
             }
         }
