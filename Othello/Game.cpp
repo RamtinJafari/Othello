@@ -1,6 +1,10 @@
 #include "codes/Database/GameHistoryManager.h"
 #include "codes/Structures/Config.h"
 #include "codes/ConfigModifier.h"
+#include "codes/GameMaster.h"
+#include "codes/GameReporter.h"
+#include "codes/GameReviewer.h"
+#include "codes/Helper.h"
 #include <iostream>
 #include <conio.h>
 #include <windows.h>
@@ -51,19 +55,19 @@ int main()
         {
             if (chosenOption == 0)
             {
-                // new game
+                executeGameMaster(false);
             }
             else if (chosenOption == 1)
             {
-                // load game
+                executeGameMaster(true);
             }
             else if (chosenOption == 2)
             {
-                // help
+                executeHelper();
             }
             else if (chosenOption == 3)
             {
-                // games history
+                executeGameReporter();
             }
             else if (chosenOption == 4)
             {
