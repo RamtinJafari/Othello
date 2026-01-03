@@ -1,5 +1,7 @@
 #include "Config.h"
 #include "Board.h"
+#include "Move.h"
+#include "../Database/GameLogManager.h"
 #include "../Utilities/Print.h"
 #include <iostream>
 #include <string>
@@ -133,7 +135,7 @@ public:
 
 // ------------------------------------- grid and game operations -----------------------------------------
 public:
-    void prepareBoardForMove()
+    void prepareBoardForMove(char thisTurnColor)
     // this method has to be called when a valid move is made
     // updated displayGrid with the latest changes in grid
     // validMovesGrid will find valid moves based on the new grid
@@ -141,7 +143,7 @@ public:
     // then they are putted inside the displayGrid
     {
         updateDisplayGrid();
-        prepareValidMovesGrid();
+        prepareValidMovesGrid(thisTurnColor);
         if (Config::getInstance() -> SHOW_AVAILABLE_PLACES_FOR_PIECES)
             putValidMoves();
     } 
@@ -280,10 +282,14 @@ private:
 public:
     void putPiece(int x, int y, char color)
     // puts the piece inside grid and flips the pieces that are surounded now
+    // afterwards, logs the move made inside GameLog.txt for game review
     // caution - this function considers that putting a piece in that coordination is valid
     // since validation should be done in GameMaster
     {
         grid[y][x] == color;
+
+        Move move(x, y, color);
+        addLog(move);
 
         horazinalflip(x, y, color);
         verticalflip(x, y, color);
@@ -511,7 +517,7 @@ private:
     }
 
 private:
-    void prepareValidMovesGrid()
+    void prepareValidMovesGrid(char color)
     // first ValidMovesGrid resets itself so previous data won't interupt the process
     // then check each place in grid, if it's valid, it'll put ⦻ inside the coresponding coordinations inside itself
     {
@@ -521,7 +527,7 @@ private:
         {
             for (int x = 0; x < BoardSize; x++)
             {
-                if (isValid(x, y, grid[y][x]) != 0)
+                if (isValid(x, y, color) != 0)
                     validMovesGrid[y][x] = '⦻';
             }
         }
@@ -573,7 +579,7 @@ private:
     }
 
 public:
-    void display(int cursorX, int cursorY)
+    void display()
     // outputs displayGrid with viasual decorations
     {
         print("―", BoardSize * 2 + 2);

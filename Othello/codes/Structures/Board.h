@@ -15,13 +15,13 @@ public:
     std::string retrieveBoard();
     void newGameSetup();
     void loadBoard(std::string Board);
-    void prepareBoardForMove();
+    void prepareBoardForMove(char thisTurnColor);
     void putPiece(int x, int y, char color);
     int countBlack();
     int countWhite();
     int isValid(int x, int y, char color);
     int countValidMoves();
-    void display(int cursorX, int cursorY);
+    void display();
     char placeCursor(int x, int y);
 
 private:

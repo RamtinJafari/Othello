@@ -9,12 +9,12 @@ struct Bot
 
     public:
     Bot(std::string name, int difficulty);
-    void decide(Board board);
+    void decide(Board board, char color);
     std::string retrieveBot();
     void loadBot(std::string bot);
 
     private:
-    void easyDecide(Board borad);
-    void mediumDecide(Board board);
-    void hardDecide(Board board);
+    void easyDecide(Board borad, char color);
+    void mediumDecide(Board board, char color);
+    void hardDecide(Board board, char color);
 };
