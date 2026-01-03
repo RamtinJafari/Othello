@@ -25,7 +25,7 @@ void executeGameReporter()
         getch();
     }
 
-    for (int id = firstId; id <= lastId; id++)
+    for (int id = lastId; id >= firstId; id--)
     {
         outputDecoratedSavedGame(getGameById(id));
     }
