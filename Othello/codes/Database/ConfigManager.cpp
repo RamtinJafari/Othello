@@ -176,22 +176,22 @@ void modifyBoardBorderColor(string color)
 
 void modifySound(bool sound) 
 {
-    int sound = static_cast<int>(sound);
-    modifyElementOfConfig(4, intToStr(sound));
+    int soundToSave = static_cast<int>(sound);
+    modifyElementOfConfig(4, intToStr(soundToSave));
 }
 
 
 void modifyShowAvailablePlacesForPieces(bool newValue) 
 {
-    int newValue = static_cast<int>(newValue);
-    modifyElementOfConfig(5, intToStr(newValue));
+    int newValueToSave = static_cast<int>(newValue);
+    modifyElementOfConfig(5, intToStr(newValueToSave));
 }
 
 
 void modifyHint(bool hint) 
 {
-    int hint = static_cast<int>(hint);
-    modifyElementOfConfig(6, intToStr(hint));
+    int hintToSave = static_cast<int>(hint);
+    modifyElementOfConfig(6, intToStr(hintToSave));
 }
 
 

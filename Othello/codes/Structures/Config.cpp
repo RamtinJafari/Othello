@@ -1,4 +1,4 @@
-#include "ConfigManager.h"
+#include "../Database/ConfigManager.h"
 #include "Config.h"
 #include <iostream>
 #include <windows.h>

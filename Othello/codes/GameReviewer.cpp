@@ -6,7 +6,7 @@
 #include <iostream>
 #include <windows.h>
 
-void executeGameReveiwer(Board board)
+void executeGameReviewer(Board board)
 {
     int logsCount = countLogs();
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "Board.h"
 
 struct Bot
 {
