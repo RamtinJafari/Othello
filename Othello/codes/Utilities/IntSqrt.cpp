@@ -1,4 +1,4 @@
-#include "codes/Utilities/IntSqrt.h"
+#include "IntSqrt.h"
 
 int intSqrt(int number)
 {

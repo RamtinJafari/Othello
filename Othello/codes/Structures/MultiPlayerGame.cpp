@@ -1,10 +1,10 @@
-#include "codes/Database/GameHistoryManager.h"
-#include "codes/Database/GameLogManager.h"
-#include "codes/Utilities/IntToStr.h"
-#include "codes/Utilities/SymbolToStr.h"
-#include "codes/Structures/Board.h"
-#include "codes/Structures/Player.h"
-#include "codes/Structures/MultiPlayerGame.h"
+#include "../Database/GameHistoryManager.h"
+#include "../Database/GameLogManager.h"
+#include "../Utilities/IntToStr.h"
+#include "../Utilities/SymbolToStr.h"
+#include "Board.h"
+#include "Player.h"
+#include "MultiPlayerGame.h"
 #include <conio.h>
 #include <iostream>
 

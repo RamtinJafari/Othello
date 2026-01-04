@@ -1,6 +1,6 @@
 #include <string>
 #include <windows.h>
-#include "codes/Structures/Player.h"
+#include "Player.h"
 
 
 Player::Player(std::string name, char32_t color)

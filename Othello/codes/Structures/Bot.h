@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "codes/Structures/Board.h"
+#include "Board.h"
 
 struct Bot
 {

@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include "codes/Utilities/StrToInt.h"
-#include "codes/Utilities/IntToStr.h"
-#include "codes/Database/ConfigManager.h"
+#include "../Utilities/StrToInt.h"
+#include "../utilities/IntToStr.h"
+#include "ConfigManager.h"
 
 using namespace std;
 
@@ -36,7 +36,7 @@ string getElementOfConfig(int index)
         throw 2; // out of bond
     }
 
-    ifstream file ("codes/Database/Config.txt");
+    ifstream file ("Config.txt");
     if (!file.is_open())
     {
         throw 1; // failed to read the file
@@ -65,7 +65,7 @@ void modifyElementOfConfig(int index, string newValue)
         throw 2; // out of bounds
     }
 
-    std::ifstream fileToRead("codes/Database/Config.txt");
+    std::ifstream fileToRead("Config.txt");
     if (!fileToRead.is_open())
     {
         throw 1; // failed to read the file
@@ -85,7 +85,7 @@ void modifyElementOfConfig(int index, string newValue)
     targetLine = targetLine.substr(0, startingIndex) + newValue;
     lines[index + 1] = targetLine;
 
-    std::ofstream fileToWrite ("codes/Database/Config.txt");
+    std::ofstream fileToWrite ("Config.txt");
     if (!fileToWrite.is_open())
     {
         throw 1; // failed to read the file

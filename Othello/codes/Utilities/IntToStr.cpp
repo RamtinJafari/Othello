@@ -1,5 +1,5 @@
 #include <string>
-#include "codes/Utilities/IntToStr.h"
+#include "IntToStr.h"
 
 
 char getChar(int digit);

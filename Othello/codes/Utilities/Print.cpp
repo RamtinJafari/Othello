@@ -1,5 +1,5 @@
 #include <iostream>
-#include "codes/Utilities/Print.h"
+#include "Print.h"
 
 void print(std::string subject, int count)
 {
