@@ -90,16 +90,6 @@ void handleLoadGame()
         loadMultiPlayerGame(gameId);
     }
 
-    std::cout << "\n The game has finished, would you like to see the replay? [Y/N]" << std::endl;
-
-    char procceded;
-    std::cin >> procceded;
-    
-    if (procceded == 'Y' || procceded == 'y')
-    {
-        executeGameReviewer();
-    }
-
     Config::customizeBoardSize(legalBoardSize); // changing board size to the original value
 }
 
@@ -116,6 +106,16 @@ void loadSinglePlayerGame(int gameId)
     game.loadGame(gameId);
 
     game.start();
+
+    std::cout << "\n The game has finished, would you like to see the replay? [Y/N]" << std::endl;
+
+    char procceded;
+    std::cin >> procceded;
+    
+    if (procceded == 'Y' || procceded == 'y')
+    {
+        executeGameReviewer(game.GameBoard);
+    }
 } 
 
 
@@ -131,6 +131,16 @@ void loadMultiPlayerGame(int gameId)
     game.loadGame(gameId);
 
     game.start();
+
+    std::cout << "\n The game has finished, would you like to see the replay? [Y/N]" << std::endl;
+
+    char procceded;
+    std::cin >> procceded;
+    
+    if (procceded == 'Y' || procceded == 'y')
+    {
+        executeGameReviewer(game.GameBoard);
+    }
 }
 
 
@@ -177,16 +187,6 @@ void handleNewGame()
             }
             break;
         }
-    }
-
-    std::cout << "\n The game has finished, would you like to see the replay? [Y/N]" << std::endl;
-
-    char procceded;
-    std::cin >> procceded;
-    
-    if (procceded == 'Y' || procceded == 'y')
-    {
-        executeGameReviewer();
     }
 }
 
@@ -331,7 +331,18 @@ void handleSinglePlayerNewGame()
 
     SinglePlayerGame game{board, &player, &bot, '○'};
 
+    game.GameBoard.newGameSetup();
     game.start();
+
+    std::cout << "\n The game has finished, would you like to see the replay? [Y/N]" << std::endl;
+
+    char procceded;
+    std::cin >> procceded;
+    
+    if (procceded == 'Y' || procceded == 'y')
+    {
+        executeGameReviewer(game.GameBoard);
+    }
 }
 
 
@@ -457,5 +468,16 @@ void handleMultiPlayerNewGame()
 
     MultiPlayerGame game{board, &player1, &player2, '○'};
 
-    game.start();   
+    game.GameBoard.newGameSetup();
+    game.start();
+
+    std::cout << "\n The game has finished, would you like to see the replay? [Y/N]" << std::endl;
+
+    char procceded;
+    std::cin >> procceded;
+    
+    if (procceded == 'Y' || procceded == 'y')
+    {
+        executeGameReviewer(game.GameBoard);
+    }
 }
