@@ -12,11 +12,11 @@ struct SinglePlayerGame
     std::string mode;
     Player* Player1;
     Bot* GameBot;
-    char CurrentTurnColor;
+    char32_t CurrentTurnColor;
     int Winner;
 
 public:
-    SinglePlayerGame(Board GameBoard, Player* Player1, Bot* GameBot, char CurrentTurnColor);
+    SinglePlayerGame(Board GameBoard, Player* Player1, Bot* GameBot, char32_t CurrentTurnColor);
     void start();
     void end();
     void loadGame(int gameId);

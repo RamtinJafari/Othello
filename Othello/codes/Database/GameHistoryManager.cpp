@@ -4,6 +4,33 @@
 #include <fstream>
 
 
+void writeTempoToGameHistory();
+void addLineToEnd(std::string str);
+void freeLastLine();
+void updateLine(int lineIndex, std::string str);
+int getLineIndexById(int gameId);
+std::string getLineByLineIndex(int lineIndex);
+void saveGame(std::string game);
+int getLinesCount();
+void syncWithNewLimit();
+int getFirstGameId();
+int getLastGameId();
+int countUnfinishedGames();
+std::string getUnfinishedGame(int number);
+std::string getGameById(int gameId);
+std::string getProperty(int id, std::string game);
+int getSavedBoardElementCount(std::string board);
+int getGameId(std::string game);
+std::string getGameBoard(std::string game);
+std::string getMode(std::string game);
+std::string getPlayer1(std::string game);
+std::string getPlayer2(std::string game);
+std::string getBot(std::string game);
+char32_t getCurrentTurnColor(std::string game);
+int getWinner(std::string game);
+
+
+
 //----------------------------------- working with GameHistory.txt -----------------------------------------------
 void syncWithNewLimit()
 // has to be called when the game starts to be updated with config's confidurations
@@ -91,13 +118,6 @@ std::string getUnfinishedGame(int index)
 
 int getFirstGameId()
 {
-    std::string game = getLineByLineIndex(0);
-    return getGameId(game);
-}
-
-
-int getFirstGameId()
-{
     int maxIndex = getLinesCount() - 1;
 
     if (maxIndex == -1) return -1; // file is empty
@@ -114,7 +134,7 @@ int getLastGameId()
     if (maxIndex == -1) return -1; // file is empty
     if (maxIndex == 0) return 0; // only one game
 
-    std::string game = getLineByLineIndex(0);
+    std::string game = getLineByLineIndex(maxIndex);
     return getGameId(game);
 }
 
@@ -329,7 +349,7 @@ int getSavedBoardElementCount(std::string board)
 {
     int count = 0;
 
-    for (char element : board)
+    for (char32_t element : board)
     {
         if (element == '|') count++;
     }
@@ -390,9 +410,9 @@ std::string getBot(std::string game)
 }
 
 
-char getCurrentTurnColor(std::string game)
+char32_t getCurrentTurnColor(std::string game)
 {
-    return (char) getProperty(5, game)[0];
+    return (char32_t) getProperty(5, game)[0];
 }
 
 

@@ -1,6 +1,12 @@
 #include <string>
 #include "StrToInt.h"
 
+
+
+int getNumber(char digit);
+
+
+
 // turns a string containing digits into a integer
 int strToInt(std::string number)
 {

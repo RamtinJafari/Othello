@@ -1,6 +1,7 @@
 #include "../Database/GameHistoryManager.h"
 #include "../Database/GameLogManager.h"
 #include "../Utilities/IntToStr.h"
+#include "../Utilities/SymbolToStr.h"
 #include "Board.h"
 #include "Bot.h"
 #include "Player.h"
@@ -15,10 +16,10 @@ struct SinglePlayerGame
     std::string mode;
     Player* Player1;
     Bot* GameBot;
-    char CurrentTurnColor;
+    char32_t CurrentTurnColor;
     int Winner;
 
-    SinglePlayerGame(Board GameBoard, Player* Player1, Bot* GameBot, char CurrentTurnColor)
+    SinglePlayerGame(Board GameBoard, Player* Player1, Bot* GameBot, char32_t CurrentTurnColor)
     {
         int lastId = getLastGameId();
 
@@ -80,7 +81,7 @@ struct SinglePlayerGame
             }
 
             system("cls");
-            char charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
+            char32_t charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
             GameBoard.display();
 
             int userInput = getch();
@@ -219,6 +220,7 @@ struct SinglePlayerGame
         std::string boardToSave = GameBoard.retrieveBoard();
         std::string playerToSave = Player1 -> retrievePlayer();
         std::string botToSave = GameBot -> retrieveBot();
+        std::string currentTurnToSave = symbolToStr(CurrentTurnColor);
         std::string winnerToSave = intToStr(Winner);
 
         return "[" + idToSave + "]["
@@ -226,7 +228,7 @@ struct SinglePlayerGame
             + mode + "]["
             + playerToSave + "]["
             + botToSave + "]["
-            + CurrentTurnColor + "]["
+            + currentTurnToSave + "]["
             + winnerToSave + "]";
     }
 };

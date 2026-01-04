@@ -17,6 +17,13 @@
 #include "Utilities/outputDecoratedSavedGame.h"
 #include "Utilities/GetSavedBoardSize.h"
 
+void handleLoadGame();
+void handleNewGame();
+void loadSinglePlayerGame(int gameId);
+void loadMultiPlayerGame(int gameId);
+void handleSinglePlayerNewGame();
+void handleMultiPlayerNewGame();
+
 void executeGameMaster(bool loadGameMode)
 {
     clearGameLog(); // emptying GameLog for the new game

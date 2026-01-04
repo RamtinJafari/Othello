@@ -7,7 +7,15 @@
 #include "../Structures/MultiPlayerGame.h"
 #include "GetSavedBoardSize.h"
 #include "Print.h"
+#include "outputDecoratedSavedGame.h"
 #include <iostream>
+
+
+
+void outputDecoratedSavedSinglePlayerGame(std::string game);
+void outputDecoratedSavedMultiPlayerGame(std::string game);
+
+
 
 void outputDecoratedSavedGame(std::string game)
 {

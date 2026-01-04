@@ -1,6 +1,13 @@
 #include <string>
+#include "IntToStr.h"
 
-std::string intToString(int number)
+
+char getChar(int digit);
+int getDigitsCount(int number);
+
+
+
+std::string intToStr(int number)
 {
     int numberLen = getDigitsCount(number);
 

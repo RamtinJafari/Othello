@@ -1,3 +1,5 @@
+#include "IntSqrt.h"
+
 int intSqrt(int number)
 {
     for (int i = 1; i < 100000000; i++)

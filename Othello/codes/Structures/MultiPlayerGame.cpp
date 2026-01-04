@@ -1,9 +1,10 @@
 #include "../Database/GameHistoryManager.h"
 #include "../Database/GameLogManager.h"
 #include "../Utilities/IntToStr.h"
+#include "../Utilities/SymbolToStr.h"
 #include "Board.h"
 #include "Player.h"
-#include "SinglePlayerGame.h"
+#include "MultiPlayerGame.h"
 #include <conio.h>
 #include <iostream>
 
@@ -14,10 +15,10 @@ struct MultiPlayerGame
     std::string mode;
     Player* Player1;
     Player* Player2;
-    char CurrentTurnColor;
+    char32_t CurrentTurnColor;
     int Winner;
 
-    MultiPlayerGame(Board GameBoard, Player* Player1, Player* Player2, char CurrentTurnColor)
+    MultiPlayerGame(Board GameBoard, Player* Player1, Player* Player2, char32_t CurrentTurnColor)
     {
         int lastId = getLastGameId();
 
@@ -58,7 +59,7 @@ struct MultiPlayerGame
         while (true)
         {
             system("cls");
-            char charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
+            char32_t charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
             GameBoard.display();
 
             int userInput = getch();
@@ -197,6 +198,7 @@ struct MultiPlayerGame
         std::string boardToSave = GameBoard.retrieveBoard();
         std::string player1ToSave = Player1 -> retrievePlayer();
         std::string player2ToSave = Player2 -> retrievePlayer();
+        std::string currentTurnToSave = symbolToStr(CurrentTurnColor);
         std::string winnerToSave = intToStr(Winner);
 
         return "[" + idToSave + "]["
@@ -204,7 +206,7 @@ struct MultiPlayerGame
             + mode + "]["
             + player1ToSave + "]["
             + player2ToSave + "]["
-            + CurrentTurnColor + "]["
+            + currentTurnToSave + "]["
             + winnerToSave + "]";
     }
 };

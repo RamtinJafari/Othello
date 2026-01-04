@@ -1,12 +1,13 @@
 #include <string>
 #include <windows.h>
+#include "Player.h"
 
 struct Player
 {
     std::string name;
-    char color;
+    char32_t color;
 
-    Player(std::string name, char color)
+    Player(std::string name, char32_t color)
     {
         this -> name = name;
         this -> color = color;
@@ -25,6 +26,6 @@ struct Player
         std::string color = player.substr(speratorIndex + 1, player.size());
 
         this -> name = name;
-        this -> color = static_cast<char>(color[0]);
+        this -> color = static_cast<char32_t>(color[0]);
     }
 };

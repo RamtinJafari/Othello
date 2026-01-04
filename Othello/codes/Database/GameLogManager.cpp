@@ -3,6 +3,14 @@
 #include <string>
 
 
+
+void clearGameLog();
+void addLog(Move move);
+int countLogs();
+Move getLog(int logIndex);
+
+
+
 void clearGameLog()
 {
     std::ofstream file ("GameLog.txt", std::ios::trunc);
