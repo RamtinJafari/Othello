@@ -216,6 +216,7 @@ void handlShowAvailablePlacesToPieces()
         return;
     }
 
+    madeChanges = true;
     if (curValue)
     {
         modifyShowAvailablePlacesForPieces(false);
