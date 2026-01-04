@@ -2,30 +2,25 @@
 #include <windows.h>
 #include "Player.h"
 
-struct Player
+
+Player::Player(std::string name, char32_t color)
 {
-    std::string name;
-    char32_t color;
+    this -> name = name;
+    this -> color = color;
+}
 
-    Player(std::string name, char32_t color)
-    {
-        this -> name = name;
-        this -> color = color;
-    }
+std::string Player::retrievePlayer()
+{
+    return name + "|" + std::string(1, color);
+}
 
-    std::string retrievePlayer()
-    {
-        return name + "|" + std::string(1, color);
-    }
+void Player::loadPlayer(std::string player)
+{
+    int speratorIndex = player.find("|");
 
-    void loadPlayer(std::string player)
-    {
-        int speratorIndex = player.find("|");
+    std::string name = player.substr(0, speratorIndex);
+    std::string color = player.substr(speratorIndex + 1, player.size());
 
-        std::string name = player.substr(0, speratorIndex);
-        std::string color = player.substr(speratorIndex + 1, player.size());
-
-        this -> name = name;
-        this -> color = static_cast<char32_t>(color[0]);
-    }
-};
+    this -> name = name;
+    this -> color = static_cast<char32_t>(color[0]);
+}
