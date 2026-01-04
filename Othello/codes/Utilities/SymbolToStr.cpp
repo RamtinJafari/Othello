@@ -1,25 +1,25 @@
 #include <string>
 
-std::string symbolToStr(char32_t character)
+std::string symbolToStr(char character)
 {
-    if (character == '⬤')
+    if (character == 'W')
     {
-        return "⬤";
+        return "W";
     }
-    else if (character == '○')
+    else if (character == 'B')
     {
-        return "○";
+        return "B";
     }
     else if (character == ' ')
     {
         return " ";
     }
-    else if (character == '⦻')
+    else if (character == 'X')
     {
-        return "⦻";
+        return "X";
     }
-    else if (character == '⊙')
+    else if (character == 'O')
     {
-        return "⊙";
+        return "O";
     }
 }

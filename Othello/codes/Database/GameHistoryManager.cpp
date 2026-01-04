@@ -26,7 +26,7 @@ std::string getMode(std::string game);
 std::string getPlayer1(std::string game);
 std::string getPlayer2(std::string game);
 std::string getBot(std::string game);
-char32_t getCurrentTurnColor(std::string game);
+char getCurrentTurnColor(std::string game);
 int getWinner(std::string game);
 
 
@@ -120,7 +120,7 @@ int getFirstGameId()
 {
     int maxIndex = getLinesCount() - 1;
 
-    if (maxIndex == -1) return -1; // file is empty
+    if (maxIndex == 0) return -1; // file is empty
     if (maxIndex == 0) return 0; // only one game
 
     std::string game = getLineByLineIndex(0);
@@ -153,10 +153,10 @@ int getLinesCount()
 
     while (getline(fileToRead, line))
     {
-        count++;
+        if (!line.empty()) count++;
     }
 
-    return count - 1;
+    return count;
     // there is a newline at the end of the GameHistory.txt
 }
 
@@ -349,7 +349,7 @@ int getSavedBoardElementCount(std::string board)
 {
     int count = 0;
 
-    for (char32_t element : board)
+    for (char element : board)
     {
         if (element == '|') count++;
     }
@@ -410,9 +410,9 @@ std::string getBot(std::string game)
 }
 
 
-char32_t getCurrentTurnColor(std::string game)
+char getCurrentTurnColor(std::string game)
 {
-    return (char32_t) getProperty(5, game)[0];
+    return (char) getProperty(5, game)[0];
 }
 
 

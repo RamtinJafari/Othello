@@ -14,26 +14,26 @@ void executeGameReviewer(Board board)
 
     while (true)
     {
-        system("clr");
+        system("cls");
 
         std::cout << "Press escape key to exit review mode \n\n";
 
         if (logId == -1)
         {
             board.newGameSetup();
-            board.prepareBoardForMove('○');
+            board.prepareBoardForMove('W');
         }
         else
         {
             Move move = getLog(logId);
             board.putPiece(move.x, move.y, move.color);
-            if (move.color == '⬤')
+            if (move.color == 'B')
             {
-                board.prepareBoardForMove('○');
+                board.prepareBoardForMove('W');
             }
             else 
             {
-                board.prepareBoardForMove('⬤');
+                board.prepareBoardForMove('B');
             }
         }
 
@@ -63,5 +63,5 @@ void executeGameReviewer(Board board)
         }
     }
 
-    system("clr");
+    system("cls");
 }

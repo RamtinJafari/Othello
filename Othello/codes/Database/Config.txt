@@ -1,5 +1,5 @@
 {
-    GAME_HISTORY_LIMIT = 50
+    GAME_HISTORY_LIMIT = 100
     BOARD_SIZE = 8
     BOARD_COLOR = black
     BOARD_BORDER_COLOR = white

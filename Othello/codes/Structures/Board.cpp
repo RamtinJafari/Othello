@@ -6,6 +6,7 @@
 #include "../Utilities/SymbolToStr.h"
 #include <iostream>
 #include <string>
+#include <windows.h>
 
 
 //------------------------------- Constructor & deconstructor ----------------------------------------
@@ -18,19 +19,19 @@ Board::Board()
 {
     BoardSize = Config::getInstance() -> BOARD_SIZE;
 
-    grid = new char32_t*[BoardSize];
+    grid = new char*[BoardSize];
     for (int i = 0; i < BoardSize; ++i) {
-        grid[i] = new char32_t[BoardSize];
+        grid[i] = new char[BoardSize];
     }
 
-    validMovesGrid = new char32_t*[BoardSize];
+    validMovesGrid = new char*[BoardSize];
     for (int i = 0; i < BoardSize; ++i) {
-        validMovesGrid[i] = new char32_t[BoardSize];
+        validMovesGrid[i] = new char[BoardSize];
     }
 
-    displayGrid = new char32_t*[BoardSize];
+    displayGrid = new char*[BoardSize];
     for (int i = 0; i < BoardSize; ++i) {
-        displayGrid[i] = new char32_t[BoardSize];
+        displayGrid[i] = new char[BoardSize];
     }
 
     resetValidMovesGrid();
@@ -74,7 +75,7 @@ std::string Board::retrieveBoard()
     {
         for (int x = 0; x < BoardSize; x++)
         {
-            result += grid[y][x];
+            result += symbolToStr(grid[y][x]);
             index++;
             if (x < BoardSize - 1)
             {
@@ -99,10 +100,10 @@ void Board::newGameSetup()
         }
     }
 
-    grid[BoardSize/2][BoardSize/2] = '○';
-    grid[BoardSize/2 + 1][BoardSize/2 + 1] = '○';
-    grid[BoardSize/2 + 1][BoardSize/2] = '⬤';
-    grid[BoardSize/2][BoardSize/2 + 1] = '⬤';
+    grid[BoardSize/2][BoardSize/2] = 'W';
+    grid[BoardSize/2 + 1][BoardSize/2 + 1] = 'W';
+    grid[BoardSize/2 + 1][BoardSize/2] = 'B';
+    grid[BoardSize/2][BoardSize/2 + 1] = 'B';
 }
 
 
@@ -116,7 +117,7 @@ void Board::loadBoard(std::string Board)
     {
         for (int x = 0; x < BoardSize; x++)
         {
-            grid[y][x] = static_cast<char32_t>(Board[index]);
+            grid[y][x] = static_cast<char>(Board[index]);
             index += 2;
         }
     }
@@ -125,7 +126,7 @@ void Board::loadBoard(std::string Board)
 
 // ------------------------------------- grid and game operations -----------------------------------------
 
-void Board::prepareBoardForMove(char32_t thisTurnColor)
+void Board::prepareBoardForMove(char thisTurnColor)
 // this method has to be called when a valid move is made
 // updated displayGrid with the latest changes in grid
 // validMovesGrid will find valid moves based on the new grid
@@ -142,14 +143,14 @@ void Board::prepareBoardForMove(char32_t thisTurnColor)
 void Board::flip(int x, int y)
 // simply changes the color of the piece inside the given coordinates (flips it)
 {
-    char32_t piece = grid[y][x];
+    char piece = grid[y][x];
 
-    if (piece == '⬤') grid[y][x] = '○';
-    else if (piece == '○') grid[y][x] = '⬤';
+    if (piece == 'B') grid[y][x] = 'W';
+    else if (piece == 'W') grid[y][x] = 'B';
 }
 
 
-void Board::verticalflip(int x, int y, char32_t color)
+void Board::verticalflip(int x, int y, char color)
 // flips the surrounded pieces in vertical directions (up and down)
 {
     if (verticalNeighbour(x, y, color) == 0)
@@ -160,7 +161,7 @@ void Board::verticalflip(int x, int y, char32_t color)
     // check up
     for (int i = y - 2; i > 0; i--)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -179,7 +180,7 @@ void Board::verticalflip(int x, int y, char32_t color)
     // check down
     for (int i = y + 2; i < BoardSize; i++)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -197,7 +198,7 @@ void Board::verticalflip(int x, int y, char32_t color)
 }
 
 
-void Board::horazinalflip(int x, int y, char32_t color)
+void Board::horazinalflip(int x, int y, char color)
 // flips the surrounded pieces in horazinal directions (left and right)
 {
     if (horazinalNeighbour(x, y, color))
@@ -208,7 +209,7 @@ void Board::horazinalflip(int x, int y, char32_t color)
     // check left
     for (int i = x - 2; i > 0; i--)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -227,7 +228,7 @@ void Board::horazinalflip(int x, int y, char32_t color)
     // check right
     for (int i = x + 2; i < BoardSize; i++)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -245,13 +246,13 @@ void Board::horazinalflip(int x, int y, char32_t color)
 }
 
 
-void Board::diagonalflip(int x, int y, char32_t color)
+void Board::diagonalflip(int x, int y, char color)
 // flips the surrounded pieces in diagonal directions
 {
     // check right-up
     for (int i = x + 2, j = y - 2; i < BoardSize && j > 0; i++, j--)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -270,7 +271,7 @@ void Board::diagonalflip(int x, int y, char32_t color)
     // check right-down
     for (int i = x + 2, j = y + 2; i < BoardSize && j < BoardSize; i++, j++)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -289,7 +290,7 @@ void Board::diagonalflip(int x, int y, char32_t color)
     // check left-up
     for (int i = x - 2, j = y - 2; i > 0 && j > 0; i--, j--)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -308,7 +309,7 @@ void Board::diagonalflip(int x, int y, char32_t color)
     // check left-down
     for (int i = x - 2, j = y + 2; i > 0 && j < BoardSize; i--, j++)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -326,7 +327,7 @@ void Board::diagonalflip(int x, int y, char32_t color)
 }
 
 
-void Board::putPiece(int x, int y, char32_t color)
+void Board::putPiece(int x, int y, char color)
 // puts the piece inside grid and flips the pieces that are surounded now
 // afterwards, logs the move made inside GameLog.txt for game review
 // caution - this function considers that putting a piece in that coordination is valid
@@ -352,7 +353,7 @@ int Board::countBlack()
     {
         for (int x = 0; x < BoardSize; x++)
         {
-            if (grid[y][x] == '○') count++;
+            if (grid[y][x] == 'W') count++;
         }
     }
 }
@@ -367,7 +368,7 @@ int Board::countWhite()
     {
         for (int x = 0; x < BoardSize; x++)
         {
-            if (grid[y][x] == '⬤') count++;
+            if (grid[y][x] == 'B') count++;
         }
     }
 }
@@ -387,7 +388,7 @@ int Board::countValidMoves()
     {
         for (int x = 0; x < BoardSize; x++)
         {
-            if (validMovesGrid[y][x] == '⦻') count++;
+            if (validMovesGrid[y][x] == 'O') count++;
         }
     }
 
@@ -396,11 +397,11 @@ int Board::countValidMoves()
 
 
 
-int Board::isValid(int x, int y, char32_t color)
+int Board::isValid(int x, int y, char color)
 // returns the number of gains if a piece with the given color inside the given coordinations is placed
 // if the number returns is bigger than zero, then the move is valid (legal)
 {
-    if (grid[y][x] == '○' || grid[y][x] == '⬤')
+    if (grid[y][x] == 'W' || grid[y][x] == 'B')
         return 0;
 
     return diagonalNeighbour(x, y, color) + horazinalNeighbour(x, y, color) + verticalNeighbour(x, y, color);
@@ -408,7 +409,7 @@ int Board::isValid(int x, int y, char32_t color)
 
 
 
-int Board::verticalNeighbour(int x, int y, char32_t color)
+int Board::verticalNeighbour(int x, int y, char color)
 // returns the number of pieces that will be surounded in vertical directions
 // if a piece with the given color is put in the given coordination
 {
@@ -417,7 +418,7 @@ int Board::verticalNeighbour(int x, int y, char32_t color)
     // check up
     for (int i = y - 2; i > 0; i--)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -433,7 +434,7 @@ int Board::verticalNeighbour(int x, int y, char32_t color)
     // check down
     for (int i = y + 2; i < BoardSize; i++)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -450,7 +451,7 @@ int Board::verticalNeighbour(int x, int y, char32_t color)
 }
 
 
-int Board::horazinalNeighbour(int x, int y, char32_t color)
+int Board::horazinalNeighbour(int x, int y, char color)
 // returns the number of pieces that will be surounded in horazinal directions
 // if a piece with the given color is put in the given coordination
 {
@@ -459,7 +460,7 @@ int Board::horazinalNeighbour(int x, int y, char32_t color)
     // check left
     for (int i = x - 2; i > 0; i--)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -475,7 +476,7 @@ int Board::horazinalNeighbour(int x, int y, char32_t color)
     // check right
     for (int i = x + 2; i < BoardSize; i++)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -492,7 +493,7 @@ int Board::horazinalNeighbour(int x, int y, char32_t color)
 }
 
 
-int Board::diagonalNeighbour(int x, int y, char32_t color)
+int Board::diagonalNeighbour(int x, int y, char color)
 // returns the number of pieces that will be surounded in diagonal directions
 // if a piece with the given color is put in the given coordination
 {
@@ -501,7 +502,7 @@ int Board::diagonalNeighbour(int x, int y, char32_t color)
     // check right-up
     for (int i = x + 2, j = y - 2; i < BoardSize && j > 0; i++, j--)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -517,7 +518,7 @@ int Board::diagonalNeighbour(int x, int y, char32_t color)
     // check right-down
     for (int i = x + 2, j = y + 2; i < BoardSize && j < BoardSize; i++, j++)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -533,7 +534,7 @@ int Board::diagonalNeighbour(int x, int y, char32_t color)
     // check left-up
     for (int i = x - 2, j = y - 2; i > 0 && j > 0; i--, j--)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -549,7 +550,7 @@ int Board::diagonalNeighbour(int x, int y, char32_t color)
     // check left-down
     for (int i = x - 2, j = y + 2; i > 0 && j < BoardSize; i--, j++)
     {
-        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+        char oppColor = (color == 'B' ? 'W':'B');
 
         if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
@@ -579,9 +580,9 @@ void Board::resetValidMovesGrid()
 }
 
 
-void Board::prepareValidMovesGrid(char32_t color)
+void Board::prepareValidMovesGrid(char color)
 // first ValidMovesGrid resets itself so previous data won't interupt the process
-// then check each place in grid, if it's valid, it'll put ⦻ inside the coresponding coordinations inside itself
+// then check each place in grid, if it's valid, it'll put O inside the coresponding coordinations inside itself
 {
     resetValidMovesGrid();
 
@@ -590,7 +591,7 @@ void Board::prepareValidMovesGrid(char32_t color)
         for (int x = 0; x < BoardSize; x++)
         {
             if (isValid(x, y, color) != 0)
-                validMovesGrid[y][x] = '⦻';
+                validMovesGrid[y][x] = 'O';
         }
     }
 }
@@ -598,13 +599,13 @@ void Board::prepareValidMovesGrid(char32_t color)
 
 //----------------------------------- display and displayGrid operations -----------------------------------------
 
-char32_t Board::placeCursor(int x, int y)
-// puts ⊙ as the cursor regardless of the element inside displayGrid
+char Board::placeCursor(int x, int y)
+// puts X as the cursor regardless of the element inside displayGrid
 // returns the element that was in the coordination, so when the cursor
 // moves, the previous element can be recovered
 {
-    char32_t curElement = displayGrid[y][x];
-    displayGrid[y][x] = '⊙';
+    char curElement = displayGrid[y][x];
+    displayGrid[y][x] = 'X';
     return curElement;
 }
 
@@ -632,9 +633,9 @@ void Board::putValidMoves()
     {
         for (int x = 0; x < BoardSize; x++)
         {
-            if (validMovesGrid[y][x] = '⦻')
+            if (validMovesGrid[y][x] = 'O')
             {
-                displayGrid[y][x] = '⦻';
+                displayGrid[y][x] = 'O';
             }
         }
     }
@@ -644,21 +645,14 @@ void Board::putValidMoves()
 void Board::display()
 // outputs displayGrid with viasual decorations
 {
-    print("―", BoardSize * 2 + 2);
-    std::cout << std::endl;
-
     for (int y = 0; y < BoardSize; y++)
     {
         std::cout << "|";
         for (int x = 0; x < BoardSize; x++)
         {
-            std::cout << displayGrid[y][x] << "|";
+            std::cout << symbolToStr(displayGrid[y][x]) << "|";
         }
 
         std::cout << std::endl;
-        print("―", BoardSize * 2 + 2);
-        std::cout << std::endl;
     }
-
-    print("―", BoardSize * 2 + 2);
 }

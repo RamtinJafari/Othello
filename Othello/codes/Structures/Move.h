@@ -6,10 +6,10 @@ struct Move
 {
     int x;
     int y;
-    char32_t color;
+    char color;
 
 public:
-    Move(int x, int y, char32_t color);
+    Move(int x, int y, char color);
     std::string retrieveMove();
     void loadMove(std::string move);
 };

@@ -8,9 +8,12 @@
 #include <iostream>
 #include <conio.h>
 #include <windows.h>
+#include <io.h>
+#include <fcntl.h>
 
 int main()
 {
+    SetConsoleOutputCP(CP_UTF8);
     system("cls");
     
     Config::initialize();

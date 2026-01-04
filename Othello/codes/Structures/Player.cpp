@@ -3,7 +3,7 @@
 #include "Player.h"
 
 
-Player::Player(std::string name, char32_t color)
+Player::Player(std::string name, char color)
 {
     this -> name = name;
     this -> color = color;
@@ -22,5 +22,5 @@ void Player::loadPlayer(std::string player)
     std::string color = player.substr(speratorIndex + 1, player.size());
 
     this -> name = name;
-    this -> color = static_cast<char32_t>(color[0]);
+    this -> color = static_cast<char>(color[0]);
 }

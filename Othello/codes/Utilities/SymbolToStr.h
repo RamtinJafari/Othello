@@ -2,4 +2,4 @@
 
 #include <string>
 
-std::string symbolToStr(char32_t);
+std::string symbolToStr(char);

@@ -2,6 +2,7 @@
 #include "IntToStr.h"
 
 
+
 char getChar(int digit);
 int getDigitsCount(int number);
 
@@ -19,8 +20,14 @@ std::string intToStr(int number)
         number /= 10;
     }
 
-    std::string str(result);
-    return str;
+    std::string resultStr = "";
+    
+    for (int i = 0; i < numberLen; i++)
+    {
+        resultStr += result[i];
+    }
+
+    return resultStr;
 }
 
 char getChar(int digit)
@@ -52,6 +59,8 @@ char getChar(int digit)
 
 int getDigitsCount(int number)
 {
+    if (number == 0) return 1;
+
     int count = 0;
 
     while(number != 0)

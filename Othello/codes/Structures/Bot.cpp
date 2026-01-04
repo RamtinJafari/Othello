@@ -4,6 +4,7 @@
 #include "../Utilities/StrToInt.h"
 #include <string>
 #include <random>
+#include <windows.h>
 
 
     
@@ -14,7 +15,7 @@ Bot::Bot(std::string name, int difficulty)
 }
 
 
-void Bot::decide(Board board, char32_t color)
+void Bot::decide(Board board, char color)
 // the fucntion called by GameMaster when it's bot's turn to move
 // this function should be called when prepareBoardForMove is called
 // so bot will work as expected
@@ -35,7 +36,7 @@ void Bot::decide(Board board, char32_t color)
 
 
 
-void Bot::easyDecide(Board board, char32_t color)
+void Bot::easyDecide(Board board, char color)
 // the decision a bot would make in easy mode
 // the act is based on a random choice
 {
@@ -51,7 +52,7 @@ void Bot::easyDecide(Board board, char32_t color)
     {
         for (int x = 0; x < board.BoardSize; x++)
         {
-            if (board.validMovesGrid[y][x] == '⦻')
+            if (board.validMovesGrid[y][x] == 'O')
             {
                 if (moveNumber == randomNumber)
                 {
@@ -68,7 +69,7 @@ void Bot::easyDecide(Board board, char32_t color)
 
 
 
-void Bot::mediumDecide(Board board, char32_t color)
+void Bot::mediumDecide(Board board, char color)
 // the decision a bot would make in medium mode
 // the act is based on how much gain each move will have
 // the move with the most gain is made
@@ -80,7 +81,7 @@ void Bot::mediumDecide(Board board, char32_t color)
     {
         for (int x = 0; x < board.BoardSize; x++)
         {
-            if (board.validMovesGrid[y][x] == '⦻')
+            if (board.validMovesGrid[y][x] == 'O')
             {
                 int gain = board.isValid(x, y, color);
                 if (gain > maxGain)
@@ -98,7 +99,7 @@ void Bot::mediumDecide(Board board, char32_t color)
 
 
 
-void Bot::hardDecide(Board board, char32_t color)
+void Bot::hardDecide(Board board, char color)
 // the decision a bot would make in hard mode
 {
     // do later

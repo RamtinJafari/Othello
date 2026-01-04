@@ -5,10 +5,10 @@
 struct Player
 {
     std::string name;
-    char32_t color;
+    char color;
 
 public:
-    Player(std::string name, char32_t color);
+    Player(std::string name, char color);
     std::string retrievePlayer();
     void loadPlayer(std::string player);
 };

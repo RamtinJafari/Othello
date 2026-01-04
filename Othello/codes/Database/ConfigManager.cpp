@@ -71,9 +71,9 @@ void modifyElementOfConfig(int index, string newValue)
         throw 1; // failed to read the file
     }
 
-    std::string lines[8];
+    std::string lines[10];
 
-    for (int i{0}; i <= index + 3; i++)
+    for (int i{0}; i < 10; i++)
     {
         getline(fileToRead, lines[i]);
     }
@@ -93,7 +93,7 @@ void modifyElementOfConfig(int index, string newValue)
 
     for (std::string l : lines)
     {
-        fileToWrite << l << std::endl;
+        fileToWrite << l << "\n";
     }
     fileToWrite.close();
 }

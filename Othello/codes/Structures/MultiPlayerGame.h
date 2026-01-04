@@ -11,11 +11,11 @@ struct MultiPlayerGame
     std::string mode;
     Player* Player1;
     Player* Player2;
-    char32_t CurrentTurnColor;
+    char CurrentTurnColor;
     int Winner;
 
 public:
-    MultiPlayerGame(Board GameBoard, Player* Player1, Player* Player2, char32_t CurrentTurnColor);
+    MultiPlayerGame(Board GameBoard, Player* Player1, Player* Player2, char CurrentTurnColor);
     void start();
     void end();
     void loadGame(int gameId);

@@ -8,13 +8,14 @@
 #include "SinglePlayerGame.h"
 #include <conio.h>
 #include <iostream>
+#include <windows.h>
 
 
-SinglePlayerGame::SinglePlayerGame(Board GameBoard, Player* Player1, Bot* GameBot, char32_t CurrentTurnColor)
+SinglePlayerGame::SinglePlayerGame(Board GameBoard, Player* Player1, Bot* GameBot, char CurrentTurnColor)
 {
     int lastId = getLastGameId();
 
-    this -> id = lastId + 1;
+    this -> id = lastId;
     this -> GameBoard = GameBoard;
     this -> mode = "1Player";
     this -> Player1 = Player1;
@@ -26,13 +27,13 @@ SinglePlayerGame::SinglePlayerGame(Board GameBoard, Player* Player1, Bot* GameBo
 
 void SinglePlayerGame::changeTurn()
 {
-    if (CurrentTurnColor == '⬤')
+    if (CurrentTurnColor == 'B')
     {
-        CurrentTurnColor = '○';
+        CurrentTurnColor = 'W';
     }
     else
     {
-        CurrentTurnColor = '⬤';
+        CurrentTurnColor = 'B';
     }
 }
 
@@ -72,14 +73,14 @@ void SinglePlayerGame::start()
         }
 
         system("cls");
-        char32_t charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
+        char charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
         GameBoard.display();
 
         int userInput = getch();
 
         if (userInput == static_cast<int>('w') || userInput == 72)
         {
-            if (CursorY - 1 > 0)
+            if (CursorY - 1 >= 0)
             {
                 GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorY--;
@@ -97,9 +98,9 @@ void SinglePlayerGame::start()
             }
         }
 
-        else if (userInput == static_cast<int>('a') || userInput == 37)
+        else if (userInput == static_cast<int>('a') || userInput == 75)
         {
-            if (CursorX - 1 > 0)
+            if (CursorX - 1 >= 0)
             {
                 GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorX--;
@@ -107,7 +108,7 @@ void SinglePlayerGame::start()
             }
         }
 
-        else if (userInput == static_cast<int>('d') || userInput == 39)
+        else if (userInput == static_cast<int>('d') || userInput == 77)
         {
             if (CursorX + 1 < GameBoard.BoardSize)
             {
@@ -119,7 +120,7 @@ void SinglePlayerGame::start()
 
         else if (userInput == 13)
         {
-            if (GameBoard.displayGrid[CursorY][CursorX] == '⦻')
+            if (GameBoard.displayGrid[CursorY][CursorX] == 'O')
             {
                 GameBoard.putPiece(CursorX, CursorY, CurrentTurnColor);
                 changeTurn();
@@ -152,11 +153,11 @@ void SinglePlayerGame::end()
 
     if (blackCount > whiteCount) 
     {
-        Winner = (Player1 -> color == '○' ? 1:2);
+        Winner = (Player1 -> color == 'W' ? 1:2);
     }
     else if (whiteCount > blackCount)
     {
-        Winner = (Player1 -> color == '⬤' ? 1:2);
+        Winner = (Player1 -> color == 'B' ? 1:2);
     }
     else
     {
@@ -165,10 +166,8 @@ void SinglePlayerGame::end()
 
     this -> save();
 
-    system("clr");
+    system("cls");
     GameBoard.display();
-
-    GameBoard.deleteBoardMemory();
 
     std::cout << std::endl
         << (Winner == 1 ? 

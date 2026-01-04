@@ -25,17 +25,17 @@ void executeConfigModifier()
     {
         system("cls");
 
-        std::cout << "curent setting are:" << std::endl
+        std::cout << "current setting are:" << std::endl
         << "The number of games inside game history: " << getGameHistoryLimit() << std::endl
         << "The size of the board: " << getBoardSize() << std::endl
-        << "Show available places for pieces: " << getShowAvailablePlacesForPieces() << std::endl << std::endl;
+        << "Show available places for pieces: " << (getShowAvailablePlacesForPieces() ? "Yes":"No") << std::endl << std::endl;
 
         std::cout << "Which of these properties do you wish to change?" << std::endl;
 
         std::cout << (chosenOption == 0 ? "■":"□") << " The number of games inside game history" << std::endl
             << (chosenOption == 1 ? "■":"□") << " The size of the board" << std::endl
             << (chosenOption == 2 ? "■":"□") << " Showing avaibale places for pieces" << std::endl
-            << (chosenOption == 3 ? "■":"□") << " apply the changes and exit" << std::endl;
+            << (chosenOption == 3 ? "■":"□") << " Apply the changes and exit" << std::endl;
 
         int userInput = getch();
 
@@ -78,10 +78,12 @@ void executeConfigModifier()
         }
     }
 
+    system("cls");
+
     if (madeChanges == false) std::cout << "No changes has been made\nPress any key to continue";
     else if (madeChanges == true) std::cout << "Please restart the game for changes to be applied to the game\nPress any key to continue";
 
-    getchar();
+    getch();
     system("cls");
     return;
 }
@@ -98,19 +100,7 @@ void handleGameHistoryLimit()
 
     int newValue;
 
-    if (!std::cin >> newValue)
-    {
-        // Failed: non-numeric input
-        std::cout << "Invalid number inputted, please enter a valid number.\n";
-        std::cout << "Press any key to continue...";
-        
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        
-        getch();
-        
-        return handleGameHistoryLimit();
-    }
+    std::cin >> newValue;
 
     if (getGameHistoryLimit() == newValue)
     {
@@ -149,19 +139,8 @@ void handleBoardSize()
         << "Please set the new value: " << std::endl;
 
     int newValue;
-    if (!std::cin >> newValue)
-    {
-        // Failed: non-numeric input
-        std::cout << "Invalid number inputted, please enter a valid number.\n";
-        std::cout << "Press any key to continue...";
-        
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        
-        getch();
-        
-        return handleGameHistoryLimit();
-    }
+    
+    std::cin >> newValue;
 
     if (getBoardSize() == newValue)
     {

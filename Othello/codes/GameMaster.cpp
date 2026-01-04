@@ -1,5 +1,3 @@
-// Player name should not have a | or [ or ] character within
-
 #include <windows.h>
 #include <conio.h>
 #include <iostream>
@@ -36,7 +34,7 @@ void executeGameMaster(bool loadGameMode)
 
 void handleLoadGame()
 {
-    system("clr");
+    system("cls");
 
     std::cout << "You've chosen to load a previous unfinished game\n"
         << "Previous unfunished games are: \n";
@@ -123,6 +121,8 @@ void loadSinglePlayerGame(int gameId)
     {
         executeGameReviewer(game.GameBoard);
     }
+
+    game.GameBoard.deleteBoardMemory();
 } 
 
 
@@ -148,6 +148,8 @@ void loadMultiPlayerGame(int gameId)
     {
         executeGameReviewer(game.GameBoard);
     }
+
+    game.GameBoard.deleteBoardMemory();
 }
 
 
@@ -254,10 +256,10 @@ void handleSinglePlayerNewGame()
         }
     }
 
-    Player player{"0", '○'};
+    Player player{"0", 'W'};
     while (true)
     {
-        system("clr");
+        system("cls");
 
         std::string name;
         std::cout << "Please set your name: ";
@@ -285,7 +287,7 @@ void handleSinglePlayerNewGame()
 
         player.name = name;
 
-        system("clr");
+        system("cls");
         break;
     }
 
@@ -322,21 +324,21 @@ void handleSinglePlayerNewGame()
         {
             if (chosenOption == 0)
             {
-                player.color = '○';
+                player.color = 'W';
             }
             else if (chosenOption == 1)
             {
-                player.color = '⬤';
+                player.color = 'B';
             }
             break;
         }
     }
 
-    system("clr");
+    system("cls");
 
     Board board{};
 
-    SinglePlayerGame game{board, &player, &bot, '○'};
+    SinglePlayerGame game{board, &player, &bot, 'W'};
 
     game.GameBoard.newGameSetup();
     game.start();
@@ -350,16 +352,18 @@ void handleSinglePlayerNewGame()
     {
         executeGameReviewer(game.GameBoard);
     }
+
+    game.GameBoard.deleteBoardMemory();
 }
 
 
 
 void handleMultiPlayerNewGame()
 {
-    Player player1{"0", '○'};
+    Player player1{"0", 'W'};
     while (true)
     {
-        system("clr");
+        system("cls");
 
         std::string name;
         std::cout << "Player1, Please set your name: ";
@@ -387,7 +391,7 @@ void handleMultiPlayerNewGame()
 
         player1.name = name;
 
-        system("clr");
+        system("cls");
         break;
     }
 
@@ -424,20 +428,20 @@ void handleMultiPlayerNewGame()
         {
             if (chosenOption == 0)
             {
-                player1.color = '○';
+                player1.color = 'W';
             }
             else if (chosenOption == 1)
             {
-                player1.color = '⬤';
+                player1.color = 'B';
             }
             break;
         }
     }
 
-    Player player2{"0", '○'};
+    Player player2{"0", 'W'};
     while (true)
     {
-        system("clr");
+        system("cls");
 
         std::string name;
         std::cout << "Player2, Please set your name: ";
@@ -465,15 +469,15 @@ void handleMultiPlayerNewGame()
 
         player2.name = name;
 
-        system("clr");
+        system("cls");
         break;
     }
 
-    system("clr");
+    system("cls");
 
     Board board{};
 
-    MultiPlayerGame game{board, &player1, &player2, '○'};
+    MultiPlayerGame game{board, &player1, &player2, 'W'};
 
     game.GameBoard.newGameSetup();
     game.start();
@@ -487,4 +491,6 @@ void handleMultiPlayerNewGame()
     {
         executeGameReviewer(game.GameBoard);
     }
+
+    game.GameBoard.deleteBoardMemory();
 }

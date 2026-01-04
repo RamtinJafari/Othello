@@ -7,13 +7,14 @@
 #include "MultiPlayerGame.h"
 #include <conio.h>
 #include <iostream>
+#include <windows.h>
 
 
-MultiPlayerGame::MultiPlayerGame(Board GameBoard, Player* Player1, Player* Player2, char32_t CurrentTurnColor)
+MultiPlayerGame::MultiPlayerGame(Board GameBoard, Player* Player1, Player* Player2, char CurrentTurnColor)
 {
     int lastId = getLastGameId();
 
-    this -> id = lastId + 1;
+    this -> id = lastId;
     this -> GameBoard = GameBoard;
     this -> mode = "2Player";
     this -> Player1 = Player1;
@@ -25,13 +26,13 @@ MultiPlayerGame::MultiPlayerGame(Board GameBoard, Player* Player1, Player* Playe
 
 void MultiPlayerGame::changeTurn()
 {
-    if (CurrentTurnColor == '⬤')
+    if (CurrentTurnColor == 'B')
     {
-        CurrentTurnColor = '○';
+        CurrentTurnColor = 'W';
     }
     else
     {
-        CurrentTurnColor = '⬤';
+        CurrentTurnColor = 'B';
     }
 }
 
@@ -43,6 +44,7 @@ void MultiPlayerGame::start()
 {
     int CursorX = 0, CursorY = 0;
     system("cls");
+    SetConsoleOutputCP(CP_UTF8);
     clearGameLog();
     GameBoard.prepareBoardForMove(CurrentTurnColor);
     this -> save();
@@ -50,14 +52,14 @@ void MultiPlayerGame::start()
     while (true)
     {
         system("cls");
-        char32_t charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
+        char charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
         GameBoard.display();
 
         int userInput = getch();
 
         if (userInput == static_cast<int>('w') || userInput == 72)
         {
-            if (CursorY - 1 > 0)
+            if (CursorY - 1 >= 0)
             {
                 GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorY--;
@@ -75,9 +77,9 @@ void MultiPlayerGame::start()
             }
         }
 
-        else if (userInput == static_cast<int>('a') || userInput == 37)
+        else if (userInput == static_cast<int>('a') || userInput == 75)
         {
-            if (CursorX - 1 > 0)
+            if (CursorX - 1 >= 0)
             {
                 GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorX--;
@@ -85,7 +87,7 @@ void MultiPlayerGame::start()
             }
         }
 
-        else if (userInput == static_cast<int>('d') || userInput == 39)
+        else if (userInput == static_cast<int>('d') || userInput == 77)
         {
             if (CursorX + 1 < GameBoard.BoardSize)
             {
@@ -97,7 +99,7 @@ void MultiPlayerGame::start()
 
         else if (userInput == 13)
         {
-            if (GameBoard.displayGrid[CursorY][CursorX] == '⦻')
+            if (GameBoard.displayGrid[CursorY][CursorX] == 'O')
             {
                 GameBoard.putPiece(CursorX, CursorY, CurrentTurnColor);
                 changeTurn();
@@ -130,11 +132,11 @@ void MultiPlayerGame::end()
 
     if (blackCount > whiteCount) 
     {
-        Winner = (Player1 -> color == '○' ? 1:2);
+        Winner = (Player1 -> color == 'W' ? 1:2);
     }
     else if (whiteCount > blackCount)
     {
-        Winner = (Player1 -> color == '⬤' ? 1:2);
+        Winner = (Player1 -> color == 'B' ? 1:2);
     }
     else
     {
@@ -143,10 +145,8 @@ void MultiPlayerGame::end()
 
     this -> save();
 
-    system("clr");
+    system("cls");
     GameBoard.display();
-
-    GameBoard.deleteBoardMemory();
 
     std::cout << std::endl
         << (Winner == 1 ? 

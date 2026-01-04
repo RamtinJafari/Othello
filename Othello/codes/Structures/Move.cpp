@@ -1,9 +1,10 @@
 #include "Move.h"
 #include "../Utilities/StrToInt.h"
 #include <string>
+#include <windows.h>
 
 
-Move::Move(int x, int y, char32_t color)
+Move::Move(int x, int y, char color)
 {
     this -> x = x;
     this -> y = y;
@@ -29,5 +30,5 @@ void Move::loadMove(std::string move)
 
     this -> x = strToInt(x);
     this -> y = strToInt(y);
-    this -> color = static_cast<char32_t>(color[0]);
+    this -> color = static_cast<char>(color[0]);
 };
