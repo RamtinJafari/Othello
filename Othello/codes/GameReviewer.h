@@ -1,3 +1,5 @@
 #pragma once
 
-void executeGameReviewer();
+#include "Structures/Board.h"
+
+void executeGameReviewer(Board board);
