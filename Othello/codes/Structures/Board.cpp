@@ -160,6 +160,13 @@ void Board::verticalflip(int x, int y, char32_t color)
     // check up
     for (int i = y - 2; i > 0; i--)
     {
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
+        {
+            break;
+        }
+
         if (grid[i][x] == color)
         {
             for (int a = y - 1; a > i; a--)
@@ -172,6 +179,13 @@ void Board::verticalflip(int x, int y, char32_t color)
     // check down
     for (int i = y + 2; i < BoardSize; i++)
     {
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
+        {
+            break;
+        }
+
         if (grid[i][x] == color)
         {
             for (int a = y + 1; a < i; a++)
@@ -194,6 +208,13 @@ void Board::horazinalflip(int x, int y, char32_t color)
     // check left
     for (int i = x - 2; i > 0; i--)
     {
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
+        {
+            break;
+        }
+
         if (grid[y][i] == color)
         {
             for (int a = x - 1; a > i; a--)
@@ -206,6 +227,13 @@ void Board::horazinalflip(int x, int y, char32_t color)
     // check right
     for (int i = x + 2; i < BoardSize; i++)
     {
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
+        {
+            break;
+        }
+
         if (grid[y][i] == color)
         {
             for (int a = x + 1; a < i; a++)
@@ -223,6 +251,13 @@ void Board::diagonalflip(int x, int y, char32_t color)
     // check right-up
     for (int i = x + 2, j = y - 2; i < BoardSize && j > 0; i++, j--)
     {
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
+        {
+            break;
+        }
+
         if (grid[j][i] == color)
         {
             for(int a = x + 1, b = y - 1; a < i && b > j; a++, b--)
@@ -235,6 +270,13 @@ void Board::diagonalflip(int x, int y, char32_t color)
     // check right-down
     for (int i = x + 2, j = y + 2; i < BoardSize && j < BoardSize; i++, j++)
     {
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
+        {
+            break;
+        }
+
         if (grid[j][i] == color)
         {
             for(int a = x + 1, b = y + 1; a < i && b < j; a++, b++)
@@ -247,6 +289,13 @@ void Board::diagonalflip(int x, int y, char32_t color)
     // check left-up
     for (int i = x - 2, j = y - 2; i > 0 && j > 0; i--, j--)
     {
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
+        {
+            break;
+        }
+
         if (grid[j][i] == color)
         {
             for(int a = x - 1, b = y - 1; a > i && b > j; a--, b--)
@@ -259,6 +308,13 @@ void Board::diagonalflip(int x, int y, char32_t color)
     // check left-down
     for (int i = x - 2, j = y + 2; i > 0 && j < BoardSize; i--, j++)
     {
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
+        {
+            break;
+        }
+
         if (grid[j][i] == color)
         {
             for(int a = x - 1, b = y + 1; a > i && b < j; a--, b++)
@@ -361,7 +417,9 @@ int Board::verticalNeighbour(int x, int y, char32_t color)
     // check up
     for (int i = y - 2; i > 0; i--)
     {
-        if (grid[i][x] == ' ')
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
             break;
         }
@@ -375,7 +433,9 @@ int Board::verticalNeighbour(int x, int y, char32_t color)
     // check down
     for (int i = y + 2; i < BoardSize; i++)
     {
-        if (grid[i][x] == ' ')
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
             break;
         }
@@ -399,7 +459,9 @@ int Board::horazinalNeighbour(int x, int y, char32_t color)
     // check left
     for (int i = x - 2; i > 0; i--)
     {
-        if (grid[y][i] == ' ')
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
             break;
         }
@@ -413,7 +475,9 @@ int Board::horazinalNeighbour(int x, int y, char32_t color)
     // check right
     for (int i = x + 2; i < BoardSize; i++)
     {
-        if (grid[y][i] == ' ')
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
             break;
         }
@@ -437,7 +501,9 @@ int Board::diagonalNeighbour(int x, int y, char32_t color)
     // check right-up
     for (int i = x + 2, j = y - 2; i < BoardSize && j > 0; i++, j--)
     {
-        if (grid[j][i] == ' ')
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
             break;
         }
@@ -451,7 +517,9 @@ int Board::diagonalNeighbour(int x, int y, char32_t color)
     // check right-down
     for (int i = x + 2, j = y + 2; i < BoardSize && j < BoardSize; i++, j++)
     {
-        if (grid[j][i] == ' ')
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
             break;
         }
@@ -465,7 +533,9 @@ int Board::diagonalNeighbour(int x, int y, char32_t color)
     // check left-up
     for (int i = x - 2, j = y - 2; i > 0 && j > 0; i--, j--)
     {
-        if (grid[j][i] == ' ')
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
             break;
         }
@@ -479,7 +549,9 @@ int Board::diagonalNeighbour(int x, int y, char32_t color)
     // check left-down
     for (int i = x - 2, j = y + 2; i > 0 && j < BoardSize; i--, j++)
     {
-        if (grid[j][i] == ' ')
+        char32_t oppColor = (color == '⬤' ? '○':'⬤');
+
+        if (grid[i][x] == oppColor || grid[i][x] == ' ')
         {
             break;
         }
