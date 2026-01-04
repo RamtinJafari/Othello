@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Structures/Move.h"
+#include "codes/Structures/Move.h"
 
 void clearGameLog();
 void addLog(Move move);

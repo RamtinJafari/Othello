@@ -1,9 +1,9 @@
-#include "Config.h"
-#include "Board.h"
-#include "Move.h"
-#include "../Database/GameLogManager.h"
-#include "../Utilities/Print.h"
-#include "../Utilities/SymbolToStr.h"
+#include "codes/Structures/Config.h"
+#include "codes/Structures/Board.h"
+#include "codes/Structures/Move.h"
+#include "codes/Database/GameLogManager.h"
+#include "codes/Utilities/Print.h"
+#include "codes/Utilities/SymbolToStr.h"
 #include <iostream>
 #include <string>
 

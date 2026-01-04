@@ -1,13 +1,13 @@
-#include "../Database/GameHistoryManager.h"
-#include "../Utilities/IntToStr.h"
-#include "../Structures/Board.h"
-#include "../Structures/Player.h"
-#include "../Structures/Bot.h"
-#include "../Structures/SinglePlayerGame.h"
-#include "../Structures/MultiPlayerGame.h"
-#include "GetSavedBoardSize.h"
-#include "Print.h"
-#include "outputDecoratedSavedGame.h"
+#include "codes/Database/GameHistoryManager.h"
+#include "codes/Utilities/IntToStr.h"
+#include "codes/Structures/Board.h"
+#include "codes/Structures/Player.h"
+#include "codes/Structures/Bot.h"
+#include "codes/Structures/SinglePlayerGame.h"
+#include "codes/Structures/MultiPlayerGame.h"
+#include "codes/Utilities/GetSavedBoardSize.h"
+#include "codes/Utilities/Print.h"
+#include "codes/Utilities/outputDecoratedSavedGame.h"
 #include <iostream>
 
 

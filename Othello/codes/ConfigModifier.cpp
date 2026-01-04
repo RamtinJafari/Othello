@@ -1,5 +1,5 @@
-#include "ConfigModifier.h"
-#include "Database/ConfigManager.h"
+#include "codes/ConfigModifier.h"
+#include "codes/Database/ConfigManager.h"
 #include <conio.h>
 #include <windows.h>
 #include <limits>

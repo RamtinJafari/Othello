@@ -1,5 +1,5 @@
 #pragma once
 
-#include "Structures/Board.h"
+#include "codes/Structures/Board.h"
 
 void executeGameReviewer(Board board);

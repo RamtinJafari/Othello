@@ -1,5 +1,5 @@
-#include "../Database/ConfigManager.h"
-#include "Config.h"
+#include "codes/Database/ConfigManager.h"
+#include "codes/Structures/Config.h"
 #include <iostream>
 #include <windows.h>
 

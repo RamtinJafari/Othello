@@ -1,5 +1,5 @@
-#include "Move.h"
-#include "../Utilities/StrToInt.h"
+#include "codes/Structures/Move.h"
+#include "codes/Utilities/StrToInt.h"
 #include <string>
 
 

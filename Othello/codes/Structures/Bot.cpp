@@ -1,7 +1,7 @@
-#include "Bot.h"
-#include "Board.h"
-#include "../Utilities/IntToStr.h"
-#include "../Utilities/StrToInt.h"
+#include "codes/Structures/Bot.h"
+#include "codes/Structures/Board.h"
+#include "codes/Utilities/IntToStr.h"
+#include "codes/Utilities/StrToInt.h"
 #include <string>
 #include <random>
 

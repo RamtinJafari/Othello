@@ -1,4 +1,4 @@
-#include "../Structures/Move.h"
+#include "codes/Structures/Move.h"
 #include <fstream>
 #include <string>
 
@@ -13,7 +13,7 @@ Move getLog(int logIndex);
 
 void clearGameLog()
 {
-    std::ofstream file ("GameLog.txt", std::ios::trunc);
+    std::ofstream file ("codes/Database/GameLog.txt", std::ios::trunc);
     if (!file.is_open())
     {
         throw 1; // failed to read file
@@ -25,7 +25,7 @@ void clearGameLog()
 
 void addLog(Move move)
 {
-    std::ofstream file("GameLog.txt", std::ios::app);
+    std::ofstream file("codes/Database/GameLog.txt", std::ios::app);
     if (!file.is_open())
     {
         throw 1; // failed to read file
@@ -40,7 +40,7 @@ void addLog(Move move)
 int countLogs()
 {
     int logCount = 0;
-    std::ifstream file("GameLog.txt");
+    std::ifstream file("codes/Database/GameLog.txt");
     std::string line;
 
     while(std::getline(file, line))
@@ -56,7 +56,7 @@ int countLogs()
 
 Move getLog(int logIndex)
 {
-    std::ifstream file ("Config.txt");
+    std::ifstream file ("codes/Database/Config.txt");
     if (!file.is_open())
     {
         throw 1; // failed to read the file

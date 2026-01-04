@@ -1,8 +1,8 @@
-#include "GameReviewer.h"
-#include "Database/GameLogManager.h"
-#include "Structures/Move.h"
-#include "Structures/Board.h"
-#include "conio.h"
+#include "codes/GameReviewer.h"
+#include "codes/Database/GameLogManager.h"
+#include "codes/Structures/Move.h"
+#include "codes/Structures/Board.h"
+#include <conio.h>
 #include <iostream>
 #include <windows.h>
 

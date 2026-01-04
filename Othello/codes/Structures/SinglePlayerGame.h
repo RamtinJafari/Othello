@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Board.h"
-#include "Bot.h"
-#include "Player.h"
+#include "codes/Structures/Board.h"
+#include "codes/Structures/Bot.h"
+#include "codes/Structures/Player.h"
 #include <string>
 
 struct SinglePlayerGame

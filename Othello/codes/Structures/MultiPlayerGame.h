@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Board.h"
-#include "Player.h"
+#include "codes/Structures/Board.h"
+#include "codes/Structures/Player.h"
 #include <string>
 
 struct MultiPlayerGame

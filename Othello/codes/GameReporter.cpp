@@ -1,10 +1,10 @@
 #include <iostream>
 #include <conio.h>
 #include <windows.h>
-#include "GameReporter.h"
-#include "Structures/Config.h"
-#include "DataBase/GameHistoryManager.h"
-#include "Utilities/outputDecoratedSavedGame.h"
+#include "codes/GameReporter.h"
+#include "codes/Structures/Config.h"
+#include "codes/DataBase/GameHistoryManager.h"
+#include "codes/Utilities/outputDecoratedSavedGame.h"
 
 
 void executeGameReporter()
