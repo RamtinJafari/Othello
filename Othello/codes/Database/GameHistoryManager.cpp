@@ -42,8 +42,8 @@ void syncWithNewLimit()
     {
         int toRemove = curCount - limit;
 
-        std::ifstream GameHistoryToRead("GameHistory.txt");
-        std::ofstream tempoFileToWrite("tempo.txt");
+        std::ifstream GameHistoryToRead("codes/Database/GameHistory.txt");
+        std::ofstream tempoFileToWrite("codes/Database/tempo.txt");
 
         if (!GameHistoryToRead.is_open() && !tempoFileToWrite.is_open())
         {
@@ -75,7 +75,7 @@ int countUnfinishedGames()
     int count = 0;
 
     std::string line;
-    std::ifstream fileToRead("GameHistory.txt");
+    std::ifstream fileToRead("codes/Database/GameHistory.txt");
 
     if (!fileToRead.is_open())
     {
@@ -96,7 +96,7 @@ std::string getUnfinishedGame(int index)
     int curIndex = 0;
 
     std::string line;
-    std::ifstream fileToRead("GameHistory.txt");
+    std::ifstream fileToRead("codes/Database/GameHistory.txt");
 
     if (!fileToRead.is_open())
     {
@@ -144,7 +144,7 @@ int getLinesCount()
     int count = 0;
 
     std::string line;
-    std::ifstream fileToRead("GameHistory.txt");
+    std::ifstream fileToRead("codes/Database/GameHistory.txt");
 
     if (!fileToRead.is_open())
     {
@@ -163,8 +163,8 @@ int getLinesCount()
 
 void writeTempoToGameHistory()
 {
-    std::ifstream tempoFileToRead("tempo.txt");
-    std::ofstream GameHistoryToWrite("GameHistory.txt");
+    std::ifstream tempoFileToRead("codes/Database/tempo.txt");
+    std::ofstream GameHistoryToWrite("codes/Database/GameHistory.txt");
 
     if (!GameHistoryToWrite.is_open() && !tempoFileToRead.is_open())
     {
@@ -185,7 +185,7 @@ void writeTempoToGameHistory()
 
 void addLineToEnd(std::string str)
 {
-    std::ofstream file("GameHistory.txt", std::ios::app);
+    std::ofstream file("codes/Database/GameHistory.txt", std::ios::app);
 
     if (!file.is_open())
     {
@@ -200,8 +200,8 @@ void addLineToEnd(std::string str)
 
 void freeLastLine()
 {
-    std::ifstream GameHistoryToRead("GameHistory.txt");
-    std::ofstream tempoFileToWrite("tempo.txt");
+    std::ifstream GameHistoryToRead("codes/Database/GameHistory.txt");
+    std::ofstream tempoFileToWrite("codes/Database/tempo.txt");
 
     if (!GameHistoryToRead.is_open() && !tempoFileToWrite.is_open())
     {
@@ -226,8 +226,8 @@ void freeLastLine()
 
 void updateLine(int lineIndex, std::string str)
 {
-    std::ifstream GameHistoryToRead("GameHistory.txt");
-    std::ofstream tempoFileToWrite("tempo.txt");
+    std::ifstream GameHistoryToRead("codes/Database/GameHistory.txt");
+    std::ofstream tempoFileToWrite("codes/Database/tempo.txt");
 
     if (!GameHistoryToRead.is_open() && !tempoFileToWrite.is_open())
     {
@@ -260,7 +260,7 @@ void updateLine(int lineIndex, std::string str)
 int getLineIndexById(int gameId)
 {
     std::string line;
-    std::ifstream fileToRead("GameHistory.txt");
+    std::ifstream fileToRead("codes/Database/GameHistory.txt");
 
     if (!fileToRead.is_open())
     {
@@ -284,7 +284,7 @@ int getLineIndexById(int gameId)
 std::string getLineByLineIndex(int lineIndex)
 {
     std::string line;
-    std::ifstream fileToRead("GameHistory.txt");
+    std::ifstream fileToRead("codes/Database/GameHistory.txt");
 
     if (!fileToRead.is_open())
     {
@@ -325,7 +325,7 @@ void saveGame(std::string game)
 std::string getGameById(int gameId)
 {
     std::string line;
-    std::ifstream fileToRead("GameHistory.txt");
+    std::ifstream fileToRead("codes/Database/GameHistory.txt");
 
     if (!fileToRead.is_open())
     {

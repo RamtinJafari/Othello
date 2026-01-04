@@ -36,7 +36,7 @@ string getElementOfConfig(int index)
         throw 2; // out of bond
     }
 
-    ifstream file ("Config.txt");
+    ifstream file ("codes/Database/Config.txt");
     if (!file.is_open())
     {
         throw 1; // failed to read the file
@@ -65,7 +65,7 @@ void modifyElementOfConfig(int index, string newValue)
         throw 2; // out of bounds
     }
 
-    std::ifstream fileToRead("Config.txt");
+    std::ifstream fileToRead("codes/Database/Config.txt");
     if (!fileToRead.is_open())
     {
         throw 1; // failed to read the file
@@ -85,7 +85,7 @@ void modifyElementOfConfig(int index, string newValue)
     targetLine = targetLine.substr(0, startingIndex) + newValue;
     lines[index + 1] = targetLine;
 
-    std::ofstream fileToWrite ("Config.txt");
+    std::ofstream fileToWrite ("codes/Database/Config.txt");
     if (!fileToWrite.is_open())
     {
         throw 1; // failed to read the file
