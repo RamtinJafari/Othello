@@ -10,9 +10,9 @@ std::string symbolToStr(char character)
     {
         return "B";
     }
-    else if (character == ' ')
+    else if (character == '.')
     {
-        return " ";
+        return ".";
     }
     else if (character == 'X')
     {

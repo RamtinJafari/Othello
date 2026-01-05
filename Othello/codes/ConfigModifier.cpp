@@ -1,5 +1,6 @@
 #include "ConfigModifier.h"
 #include "Database/ConfigManager.h"
+#include "Database/GameHistoryManager.h"
 #include <conio.h>
 #include <windows.h>
 #include <limits>
@@ -122,6 +123,7 @@ void handleGameHistoryLimit()
     }
 
     modifyGameHistoryLimit(newValue);
+    syncGameHistoryWithLimit();
     std::cout << "Change has been made\nPress any key to continue";
     getch();
 

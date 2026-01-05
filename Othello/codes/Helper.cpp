@@ -4,9 +4,5 @@
 
 void executeHelper()
 {
-    Board board{};
-    board.newGameSetup();
-    board.prepareBoardForMove('B');
-
     
 }

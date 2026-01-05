@@ -11,12 +11,12 @@
 #include <windows.h>
 
 
-SinglePlayerGame::SinglePlayerGame(Board GameBoard, Player* Player1, Bot* GameBot, char CurrentTurnColor)
+SinglePlayerGame::SinglePlayerGame(Board *GameBoard, Player* Player1, Bot* GameBot, char CurrentTurnColor)
 {
     int lastId = getLastGameId();
 
     this -> id = lastId + 1;
-    this -> GameBoard = GameBoard;
+    this ->  GameBoard =  GameBoard;
     this -> mode = "1Player";
     this -> Player1 = Player1;
     this -> GameBot = GameBot;
@@ -46,7 +46,7 @@ void SinglePlayerGame::start()
     int CursorX = 0, CursorY = 0;
 
     clearGameLog();
-    GameBoard.prepareBoardForMove(CurrentTurnColor);
+     (*GameBoard).prepareBoardForMove(CurrentTurnColor);
 
     this -> save();
 
@@ -54,19 +54,19 @@ void SinglePlayerGame::start()
     {
         if (CurrentTurnColor != Player1 -> color)
         {
-            GameBot -> decide(GameBoard, CurrentTurnColor);
+            GameBot -> decide( (*GameBoard), CurrentTurnColor);
 
             changeTurn();
-            GameBoard.prepareBoardForMove(CurrentTurnColor);
+             (*GameBoard).prepareBoardForMove(CurrentTurnColor);
             this -> save();
 
-            if (GameBoard.countValidMoves() == 0)
+            if ( (*GameBoard).countValidMoves() == 0)
             {
                 changeTurn();
-                GameBoard.prepareBoardForMove(CurrentTurnColor);
+                 (*GameBoard).prepareBoardForMove(CurrentTurnColor);
                 this -> save();
 
-                if (GameBoard.countValidMoves() == 0)
+                if ( (*GameBoard).countValidMoves() == 0)
                 {
                     end();
                 }
@@ -75,9 +75,9 @@ void SinglePlayerGame::start()
 
         system("cls");
 
-        char charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
+        char charCursorReplaced =  (*GameBoard).placeCursor(CursorX, CursorY);
 
-        GameBoard.display();
+         (*GameBoard).display();
 
         int userInput = getch();
 
@@ -85,7 +85,7 @@ void SinglePlayerGame::start()
         {
             if (CursorY - 1 >= 0)
             {
-                GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
+                 (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorY--;
                 continue;
             }
@@ -93,9 +93,9 @@ void SinglePlayerGame::start()
 
         else if (userInput == static_cast<int>('s'))
         {
-            if (CursorY + 1 < GameBoard.BoardSize)
+            if (CursorY + 1 <  (*GameBoard).BoardSize)
             {
-                GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
+                 (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorY++;
                 continue;
             }
@@ -105,7 +105,7 @@ void SinglePlayerGame::start()
         {
             if (CursorX - 1 >= 0)
             {
-                GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
+                 (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorX--;
                 continue;
             }
@@ -113,9 +113,9 @@ void SinglePlayerGame::start()
 
         else if (userInput == static_cast<int>('d'))
         {
-            if (CursorX + 1 < GameBoard.BoardSize)
+            if (CursorX + 1 <  (*GameBoard).BoardSize)
             {
-                GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
+                 (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorX++;
                 continue;
             }
@@ -123,20 +123,20 @@ void SinglePlayerGame::start()
 
         else if (userInput == 13)
         {
-            if (GameBoard.displayGrid[CursorY][CursorX] == 'O')
+            if ( (*GameBoard).displayGrid[CursorY][CursorX] == 'O')
             {
-                GameBoard.putPiece(CursorX, CursorY, CurrentTurnColor);
+                 (*GameBoard).putPiece(CursorX, CursorY, CurrentTurnColor);
                 changeTurn();
-                GameBoard.prepareBoardForMove(CurrentTurnColor);
+                 (*GameBoard).prepareBoardForMove(CurrentTurnColor);
                 this -> save();
 
-                if (GameBoard.countValidMoves() == 0)
+                if ( (*GameBoard).countValidMoves() == 0)
                 {
                     changeTurn();
-                    GameBoard.prepareBoardForMove(CurrentTurnColor);
+                     (*GameBoard).prepareBoardForMove(CurrentTurnColor);
                     this -> save();
 
-                    if (GameBoard.countValidMoves() == 0)
+                    if ( (*GameBoard).countValidMoves() == 0)
                     {
                         end();
                     }
@@ -149,11 +149,11 @@ void SinglePlayerGame::start()
 
 void SinglePlayerGame::end()
 {
-    int blackCount = GameBoard.countBlack();   // Fixed in Board.cpp
-    int whiteCount = GameBoard.countWhite();
+    int blackCount =  (*GameBoard).countBlack();   // Fixed in Board.cpp
+    int whiteCount =  (*GameBoard).countWhite();
 
     system("cls");
-    GameBoard.display();
+     (*GameBoard).display();
 
     std::cout << "\nFinal Score: Black: " << blackCount 
               << " | White: " << whiteCount << "\n\n";
@@ -188,24 +188,7 @@ void SinglePlayerGame::end()
 void SinglePlayerGame::save()
 // saves the game inside GameHistory.txt
 {
-    std::string gameToSave = this -> retrieveGame();
-    saveGame(gameToSave);
-}
-
-
-void SinglePlayerGame::loadGame(int gameId)
-// recreates this Game instance according to a game inside GameHistory.txt which its id is given
-// the string being processed is created by retrieveGame method
-{
-    std::string game = getGameById(gameId);
-
-    id = getGameId(game);
-    GameBoard.loadBoard(getGameBoard(game));
-    mode = getMode(game);
-    Player1 -> loadPlayer(getPlayer1(game));
-    GameBot -> loadBot(getBot(game));
-    CurrentTurnColor = getCurrentTurnColor(game);
-    Winner = getWinner(game);
+    saveGame(this);
 }
 
 
@@ -214,7 +197,7 @@ std::string SinglePlayerGame::retrieveGame()
 // this string can be turned into a Game instance via loadGame method
 {
     std::string idToSave = intToStr(id);
-    std::string boardToSave = GameBoard.retrieveBoard();
+    std::string boardToSave =  (*GameBoard).retrieveBoard();
     std::string playerToSave = Player1 -> retrievePlayer();
     std::string botToSave = GameBot -> retrieveBot();
     std::string currentTurnToSave = symbolToStr(CurrentTurnColor);

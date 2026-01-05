@@ -1,23 +1,15 @@
 #pragma once
 
 #include <string>
+#include "../Structures/MultiPlayerGame.h"
+#include "../Structures/SinglePlayerGame.h"
 
-// working with GameHistory.txt
-void syncWithNewLimit();
+void saveGame(SinglePlayerGame* game);
+void saveGame(MultiPlayerGame* game);
+SinglePlayerGame getSinglePlayerGame(int id);
+MultiPlayerGame getMultiPlayerGame(int id);
+void syncGameHistoryWithLimit();
+std::string getProperty(int propertyId, std::string game);
+int getGameId(std::string game);
 int getFirstGameId();
 int getLastGameId();
-int countUnfinishedGames();
-std::string getUnfinishedGame(int number);
-void saveGame(std::string game);
-std::string getGameById(int gameId);
-
-// working with Game's properties
-int getSavedBoardElementCount(std::string board);
-int getGameId(std::string game);
-std::string getGameBoard(std::string game);
-std::string getMode(std::string game);
-std::string getPlayer1(std::string game);
-std::string getPlayer2(std::string game);
-std::string getBot(std::string game);
-char getCurrentTurnColor(std::string game);
-int getWinner(std::string game);

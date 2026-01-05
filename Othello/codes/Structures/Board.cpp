@@ -11,32 +11,32 @@
 
 //------------------------------- Constructor & deconstructor ----------------------------------------
 
-Board::Board() 
+Board::Board(int boardSize) 
 // gets BoardSize from Config and allocates memort for matrixes
 // intializes ValidMoves only, since grid will be intializes by GameMaster
 // using newGameSetup or loadBoard methods
 // also displayGrid is updated with grid before being diplayed
 {
-    BoardSize = Config::getInstance() -> BOARD_SIZE;
+    BoardSize = boardSize;
 
-    grid = new char*[BoardSize];
-    for (int i = 0; i < BoardSize; ++i) {
-        grid[i] = new char[BoardSize];
+    grid = new char*[boardSize];
+    for (int i = 0; i < boardSize; ++i) {
+        grid[i] = new char[boardSize];
     }
 
-    validMovesGrid = new char*[BoardSize];
-    for (int i = 0; i < BoardSize; ++i) {
-        validMovesGrid[i] = new char[BoardSize];
+    validMovesGrid = new char*[boardSize];
+    for (int i = 0; i < boardSize; ++i) {
+        validMovesGrid[i] = new char[boardSize];
     }
 
-    displayGrid = new char*[BoardSize];
-    for (int i = 0; i < BoardSize; ++i) {
-        displayGrid[i] = new char[BoardSize];
+    displayGrid = new char*[boardSize];
+    for (int i = 0; i < boardSize; ++i) {
+        displayGrid[i] = new char[boardSize];
     }
 
-    for (int y = 0; y < BoardSize; y++)
+    for (int y = 0; y < boardSize; y++)
     {
-        for (int x = 0; x < BoardSize; x++)
+        for (int x = 0; x < boardSize; x++)
         {
             grid[y][x] = '.';
             validMovesGrid[y][x] = '.';
@@ -75,7 +75,6 @@ std::string Board::retrieveBoard()
 // turns grid into string format to be saved inside database
 // this string can be used to create a grid using loadBoard method
 {
-    int index = 0;
     int size = BoardSize * BoardSize + BoardSize; 
     std::string result = "";
 
@@ -84,11 +83,10 @@ std::string Board::retrieveBoard()
         for (int x = 0; x < BoardSize; x++)
         {
             result += symbolToStr(grid[y][x]);
-            index++;
-            if (x < BoardSize - 1)
+
+            if (!(y == BoardSize-1 && x == BoardSize-1))
             {
-                result += '.';
-                index++;
+                result += "|";
             }
         }
     }

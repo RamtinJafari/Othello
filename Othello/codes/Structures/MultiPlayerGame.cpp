@@ -10,7 +10,7 @@
 #include <windows.h>
 
 
-MultiPlayerGame::MultiPlayerGame(Board GameBoard, Player* Player1, Player* Player2, char CurrentTurnColor)
+MultiPlayerGame::MultiPlayerGame(Board* GameBoard, Player* Player1, Player* Player2, char CurrentTurnColor)
 {
     int lastId = getLastGameId();
 
@@ -47,21 +47,21 @@ void MultiPlayerGame::start()
     system("cls");
     SetConsoleOutputCP(CP_UTF8);
     clearGameLog();
-    GameBoard.prepareBoardForMove(CurrentTurnColor);
+    (*GameBoard).prepareBoardForMove(CurrentTurnColor);
     this -> save();
 
     while (true)
     {
         system("cls");
         
-        char charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
+        char charCursorReplaced = (*GameBoard).placeCursor(CursorX, CursorY);
         if (madeValidMove)
         {
-            char charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
+            char charCursorReplaced = (*GameBoard).placeCursor(CursorX, CursorY);
             madeValidMove == false;
         } 
 
-        GameBoard.display();
+        (*GameBoard).display();
 
         int userInput = getch();
 
@@ -69,7 +69,7 @@ void MultiPlayerGame::start()
         {
             if (CursorY - 1 >= 0)
             {
-                GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
+                (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorY--;
                 madeValidMove = true;
                 continue;
@@ -78,9 +78,9 @@ void MultiPlayerGame::start()
 
         else if (userInput == static_cast<int>('s') || userInput == 80)
         {
-            if (CursorY + 1 < GameBoard.BoardSize)
+            if (CursorY + 1 < (*GameBoard).BoardSize)
             {
-                GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
+                (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorY++;
                 madeValidMove = true;
                 continue;
@@ -91,7 +91,7 @@ void MultiPlayerGame::start()
         {
             if (CursorX - 1 >= 0)
             {
-                GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
+                (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorX--;
                 madeValidMove = true;
                 continue;
@@ -100,9 +100,9 @@ void MultiPlayerGame::start()
 
         else if (userInput == static_cast<int>('d') || userInput == 77)
         {
-            if (CursorX + 1 < GameBoard.BoardSize)
+            if (CursorX + 1 < (*GameBoard).BoardSize)
             {
-                GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
+                (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorX++;
                 madeValidMove = true;
                 continue;
@@ -111,20 +111,20 @@ void MultiPlayerGame::start()
 
         else if (userInput == 13)
         {
-            if (GameBoard.displayGrid[CursorY][CursorX] == 'O')
+            if ((*GameBoard).displayGrid[CursorY][CursorX] == 'O')
             {
-                GameBoard.putPiece(CursorX, CursorY, CurrentTurnColor);
+                (*GameBoard).putPiece(CursorX, CursorY, CurrentTurnColor);
                 changeTurn();
-                GameBoard.prepareBoardForMove(CurrentTurnColor);
+                (*GameBoard).prepareBoardForMove(CurrentTurnColor);
                 this -> save();
 
-                if (GameBoard.countValidMoves() == 0)
+                if ((*GameBoard).countValidMoves() == 0)
                 {
                     changeTurn();
-                    GameBoard.prepareBoardForMove(CurrentTurnColor);
+                    (*GameBoard).prepareBoardForMove(CurrentTurnColor);
                     this -> save();
 
-                    if (GameBoard.countValidMoves() == 0)
+                    if ((*GameBoard).countValidMoves() == 0)
                     {
                         end();
                     }
@@ -139,8 +139,8 @@ void MultiPlayerGame::end()
 // called when there is no valid moves remaining, the game is over
 // Game decides the winner, declares the winner and saves the game for the last time
 {
-    int blackCount = GameBoard.countBlack();
-    int whiteCount = GameBoard.countWhite();
+    int blackCount = (*GameBoard).countBlack();
+    int whiteCount = (*GameBoard).countWhite();
 
     if (blackCount > whiteCount) 
     {
@@ -158,7 +158,7 @@ void MultiPlayerGame::end()
     this -> save();
 
     system("cls");
-    GameBoard.display();
+    (*GameBoard).display();
 
     std::cout << std::endl
         << (Winner == 1 ? 
@@ -172,24 +172,7 @@ void MultiPlayerGame::end()
 void MultiPlayerGame::save()
 // saves the game inside GameHistory.txt
 {
-    std::string gameToSave = this -> retrieveGame();
-    saveGame(gameToSave);
-}
-
-
-void MultiPlayerGame::loadGame(int gameId)
-// recreates this Game instance according to a game inside GameHistory.txt which its id is given
-// the string being processed is created by retrieveGame method
-{
-    std::string game = getGameById(gameId);
-
-    id = getGameId(game);
-    GameBoard.loadBoard(getGameBoard(game));
-    mode = getMode(game);
-    Player1 -> loadPlayer(getPlayer1(game));
-    Player2 -> loadPlayer(getPlayer2(game));
-    CurrentTurnColor = getCurrentTurnColor(game);
-    Winner = getWinner(game);
+    saveGame(this);
 }
 
 
@@ -198,7 +181,7 @@ std::string MultiPlayerGame::retrieveGame()
 // this string can be turned into a Game instance via loadGame method
 {
     std::string idToSave = intToStr(id);
-    std::string boardToSave = GameBoard.retrieveBoard();
+    std::string boardToSave = (*GameBoard).retrieveBoard();
     std::string player1ToSave = Player1 -> retrievePlayer();
     std::string player2ToSave = Player2 -> retrievePlayer();
     std::string currentTurnToSave = symbolToStr(CurrentTurnColor);

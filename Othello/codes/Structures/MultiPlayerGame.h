@@ -7,7 +7,7 @@
 struct MultiPlayerGame
 {
     int id;
-    Board GameBoard;
+    Board* GameBoard;
     std::string mode;
     Player* Player1;
     Player* Player2;
@@ -15,13 +15,12 @@ struct MultiPlayerGame
     int Winner;
 
 public:
-    MultiPlayerGame(Board GameBoard, Player* Player1, Player* Player2, char CurrentTurnColor);
+    MultiPlayerGame(Board* GameBoard, Player* Player1, Player* Player2, char CurrentTurnColor);
     void start();
     void end();
-    void loadGame(int gameId);
-
-private:
-    void changeTurn();
     std::string retrieveGame();
     void save();
+    void changeTurn();
+
+private:
 };

@@ -14,7 +14,7 @@ int main()
     system("cls");
     
     Config::initialize();
-    syncWithNewLimit();
+    syncGameHistoryWithLimit();
 
 
     int chosenOption = 0;

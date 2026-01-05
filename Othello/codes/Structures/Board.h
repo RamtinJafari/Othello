@@ -10,7 +10,7 @@ struct Board
     char** displayGrid;
 
 public:
-    Board();
+    Board(int boardSize);
     void deleteBoardMemory();
     std::string retrieveBoard();
     void newGameSetup();
