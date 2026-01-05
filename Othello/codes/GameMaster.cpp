@@ -161,8 +161,8 @@ void handleNewGame()
     {
         system("cls");
 
-        std::cout << (chosenOption == 0 ? "■":"□") << " Single Player" << std::endl
-            << (chosenOption == 1 ? "■":"□") << " MultiPlayer" << std::endl;
+        std::cout << (chosenOption == 0 ? " >":" ") << " Single Player" << std::endl
+            << (chosenOption == 1 ? " >":" ") << " MultiPlayer" << std::endl;
 
         int userInput = getch();
 
@@ -211,9 +211,9 @@ void handleSinglePlayerNewGame()
         system("cls");
 
         std::cout << "Please choose the difficulty: \n"
-            << (chosenOption == 0 ? "■":"□") << " Easy" << std::endl
-            << (chosenOption == 1 ? "■":"□") << " Medium" << std::endl
-            << (chosenOption == 2 ? "■":"□") << " Hard" << std::endl;
+            << (chosenOption == 0 ? " >":" ") << " Easy" << std::endl
+            << (chosenOption == 1 ? " >":" ") << " Medium" << std::endl
+            << (chosenOption == 2 ? " >":" ") << " Hard" << std::endl;
 
         int userInput = getch();
 
@@ -297,8 +297,8 @@ void handleSinglePlayerNewGame()
         system("cls");
 
         std::cout << "Please choose your color\n"
-            << (chosenOption == 0 ? "■":"□") << " Black" << std::endl
-            << (chosenOption == 1 ? "■":"□") << " White" << std::endl;
+            << (chosenOption == 0 ? " >":" ") << " Black" << std::endl
+            << (chosenOption == 1 ? " >":" ") << " White" << std::endl;
 
         int userInput = getch();
 
@@ -338,9 +338,10 @@ void handleSinglePlayerNewGame()
 
     Board board{};
 
-    SinglePlayerGame game{board, &player, &bot, 'W'};
+    board.newGameSetup();
 
-    game.GameBoard.newGameSetup();
+    SinglePlayerGame game{board, &player, &bot, 'B'};
+
     game.start();
 
     std::cout << "\n The game has finished, would you like to see the replay? [Y/N]" << std::endl;
@@ -401,8 +402,8 @@ void handleMultiPlayerNewGame()
         system("cls");
 
         std::cout << "Player1, please choose your color\n"
-            << (chosenOption == 0 ? "■":"□") << " Black" << std::endl
-            << (chosenOption == 1 ? "■":"□") << " White" << std::endl;
+            << (chosenOption == 0 ? " >":" ") << " Black" << std::endl
+            << (chosenOption == 1 ? " >":" ") << " White" << std::endl;
 
         int userInput = getch();
 
@@ -477,9 +478,10 @@ void handleMultiPlayerNewGame()
 
     Board board{};
 
-    MultiPlayerGame game{board, &player1, &player2, 'W'};
+    board.newGameSetup();
 
-    game.GameBoard.newGameSetup();
+    MultiPlayerGame game{board, &player1, &player2, 'B'};
+
     game.start();
 
     std::cout << "\n The game has finished, would you like to see the replay? [Y/N]" << std::endl;

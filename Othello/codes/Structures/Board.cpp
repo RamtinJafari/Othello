@@ -34,7 +34,15 @@ Board::Board()
         displayGrid[i] = new char[BoardSize];
     }
 
-    resetValidMovesGrid();
+    for (int y = 0; y < BoardSize; y++)
+    {
+        for (int x = 0; x < BoardSize; x++)
+        {
+            grid[y][x] = '.';
+            validMovesGrid[y][x] = '.';
+            displayGrid[y][x] = '.';
+        }
+    }
 }
 
 
@@ -79,7 +87,7 @@ std::string Board::retrieveBoard()
             index++;
             if (x < BoardSize - 1)
             {
-                result += ' ';
+                result += '.';
                 index++;
             }
         }
@@ -96,14 +104,16 @@ void Board::newGameSetup()
     {
         for (int x = 0; x < BoardSize; x++)
         {
-            grid[y][x] = ' ';
+            grid[y][x] = '.';
         }
     }
 
+    grid[BoardSize/2 - 1][BoardSize/2 - 1] = 'W';
     grid[BoardSize/2][BoardSize/2] = 'W';
-    grid[BoardSize/2 + 1][BoardSize/2 + 1] = 'W';
-    grid[BoardSize/2 + 1][BoardSize/2] = 'B';
-    grid[BoardSize/2][BoardSize/2 + 1] = 'B';
+    grid[BoardSize/2][BoardSize/2 - 1] = 'B';
+    grid[BoardSize/2 - 1][BoardSize/2] = 'B';
+
+    updateDisplayGrid();
 }
 
 
@@ -121,6 +131,8 @@ void Board::loadBoard(std::string Board)
             index += 2;
         }
     }
+
+    updateDisplayGrid();
 }
 
 
@@ -140,237 +152,60 @@ void Board::prepareBoardForMove(char thisTurnColor)
 } 
 
 
+// Simple flip a single piece
 void Board::flip(int x, int y)
-// simply changes the color of the piece inside the given coordinates (flips it)
 {
-    char piece = grid[y][x];
-
-    if (piece == 'B') grid[y][x] = 'W';
-    else if (piece == 'W') grid[y][x] = 'B';
+    if (grid[y][x] == 'B')
+        grid[y][x] = 'W';
+    else if (grid[y][x] == 'W')
+        grid[y][x] = 'B';
 }
 
-
-void Board::verticalflip(int x, int y, char color)
-// flips the surrounded pieces in vertical directions (up and down)
-{
-    if (verticalNeighbour(x, y, color) == 0)
-    {
-        return;
-    }
-
-    // check up
-    for (int i = y - 2; i > 0; i--)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[i][x] == color)
-        {
-            for (int a = y - 1; a > i; a--)
-            {
-                flip(x, a);
-            }
-        }
-    }
-
-    // check down
-    for (int i = y + 2; i < BoardSize; i++)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[i][x] == color)
-        {
-            for (int a = y + 1; a < i; a++)
-            {
-                flip(x, a);
-            }
-        }
-    }
-}
-
-
-void Board::horazinalflip(int x, int y, char color)
-// flips the surrounded pieces in horazinal directions (left and right)
-{
-    if (horazinalNeighbour(x, y, color))
-    {
-        return;
-    }
-
-    // check left
-    for (int i = x - 2; i > 0; i--)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[y][i] == color)
-        {
-            for (int a = x - 1; a > i; a--)
-            {
-                flip(a, y);
-            }
-        }
-    }
-
-    // check right
-    for (int i = x + 2; i < BoardSize; i++)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[y][i] == color)
-        {
-            for (int a = x + 1; a < i; a++)
-            {
-                flip(a, y);
-            }
-        }
-    }
-}
-
-
-void Board::diagonalflip(int x, int y, char color)
-// flips the surrounded pieces in diagonal directions
-{
-    // check right-up
-    for (int i = x + 2, j = y - 2; i < BoardSize && j > 0; i++, j--)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[j][i] == color)
-        {
-            for(int a = x + 1, b = y - 1; a < i && b > j; a++, b--)
-            {
-                flip(a, b);
-            }
-        }
-    }
-
-    // check right-down
-    for (int i = x + 2, j = y + 2; i < BoardSize && j < BoardSize; i++, j++)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[j][i] == color)
-        {
-            for(int a = x + 1, b = y + 1; a < i && b < j; a++, b++)
-            {
-                flip(a, b);
-            }
-        }
-    }
-
-    // check left-up
-    for (int i = x - 2, j = y - 2; i > 0 && j > 0; i--, j--)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[j][i] == color)
-        {
-            for(int a = x - 1, b = y - 1; a > i && b > j; a--, b--)
-            {
-                flip(a, b);
-            }
-        }
-    }
-
-    // check left-down
-    for (int i = x - 2, j = y + 2; i > 0 && j < BoardSize; i--, j++)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[j][i] == color)
-        {
-            for(int a = x - 1, b = y + 1; a > i && b < j; a--, b++)
-            {
-                flip(a, b);
-            }
-        }
-    }
-}
-
-
+// Main function: place a piece and flip all surrounded opponent pieces
 void Board::putPiece(int x, int y, char color)
-// puts the piece inside grid and flips the pieces that are surounded now
-// afterwards, logs the move made inside GameLog.txt for game review
-// caution - this function considers that putting a piece in that coordination is valid
-// since validation should be done in GameMaster
 {
-    grid[y][x] == color;
+    // Place the new piece
+    grid[y][x] = color;
 
+    // Log the move
     Move move(x, y, color);
     addLog(move);
 
-    horazinalflip(x, y, color);
-    verticalflip(x, y, color);
-    diagonalflip(x, y, color);
-}
+    // Directions: left, up, right, down, and diagonals
+    const int dx[] = {-1, -1, -1,  0, 0,  1, 1, 1};
+    const int dy[] = {-1,  0,  1, -1, 1, -1, 0, 1};
 
-
-int Board::countBlack()
-// counts the number of black pieces inside the grid
-{
-    int count = 0;
-
-    for (int y = 0; y < BoardSize; y++)
-    {
-        for (int x = 0; x < BoardSize; x++)
-        {
-            if (grid[y][x] == 'W') count++;
+    // For each of the 8 directions
+    for (int d = 0; d < 8; ++d) {
+        int flips = countFlipsInDirection(x, y, dx[d], dy[d], color);
+        if (flips > 0) {
+            // Flip all opponent pieces in this direction
+            int nx = x + dx[d];
+            int ny = y + dy[d];
+            for (int step = 0; step < flips; ++step) {
+                flip(nx, ny);
+                nx += dx[d];
+                ny += dy[d];
+            }
         }
     }
 }
 
 
-int Board::countWhite()
-// counts the number of white pieces inside the grid
-{
+int Board::countBlack() {
     int count = 0;
-
     for (int y = 0; y < BoardSize; y++)
-    {
         for (int x = 0; x < BoardSize; x++)
-        {
             if (grid[y][x] == 'B') count++;
-        }
-    }
+    return count;
+}
+
+int Board::countWhite() {
+    int count = 0;
+    for (int y = 0; y < BoardSize; y++)
+        for (int x = 0; x < BoardSize; x++)
+            if (grid[y][x] == 'W') count++;
+    return count;
 }
 
 
@@ -398,172 +233,48 @@ int Board::countValidMoves()
 
 
 int Board::isValid(int x, int y, char color)
-// returns the number of gains if a piece with the given color inside the given coordinations is placed
-// if the number returns is bigger than zero, then the move is valid (legal)
 {
-    if (grid[y][x] == 'W' || grid[y][x] == 'B')
+    // Must be empty
+    if (grid[y][x] != '.')
         return 0;
 
-    return diagonalNeighbour(x, y, color) + horazinalNeighbour(x, y, color) + verticalNeighbour(x, y, color);
+    // Must flip at least one opponent piece in at least one direction
+    int totalFlips = 0;
+
+    // Check all 8 directions
+    const int dx[] = {-1, -1, -1,  0, 0,  1, 1, 1};
+    const int dy[] = {-1,  0,  1, -1, 1, -1, 0, 1};
+
+    for (int d = 0; d < 8; ++d) {
+        totalFlips += countFlipsInDirection(x, y, dx[d], dy[d], color);
+    }
+
+    return totalFlips;  // > 0 means valid move, value is how many pieces flipped
 }
 
 
-
-int Board::verticalNeighbour(int x, int y, char color)
-// returns the number of pieces that will be surounded in vertical directions
-// if a piece with the given color is put in the given coordination
+int Board::countFlipsInDirection(int x, int y, int dx, int dy, char color)
 {
-    int gain = 0;
+    char opp = (color == 'B' ? 'W' : 'B');
 
-    // check up
-    for (int i = y - 2; i > 0; i--)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
+    int flips = 0;
+    int nx = x + dx;
+    int ny = y + dy;
 
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[i][x] == color)
-        {
-            gain += i - y - 1;
-        }
+    // Walk in the direction, counting opponent pieces
+    while (nx >= 0 && nx < BoardSize && ny >= 0 && ny < BoardSize && grid[ny][nx] == opp) {
+        flips++;
+        nx += dx;
+        ny += dy;
     }
 
-    // check down
-    for (int i = y + 2; i < BoardSize; i++)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[i][x] == color)
-        {
-            gain += y - i - 1;
-        }
+    // If we didn't reach our own color at the end, this direction gives no valid flips
+    if (nx < 0 || nx >= BoardSize || ny < 0 || ny >= BoardSize || grid[ny][nx] != color) {
+        return 0;
     }
 
-    return gain;
-}
-
-
-int Board::horazinalNeighbour(int x, int y, char color)
-// returns the number of pieces that will be surounded in horazinal directions
-// if a piece with the given color is put in the given coordination
-{
-    int gain = 0;
-
-    // check left
-    for (int i = x - 2; i > 0; i--)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[y][i] == color)
-        {
-            gain += i - x - 1;
-        }
-    }
-
-    // check right
-    for (int i = x + 2; i < BoardSize; i++)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[y][i] == color)
-        {
-            gain += x - i - 1;
-        }
-    }
-
-    return gain;
-}
-
-
-int Board::diagonalNeighbour(int x, int y, char color)
-// returns the number of pieces that will be surounded in diagonal directions
-// if a piece with the given color is put in the given coordination
-{
-    int gain = 0;
-
-    // check right-up
-    for (int i = x + 2, j = y - 2; i < BoardSize && j > 0; i++, j--)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[j][i] == color)
-        {
-            gain += i - x - 1;
-        }
-    }
-
-    // check right-down
-    for (int i = x + 2, j = y + 2; i < BoardSize && j < BoardSize; i++, j++)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[j][i] == color)
-        {
-            gain += i - x - 1;
-        }
-    }
-
-    // check left-up
-    for (int i = x - 2, j = y - 2; i > 0 && j > 0; i--, j--)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[j][i] == color)
-        {
-            gain += x - i - 1;
-        }
-    }
-
-    // check left-down
-    for (int i = x - 2, j = y + 2; i > 0 && j < BoardSize; i--, j++)
-    {
-        char oppColor = (color == 'B' ? 'W':'B');
-
-        if (grid[i][x] == oppColor || grid[i][x] == ' ')
-        {
-            break;
-        }
-
-        if (grid[j][i] == color)
-        {
-            gain += x - i - 1;
-        }
-    }
-
-    return gain;
+    // Otherwise, all the opponent pieces we passed will be flipped
+    return flips;
 }
 
 
@@ -574,7 +285,7 @@ void Board::resetValidMovesGrid()
     {
         for (int x = 0; x < BoardSize; x++)
         {
-            validMovesGrid[y][x] = ' ';
+            validMovesGrid[y][x] = '.';
         }
     }
 }
@@ -633,7 +344,7 @@ void Board::putValidMoves()
     {
         for (int x = 0; x < BoardSize; x++)
         {
-            if (validMovesGrid[y][x] = 'O')
+            if (validMovesGrid[y][x] == 'O')
             {
                 displayGrid[y][x] = 'O';
             }

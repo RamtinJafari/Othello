@@ -15,7 +15,7 @@ SinglePlayerGame::SinglePlayerGame(Board GameBoard, Player* Player1, Bot* GameBo
 {
     int lastId = getLastGameId();
 
-    this -> id = lastId;
+    this -> id = lastId + 1;
     this -> GameBoard = GameBoard;
     this -> mode = "1Player";
     this -> Player1 = Player1;
@@ -44,9 +44,10 @@ void SinglePlayerGame::start()
 //      player choosed to create a new game, every object is created and prepared
 {
     int CursorX = 0, CursorY = 0;
-    system("cls");
+
     clearGameLog();
     GameBoard.prepareBoardForMove(CurrentTurnColor);
+
     this -> save();
 
     while (true)
@@ -73,12 +74,14 @@ void SinglePlayerGame::start()
         }
 
         system("cls");
+
         char charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
+
         GameBoard.display();
 
         int userInput = getch();
 
-        if (userInput == static_cast<int>('w') || userInput == 72)
+        if (userInput == static_cast<int>('w'))
         {
             if (CursorY - 1 >= 0)
             {
@@ -88,7 +91,7 @@ void SinglePlayerGame::start()
             }
         }
 
-        else if (userInput == static_cast<int>('s') || userInput == 80)
+        else if (userInput == static_cast<int>('s'))
         {
             if (CursorY + 1 < GameBoard.BoardSize)
             {
@@ -98,7 +101,7 @@ void SinglePlayerGame::start()
             }
         }
 
-        else if (userInput == static_cast<int>('a') || userInput == 75)
+        else if (userInput == static_cast<int>('a'))
         {
             if (CursorX - 1 >= 0)
             {
@@ -108,7 +111,7 @@ void SinglePlayerGame::start()
             }
         }
 
-        else if (userInput == static_cast<int>('d') || userInput == 77)
+        else if (userInput == static_cast<int>('d'))
         {
             if (CursorX + 1 < GameBoard.BoardSize)
             {
@@ -145,36 +148,40 @@ void SinglePlayerGame::start()
 
 
 void SinglePlayerGame::end()
-// called when there is no valid moves remaining, the game is over
-// Game decides the winner, declares the winner and saves the game for the last time
 {
-    int blackCount = GameBoard.countBlack();
+    int blackCount = GameBoard.countBlack();   // Fixed in Board.cpp
     int whiteCount = GameBoard.countWhite();
-
-    if (blackCount > whiteCount) 
-    {
-        Winner = (Player1 -> color == 'W' ? 1:2);
-    }
-    else if (whiteCount > blackCount)
-    {
-        Winner = (Player1 -> color == 'B' ? 1:2);
-    }
-    else
-    {
-        Winner == 3; // draw
-    }
-
-    this -> save();
 
     system("cls");
     GameBoard.display();
 
-    std::cout << std::endl
-        << (Winner == 1 ? 
-            "Congratulations " + Player1 -> name + "!" + "\nYou won!\n":
-            "You lost, bot won\n"
-        )
-        << std::endl;
+    std::cout << "\nFinal Score: Black: " << blackCount 
+              << " | White: " << whiteCount << "\n\n";
+
+    if (blackCount > whiteCount) {
+        if (Player1->color == 'B') {
+            Winner = 1;  // Player wins
+            std::cout << "Congratulations " << Player1->name << "! You won!\n";
+        } else {
+            Winner = 2;  // Bot wins
+            std::cout << "You lost. The bot won.\n";
+        }
+    }
+    else if (whiteCount > blackCount) {
+        if (Player1->color == 'W') {
+            Winner = 1;
+            std::cout << "Congratulations " << Player1->name << "! You won!\n";
+        } else {
+            Winner = 2;
+            std::cout << "You lost. The bot won.\n";
+        }
+    }
+    else {
+        Winner = 3;  // Draw
+        std::cout << "It's a draw!\n";
+    }
+
+    this->save();
 }
 
 

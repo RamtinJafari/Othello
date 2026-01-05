@@ -1,6 +1,12 @@
 #include "Helper.h"
+#include "Structures/Board.h"
+#include <iostream>
 
 void executeHelper()
 {
-    return;
+    Board board{};
+    board.newGameSetup();
+    board.prepareBoardForMove('B');
+
+    
 }

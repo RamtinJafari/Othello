@@ -32,10 +32,10 @@ void executeConfigModifier()
 
         std::cout << "Which of these properties do you wish to change?" << std::endl;
 
-        std::cout << (chosenOption == 0 ? "■":"□") << " The number of games inside game history" << std::endl
-            << (chosenOption == 1 ? "■":"□") << " The size of the board" << std::endl
-            << (chosenOption == 2 ? "■":"□") << " Showing avaibale places for pieces" << std::endl
-            << (chosenOption == 3 ? "■":"□") << " Apply the changes and exit" << std::endl;
+        std::cout << (chosenOption == 0 ? " >":" ") << " The number of games inside game history" << std::endl
+            << (chosenOption == 1 ? " >":" ") << " The size of the board" << std::endl
+            << (chosenOption == 2 ? " >":" ") << " Showing avaibale places for pieces" << std::endl
+            << (chosenOption == 3 ? " >":" ") << " Apply the changes and exit" << std::endl;
 
         int userInput = getch();
 

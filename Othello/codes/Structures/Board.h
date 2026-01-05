@@ -24,14 +24,9 @@ public:
     void display();
     char placeCursor(int x, int y);
 
-private:
+public:
     void flip(int x, int y);
-    void verticalflip(int x, int y, char color);
-    void horazinalflip(int x, int y, char color);
-    void diagonalflip(int x, int y, char color);
-    int verticalNeighbour(int x, int y, char color);
-    int horazinalNeighbour(int x, int y, char color);
-    int diagonalNeighbour(int x, int y, char color);
+    int countFlipsInDirection(int x, int y, int dx, int dy, char color);
     void resetValidMovesGrid();
     void prepareValidMovesGrid(char color);
     void updateDisplayGrid();

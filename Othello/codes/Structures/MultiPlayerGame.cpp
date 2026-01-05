@@ -14,7 +14,7 @@ MultiPlayerGame::MultiPlayerGame(Board GameBoard, Player* Player1, Player* Playe
 {
     int lastId = getLastGameId();
 
-    this -> id = lastId;
+    this -> id = lastId + 1;
     this -> GameBoard = GameBoard;
     this -> mode = "2Player";
     this -> Player1 = Player1;
@@ -43,6 +43,7 @@ void MultiPlayerGame::start()
 //      player choosed to create a new game, every object is created and prepared
 {
     int CursorX = 0, CursorY = 0;
+    bool madeValidMove = false;
     system("cls");
     SetConsoleOutputCP(CP_UTF8);
     clearGameLog();
@@ -52,7 +53,14 @@ void MultiPlayerGame::start()
     while (true)
     {
         system("cls");
+        
         char charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
+        if (madeValidMove)
+        {
+            char charCursorReplaced = GameBoard.placeCursor(CursorX, CursorY);
+            madeValidMove == false;
+        } 
+
         GameBoard.display();
 
         int userInput = getch();
@@ -63,6 +71,7 @@ void MultiPlayerGame::start()
             {
                 GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorY--;
+                madeValidMove = true;
                 continue;
             }
         }
@@ -73,6 +82,7 @@ void MultiPlayerGame::start()
             {
                 GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorY++;
+                madeValidMove = true;
                 continue;
             }
         }
@@ -83,6 +93,7 @@ void MultiPlayerGame::start()
             {
                 GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorX--;
+                madeValidMove = true;
                 continue;
             }
         }
@@ -93,6 +104,7 @@ void MultiPlayerGame::start()
             {
                 GameBoard.displayGrid[CursorY][CursorX] = charCursorReplaced;
                 CursorX++;
+                madeValidMove = true;
                 continue;
             }
         }
