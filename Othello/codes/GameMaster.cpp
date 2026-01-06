@@ -49,7 +49,7 @@ void handleLoadGame()
         return;
     }
 
-    for (int i = 0; i <= lastGameId; i++)
+    for (int i = startingGameId; i <= lastGameId; i++)
     {
         outputDecoratedSavedGame(getGameById(i));
     }
