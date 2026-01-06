@@ -213,17 +213,17 @@ void handleSinglePlayerNewGame()
             if (chosenOption == 0)
             {
                 bot.difficulty = 1;
-                bot.name == "Easy Bot";
+                bot.name = "Easy Bot";
             }
             else if (chosenOption == 1)
             {
                 bot.difficulty = 2;
-                bot.name == "Medium Bot";
+                bot.name = "Medium Bot";
             }
             else if (chosenOption == 2)
             {
                 bot.difficulty = 3;
-                bot.name == "Hard Bot";
+                bot.name = "Hard Bot";
             }
             break;
         }
