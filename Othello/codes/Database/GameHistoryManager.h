@@ -11,6 +11,7 @@ MultiPlayerGame getMultiPlayerGame(int id);
 std::string getGameById(int gameId);
 void syncGameHistoryWithLimit();
 std::string getProperty(int propertyId, std::string game);
+int getSavedBoardElementCount(std::string board); 
 int getGameId(std::string game);
 int getFirstGameId();
 int getLastGameId();
