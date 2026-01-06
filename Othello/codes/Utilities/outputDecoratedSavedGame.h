@@ -2,4 +2,4 @@
 
 #include <string>
 
-void outputDecoratedSavedGame(std::string game);
+void outputDecoratedSavedGame(std::string savedGame);

@@ -12,153 +12,93 @@
 
 
 
-void outputDecoratedSavedSinglePlayerGame(std::string game);
-void outputDecoratedSavedMultiPlayerGame(std::string game);
+void outputDecoratedSavedSinglePlayerGame(std::string savedGame);
+void outputDecoratedSavedMultiPlayerGame(std::string savedGame);
 
 
 
-void outputDecoratedSavedGame(std::string game)
+void outputDecoratedSavedGame(std::string savedGame)
 {
-    std::string gameMode = getMode(game);
+    std::string gameMode = getProperty(2, savedGame);
 
     if (gameMode == "1Player") 
     {
-        return outputDecoratedSavedSinglePlayerGame(game);
+        return outputDecoratedSavedSinglePlayerGame(savedGame);
     }
     else
     {
-        return outputDecoratedSavedMultiPlayerGame(game);
+        return outputDecoratedSavedMultiPlayerGame(savedGame);
     }
 }
 
 
 
-void outputDecoratedSavedSinglePlayerGame(std::string game)
+void outputDecoratedSavedSinglePlayerGame(std::string savedGame)
 {
-    int id = getGameId(game);
-    std::cout << "{\n  id = " + intToStr(id) + "\n";
+    SinglePlayerGame game = getSinglePlayerGame(getGameId(savedGame));
 
-    std::string savedGameBoard = getGameBoard(game);
-    int boardSize = getSavedBoardSize(savedGameBoard);
+    std::cout << "{\n    id = " << game.id << "\n";
 
-    std::cout << "  game board = { \n";
+    std::cout << "    game board = { \n";
+    game.GameBoard -> display();
 
-    
-    std::cout << "      ";
-    print("―", boardSize * 2 + 2);
-    std::cout << std::endl;
+    std::cout << "    mode = single player\n";
 
-    int i = 0;
-    for (int y = 0; y < boardSize; y++)
-    {
-        std::cout << "      |";
-        for (int x = 0; x < boardSize; x++)
-        {
-            std::cout << savedGameBoard[i] << "|";
-            i += 2;
-        }
-
-        std::cout << "\n        ";
-        print("―", boardSize * 2 + 2);
-        std::cout << "\n";
-    }
-
-    std::cout << "      ";
-    print("―", boardSize * 2 + 2);
-    std::cout << "  }\n";
+    std::cout << "    Player = {\n"
+        << "        name = " << game.Player1 -> name << std::endl
+        << "        color = " << (game.Player1 -> color == 'W' ? "White":"Black") << std::endl
+        << "    }\n";
 
 
-    std::cout << "  mode = single player\n";
-
-    Player player{"0", 0};
-    player.loadPlayer(getPlayer1(game));
-    std::cout << "  Player = {\n"
-        << "      name = " << player.name << std::endl
-        << "      color = " << player.color << std::endl
-        << "  }\n";
-
-
-    Bot bot{"0", 0};
-    bot.loadBot(getBot(game));
+    int botDifficulty = game.GameBot -> difficulty;
     std::string difficultyToOutput = (
-        bot.difficulty == 1 ?
-            "easy" : bot.difficulty == 2 ?
+        botDifficulty == 1 ?
+            "easy" : botDifficulty == 2 ?
                 "medium" : "hard"
     );
-    std::cout << "  Bot = {\n"
-        << "      difficulty = " << difficultyToOutput << std::endl
-        << "  }\n";
+    std::cout << "    Bot = {\n"
+        << "        difficulty = " << difficultyToOutput << std::endl
+        << "    }\n";
 
-    int winner = getWinner(game);
+    int winner = game.Winner;
     std::string winnerToOutput = (
         winner == 0 ?
             "The game is unfinished" : winner == 1 ?
                 "Player has won this game" : winner == 2 ?
                     "Bot has won this game" : "The game resulted in a draw"
     );
-    std::cout << "  " << winnerToOutput << "\n}\n";
+    std::cout << "    " << winnerToOutput << "\n}\n";
 }
 
 
 
-void outputDecoratedSavedMultiPlayerGame(std::string game)
+void outputDecoratedSavedMultiPlayerGame(std::string savedGame)
 {
-    int id = getGameId(game);
-    std::cout << "{\n  id = " + intToStr(id) + "\n";
+    MultiPlayerGame game = getMultiPlayerGame(getGameId(savedGame));
 
-    std::string savedGameBoard = getGameBoard(game);
-    int boardSize = getSavedBoardSize(savedGameBoard);
+    std::cout << "{\n    id = " << game.id << "\n";
 
-    std::cout << "  game board = { \n";
+    std::cout << "    game board = { \n";
+    game.GameBoard -> display();
 
-    
-    std::cout << "      ";
-    print("―", boardSize * 2 + 2);
-    std::cout << std::endl;
+    std::cout << "    mode = Multiplayer\n";
 
-    int i = 0;
-    for (int y = 0; y < boardSize; y++)
-    {
-        std::cout << "      |";
-        for (int x = 0; x < boardSize; x++)
-        {
-            std::cout << savedGameBoard[i] << "|";
-            i += 2;
-        }
+    std::cout << "    Player1 = {\n"
+        << "        name = " << game.Player1 -> name << std::endl
+        << "        color = " << (game.Player1 -> color == 'W' ? "White":"Black") << std::endl
+        << "    }\n";
 
-        std::cout << "\n        ";
-        print("―", boardSize * 2 + 2);
-        std::cout << "\n";
-    }
+    std::cout << "    Player2 = {\n"
+        << "        name = " << game.Player2 -> name << std::endl
+        << "        color = " << (game.Player2 -> color == 'W' ? "White":"Black") << std::endl
+        << "    }\n";
 
-    std::cout << "      ";
-    print("―", boardSize * 2 + 2);
-    std::cout << "  }\n";
-
-
-    std::cout << "  mode = multiplayer\n";
-
-    Player player1{"0", 0};
-    player1.loadPlayer(getPlayer1(game));
-    std::cout << "  Player1 = {\n"
-        << "      name = " << player1.name << std::endl
-        << "      color = " << player1.color << std::endl
-        << "  }\n";
-
-
-    Player player2{"0", 0};
-    player2.loadPlayer(getPlayer1(game));
-    std::cout << "  Player2 = {\n"
-        << "      name = " << player2.name << std::endl
-        << "      color = " << player2.color << std::endl
-        << "  }\n";
-
-    int winner = getWinner(game);
+    int winner = game.Winner;
     std::string winnerToOutput = (
         winner == 0 ?
             "The game is unfinished" : winner == 1 ?
                 "Player has won this game" : winner == 2 ?
                     "Bot has won this game" : "The game resulted in a draw"
     );
-    std::cout << "  " << winnerToOutput << "\n}\n";
+    std::cout << "    " << winnerToOutput << "\n}\n";
 }
