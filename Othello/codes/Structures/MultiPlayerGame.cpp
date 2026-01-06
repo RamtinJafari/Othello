@@ -47,7 +47,7 @@ void MultiPlayerGame::start()
     while (true)
     {
         system("cls");
-        std::cout << (CurrentTurnColor == Player1 -> color ? Player2 -> name + "it's your turn" : Player2 -> name + "it's your turn");
+        std::cout << (CurrentTurnColor == Player1 -> color ? Player2 -> name + "it's your turn" : Player2 -> name + "it's your turn") << std::endl;
 
         (*GameBoard).display();
 
