@@ -41,6 +41,13 @@ void handleLoadGame()
 
     int startingGameId = getFirstGameId();
     int lastGameId = getLastGameId();
+
+    if (startingGameId == -1)
+    {
+        std::cout << "\n There are no games inside game history\n Press any key to continue";
+        getch();
+    }
+
     for (int i = 0; i <= lastGameId; i++)
     {
         outputDecoratedSavedGame(getGameById(i));
