@@ -39,31 +39,27 @@ void SinglePlayerGame::changeTurn()
 
 
 void SinglePlayerGame::start()
-// this method is called after:
-//      player choosed to load a game and loadGame method was called
-//      player choosed to create a new game, every object is created and prepared
 {
-    int CursorX = 0, CursorY = 0;
-
     clearGameLog();
-     (*GameBoard).prepareBoardForMove(CurrentTurnColor);
+    (*GameBoard).prepareBoardForMove(CurrentTurnColor);
 
     this -> save();
 
     while (true)
     {
-        if (CurrentTurnColor != Player1 -> color)
+        if (CurrentTurnColor != Player1 -> color) // Bot turn
         {
-            GameBot -> decide( (*GameBoard), CurrentTurnColor);
+            Move botMove = GameBot -> suggestMove( (*GameBoard), CurrentTurnColor);
+            GameBoard -> putPiece(botMove.x, botMove.y, CurrentTurnColor);
 
             changeTurn();
-             (*GameBoard).prepareBoardForMove(CurrentTurnColor);
+            (*GameBoard).prepareBoardForMove(CurrentTurnColor);
             this -> save();
 
             if ( (*GameBoard).countValidMoves() == 0)
             {
                 changeTurn();
-                 (*GameBoard).prepareBoardForMove(CurrentTurnColor);
+                (*GameBoard).prepareBoardForMove(CurrentTurnColor);
                 this -> save();
 
                 if ( (*GameBoard).countValidMoves() == 0)
@@ -75,65 +71,55 @@ void SinglePlayerGame::start()
 
         system("cls");
 
-        char charCursorReplaced =  (*GameBoard).placeCursor(CursorX, CursorY);
-
-         (*GameBoard).display();
+        (*GameBoard).display();
 
         int userInput = getch();
 
-        if (userInput == static_cast<int>('w'))
+        if (userInput == static_cast<int>('w') || userInput == 72)
         {
-            if (CursorY - 1 >= 0)
+            if (GameBoard -> CursorY != 0)
             {
-                 (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
-                CursorY--;
-                continue;
+                GameBoard -> CursorY--;
             }
         }
 
-        else if (userInput == static_cast<int>('s'))
+        else if (userInput == static_cast<int>('s') || userInput == 80)
         {
-            if (CursorY + 1 <  (*GameBoard).BoardSize)
+            if (GameBoard -> CursorY != GameBoard -> BoardSize - 1)
             {
-                 (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
-                CursorY++;
-                continue;
+                GameBoard -> CursorY++;
             }
         }
 
-        else if (userInput == static_cast<int>('a'))
+        else if (userInput == static_cast<int>('a') || userInput == 75)
         {
-            if (CursorX - 1 >= 0)
+            if (GameBoard -> CursorX != 0)
             {
-                 (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
-                CursorX--;
-                continue;
+                GameBoard -> CursorX--;
             }
         }
 
-        else if (userInput == static_cast<int>('d'))
+        else if (userInput == static_cast<int>('d') || userInput == 77)
         {
-            if (CursorX + 1 <  (*GameBoard).BoardSize)
+            if (GameBoard -> CursorX != GameBoard -> BoardSize - 1)
             {
-                 (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
-                CursorX++;
-                continue;
+                GameBoard -> CursorX++;
             }
         }
 
         else if (userInput == 13)
         {
-            if ( (*GameBoard).displayGrid[CursorY][CursorX] == 'O')
+            if ( (*GameBoard).validMovesGrid[GameBoard -> CursorY][GameBoard -> CursorX] == 'O')
             {
-                 (*GameBoard).putPiece(CursorX, CursorY, CurrentTurnColor);
+                (*GameBoard).putPiece(GameBoard -> CursorX, GameBoard -> CursorY, CurrentTurnColor);
                 changeTurn();
-                 (*GameBoard).prepareBoardForMove(CurrentTurnColor);
+                (*GameBoard).prepareBoardForMove(CurrentTurnColor);
                 this -> save();
 
-                if ( (*GameBoard).countValidMoves() == 0)
+                if ((*GameBoard).countValidMoves() == 0)
                 {
                     changeTurn();
-                     (*GameBoard).prepareBoardForMove(CurrentTurnColor);
+                    (*GameBoard).prepareBoardForMove(CurrentTurnColor);
                     this -> save();
 
                     if ( (*GameBoard).countValidMoves() == 0)
@@ -149,34 +135,46 @@ void SinglePlayerGame::start()
 
 void SinglePlayerGame::end()
 {
-    int blackCount =  (*GameBoard).countBlack();   // Fixed in Board.cpp
+    int blackCount =  (*GameBoard).countBlack();
     int whiteCount =  (*GameBoard).countWhite();
 
     system("cls");
-     (*GameBoard).display();
+    (*GameBoard).display();
 
     std::cout << "\nFinal Score: Black: " << blackCount 
-              << " | White: " << whiteCount << "\n\n";
+        << " | White: " << whiteCount << "\n\n";
 
-    if (blackCount > whiteCount) {
-        if (Player1->color == 'B') {
-            Winner = 1;  // Player wins
+    if (blackCount > whiteCount) 
+    {
+
+        if (Player1->color == 'B') 
+        {
+            Winner = 1;  
             std::cout << "Congratulations " << Player1->name << "! You won!\n";
-        } else {
-            Winner = 2;  // Bot wins
-            std::cout << "You lost. The bot won.\n";
-        }
-    }
-    else if (whiteCount > blackCount) {
-        if (Player1->color == 'W') {
-            Winner = 1;
-            std::cout << "Congratulations " << Player1->name << "! You won!\n";
-        } else {
+        } 
+        else 
+        {
             Winner = 2;
             std::cout << "You lost. The bot won.\n";
         }
     }
-    else {
+
+    else if (whiteCount > blackCount) 
+    {
+        if (Player1->color == 'W') 
+        {
+            Winner = 1;
+            std::cout << "Congratulations " << Player1->name << "! You won!\n";
+        } 
+        else 
+        {
+            Winner = 2;
+            std::cout << "You lost. The bot won.\n";
+        }
+    }
+
+    else 
+    {
         Winner = 3;  // Draw
         std::cout << "It's a draw!\n";
     }

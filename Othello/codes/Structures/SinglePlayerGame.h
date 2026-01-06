@@ -18,10 +18,10 @@ struct SinglePlayerGame
 public:
     SinglePlayerGame(Board* GameBoard, Player* Player1, Bot* GameBot, char CurrentTurnColor);
     void start();
-    void end();
     std::string retrieveGame();
-    void save();
-    void changeTurn();
 
 private:
+    void end();
+    void save();
+    void changeTurn();
 };
