@@ -23,6 +23,7 @@ void executeGameReporter()
     {
         std::cout << "\n There are no games inside game history\n Press any key to continue";
         getch();
+        return;
     }
 
     for (int id = lastId; id >= firstId; id--)
