@@ -281,7 +281,7 @@ int Bot::rateBoard(Board& board, char botColor)
 }
 
 
-int Bot::minimax(char color, Board dummyBoard, bool isMaxAgent, char botColor, int depth = 0, int upFloor = INT_MIN, int downFloor = INT_MAX)
+int Bot::minimax(char color, Board dummyBoard, bool isMaxAgent, char botColor, int depth, int upFloor, int downFloor)
 {
     int index = 0;
     int validMovesCount = dummyBoard.countValidMoves();
