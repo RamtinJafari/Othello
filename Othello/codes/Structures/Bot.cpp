@@ -176,7 +176,7 @@ void Bot::loadBot(std::string bot)
 
 
 //----------------------------------------- minimax algorithm ----------------------------------------------------
-int ratePlacement(int x, int y, int boardSize)
+int Bot::ratePlacement(int x, int y, int boardSize)
 // Board is passed by refrence for time optimization
 // if we put a piece with these information, what score would the piece get
 // for the coordinates itselves
@@ -223,7 +223,7 @@ int ratePlacement(int x, int y, int boardSize)
 }
 
 
-int rateBoard(Board& board, char botColor)
+int Bot::rateBoard(Board& board, char botColor)
 {
     char oppColor = (botColor == 'W' ? 'B':'W');
 
@@ -281,7 +281,7 @@ int rateBoard(Board& board, char botColor)
 }
 
 
-int minimax(char color, Board dummyBoard, bool isMaxAgent, char botColor, int depth = 0, int upFloor = INT_MIN, int downFloor = INT_MAX)
+int Bot::minimax(char color, Board dummyBoard, bool isMaxAgent, char botColor, int depth = 0, int upFloor = INT_MIN, int downFloor = INT_MAX)
 {
     int index = 0;
     int validMovesCount = dummyBoard.countValidMoves();
@@ -360,7 +360,7 @@ int minimax(char color, Board dummyBoard, bool isMaxAgent, char botColor, int de
 }
 
 
-void deepCopy(Board& board, Board& newBoard)
+void Bot::deepCopy(Board& board, Board& newBoard)
 {
     for (int y = 0; y < board.BoardSize; y++)
     {
