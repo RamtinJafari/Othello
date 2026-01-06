@@ -1,5 +1,7 @@
 #include <string>
 #include "Player.h"
+#include "../Utilities/SymbolToStr.h"
+#include "../Utilities/StrToSymbol.h"
 
 
 Player::Player(std::string name, char color)
@@ -10,7 +12,7 @@ Player::Player(std::string name, char color)
 
 std::string Player::retrievePlayer()
 {
-    return name + "|" + std::string(1, color);
+    return name + "|" + symbolToStr(color);
 }
 
 void Player::loadPlayer(std::string player)
@@ -21,5 +23,5 @@ void Player::loadPlayer(std::string player)
     std::string color = player.substr(speratorIndex + 1, player.size());
 
     this -> name = name;
-    this -> color = static_cast<char>(color[0]);
+    this -> color = strToSymbol(color);
 }
