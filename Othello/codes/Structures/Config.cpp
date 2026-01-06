@@ -60,6 +60,6 @@ void Config::initialize()
 
 void Config::customizeBoardSize(int boardSize)
 {
-    if (instance)  // safety check
+    if (instance)
         instance->BOARD_SIZE = boardSize;
 }
