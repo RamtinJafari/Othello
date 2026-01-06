@@ -16,7 +16,7 @@ void executeGameReviewer(Board board)
     {
         system("cls");
 
-        std::cout << "Press escape key to exit review mode \n\n";
+        std::cout << "Press escape key to exit review mode \nPress any other key to see the next move \n\n";
 
         if (logId == -1)
         {
@@ -41,25 +41,17 @@ void executeGameReviewer(Board board)
 
         int userInput = getch();
 
-        if (userInput == static_cast<int>('a') || userInput == 37)
-        {
-            if (logId > -1)
-            {
-                logId--;
-            }
-        }
-
-        else if (userInput == static_cast<int>('d') || userInput == 39)
-        {
-            if (logId < logsCount - 1)
-            {
-                logId++;
-            }
-        }
-
-        else if(userInput == 27)
+        if(userInput == 27)
         {
             break;
+        }
+        else
+        {
+            if (logId == logsCount - 1)
+            {
+                break;
+            }
+            logId++;
         }
     }
 
