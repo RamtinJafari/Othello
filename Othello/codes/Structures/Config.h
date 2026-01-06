@@ -21,5 +21,4 @@ private:
 public:
     static Config* getInstance();
     static void initialize();
-    static void customizeBoardSize(int boardSize);
 };

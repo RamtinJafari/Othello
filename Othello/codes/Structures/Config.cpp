@@ -56,10 +56,3 @@ void Config::initialize()
     if (!instance)
         instance = new Config();
 }
-
-
-void Config::customizeBoardSize(int boardSize)
-{
-    if (instance)
-        instance->BOARD_SIZE = boardSize;
-}
