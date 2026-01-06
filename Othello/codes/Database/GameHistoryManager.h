@@ -8,6 +8,7 @@ void saveGame(SinglePlayerGame* game);
 void saveGame(MultiPlayerGame* game);
 SinglePlayerGame getSinglePlayerGame(int id);
 MultiPlayerGame getMultiPlayerGame(int id);
+std::string getGameById(int gameId);
 void syncGameHistoryWithLimit();
 std::string getProperty(int propertyId, std::string game);
 int getGameId(std::string game);

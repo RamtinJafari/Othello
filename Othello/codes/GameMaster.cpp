@@ -39,54 +39,33 @@ void handleLoadGame()
     std::cout << "You've chosen to load a previous unfinished game\n"
         << "Previous unfunished games are: \n";
 
-    int numberOfUnfinishedGames = countUnfinishedGames();
-    for (int i = 0; i < numberOfUnfinishedGames; i++)
+    int startingGameId = getFirstGameId();
+    int lastGameId = getLastGameId();
+    for (int i = 0; i <= lastGameId; i++)
     {
-        outputDecoratedSavedGame(
-            getUnfinishedGame(i)
-        );
+        outputDecoratedSavedGame(getGameById(i));
     }
 
     int gameId;
-    std::string game;
+    std::string wantedGame;
     while (true)
     {
         std::cout << "\n Please type the id of the game you wish to continue playing: ";
 
-        if (!std::cin >> gameId)
-        {
-            // Failed: non-numeric input
-            std::cout << "Invalid number inputted, please enter a valid number.\n";
-            std::cout << "Press any key to continue...";
-            
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            
-            getch();
-            
-            continue;
-        }
+        std::cin >> gameId;
 
         std::string savedGame = getGameById(gameId);
 
-        if (getWinner(savedGame) != 0)
+        if (getProperty(6, savedGame) != "0")
         {
             std::cout << "The id entered belong to a finished game, please choose an id from the given list\n";
             continue;
         }
 
-        game = savedGame;
+        wantedGame = savedGame;
     }
 
-    int legalBoardSize = Config::getInstance() -> BOARD_SIZE;
-    int thisGameBoardSize = getSavedBoardSize(getGameBoard(game));
-
-    if (thisGameBoardSize != legalBoardSize)
-    {
-        Config::customizeBoardSize(thisGameBoardSize); // changing board size temporarily
-    }
-
-    if (getMode(game) == "1Player")
+    if (getProperty(2, wantedGame) == "1Player")
     {
         loadSinglePlayerGame(gameId);
     }
@@ -94,21 +73,13 @@ void handleLoadGame()
     {
         loadMultiPlayerGame(gameId);
     }
-
-    Config::customizeBoardSize(legalBoardSize); // changing board size to the original value
 }
 
 
 
 void loadSinglePlayerGame(int gameId)
 {
-    Player player{"0", 0};
-    Bot bot{"0", 0};
-    Board board{};
-
-    SinglePlayerGame game{board, &player, &bot, '0'};
-
-    game.loadGame(gameId);
+    SinglePlayerGame game = getSinglePlayerGame(gameId);
 
     game.start();
 
@@ -119,23 +90,17 @@ void loadSinglePlayerGame(int gameId)
     
     if (procceded == 'Y' || procceded == 'y')
     {
-        executeGameReviewer(game.GameBoard);
+        executeGameReviewer(*game.GameBoard);
     }
 
-    game.GameBoard.deleteBoardMemory();
+    game.GameBoard -> deleteBoardMemory();
 } 
 
 
 
 void loadMultiPlayerGame(int gameId)
 {
-    Player player1{"0", 0};
-    Player player2{"0", 0};
-    Board board{};
-
-    MultiPlayerGame game{board, &player1, &player2, '0'};
-
-    game.loadGame(gameId);
+    MultiPlayerGame game = getMultiPlayerGame(gameId);
 
     game.start();
 
@@ -146,10 +111,10 @@ void loadMultiPlayerGame(int gameId)
     
     if (procceded == 'Y' || procceded == 'y')
     {
-        executeGameReviewer(game.GameBoard);
+        executeGameReviewer(*game.GameBoard);
     }
 
-    game.GameBoard.deleteBoardMemory();
+    game.GameBoard -> deleteBoardMemory();
 }
 
 
@@ -249,7 +214,7 @@ void handleSinglePlayerNewGame()
             }
             else if (chosenOption == 2)
             {
-                bot.difficulty = 2; // to change
+                bot.difficulty = 3;
                 bot.name == "Hard Bot";
             }
             break;
@@ -324,11 +289,11 @@ void handleSinglePlayerNewGame()
         {
             if (chosenOption == 0)
             {
-                player.color = 'W';
+                player.color = 'B';
             }
             else if (chosenOption == 1)
             {
-                player.color = 'B';
+                player.color = 'W';
             }
             break;
         }
@@ -336,11 +301,11 @@ void handleSinglePlayerNewGame()
 
     system("cls");
 
-    Board board{};
+    Board board{Config::instance -> BOARD_SIZE};
 
     board.newGameSetup();
 
-    SinglePlayerGame game{board, &player, &bot, 'B'};
+    SinglePlayerGame game{&board, &player, &bot, 'B'};
 
     game.start();
 
@@ -351,10 +316,10 @@ void handleSinglePlayerNewGame()
     
     if (procceded == 'Y' || procceded == 'y')
     {
-        executeGameReviewer(game.GameBoard);
+        executeGameReviewer(*game.GameBoard);
     }
 
-    game.GameBoard.deleteBoardMemory();
+    game.GameBoard -> deleteBoardMemory();
 }
 
 
@@ -476,11 +441,11 @@ void handleMultiPlayerNewGame()
 
     system("cls");
 
-    Board board{};
+    Board board{Config::getInstance() -> BOARD_SIZE};
 
     board.newGameSetup();
 
-    MultiPlayerGame game{board, &player1, &player2, 'B'};
+    MultiPlayerGame game{&board, &player1, &player2, 'B'};
 
     game.start();
 
@@ -491,8 +456,8 @@ void handleMultiPlayerNewGame()
     
     if (procceded == 'Y' || procceded == 'y')
     {
-        executeGameReviewer(game.GameBoard);
+        executeGameReviewer(*game.GameBoard);
     }
 
-    game.GameBoard.deleteBoardMemory();
+    game.GameBoard -> deleteBoardMemory();
 }
