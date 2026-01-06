@@ -2,6 +2,7 @@
 
 #include <string>
 #include "Board.h"
+#include "Move.h"
 
 struct Bot
 {
@@ -10,12 +11,16 @@ struct Bot
 
     public:
     Bot(std::string name, int difficulty);
-    void decide(Board board, char color);
+    Move suggestMove(Board& board, char color);
     std::string retrieveBot();
     void loadBot(std::string bot);
 
     private:
-    void easyDecide(Board borad, char color);
-    void mediumDecide(Board board, char color);
-    void hardDecide(Board board, char color);
+    Move suggestEasyMove(Board& borad, char color);
+    Move suggestMediumMove(Board& board, char color);
+    Move suggestHardMove(Board& board, char color);
+    int ratePlacement(int x, int y, int boardSize);
+    int rateBoard(Board& board, char botColor);
+    int minimax(char color, Board dummyBoard, bool isMaxAgent, char botColor, int depth = 0, int upFloor = INT_MIN, int downFloor = INT_MAX);
+    void deepCopy(Board& board, Board& newBoard);
 };
