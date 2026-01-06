@@ -17,10 +17,10 @@ struct MultiPlayerGame
 public:
     MultiPlayerGame(Board* GameBoard, Player* Player1, Player* Player2, char CurrentTurnColor);
     void start();
-    void end();
     std::string retrieveGame();
-    void save();
-    void changeTurn();
 
 private:
+    void end();
+    void save();
+    void changeTurn();
 };

@@ -38,28 +38,15 @@ void MultiPlayerGame::changeTurn()
 
 
 void MultiPlayerGame::start()
-// this method is called after:
-//      player choosed to load a game and loadGame method was called
-//      player choosed to create a new game, every object is created and prepared
 {
-    int CursorX = 0, CursorY = 0;
-    bool madeValidMove = false;
-    system("cls");
-    SetConsoleOutputCP(CP_UTF8);
     clearGameLog();
     (*GameBoard).prepareBoardForMove(CurrentTurnColor);
+
     this -> save();
 
     while (true)
     {
         system("cls");
-        
-        char charCursorReplaced = (*GameBoard).placeCursor(CursorX, CursorY);
-        if (madeValidMove)
-        {
-            char charCursorReplaced = (*GameBoard).placeCursor(CursorX, CursorY);
-            madeValidMove == false;
-        } 
 
         (*GameBoard).display();
 
@@ -67,53 +54,41 @@ void MultiPlayerGame::start()
 
         if (userInput == static_cast<int>('w') || userInput == 72)
         {
-            if (CursorY - 1 >= 0)
+            if (GameBoard -> CursorY != 0)
             {
-                (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
-                CursorY--;
-                madeValidMove = true;
-                continue;
+                GameBoard -> CursorY--;
             }
         }
 
         else if (userInput == static_cast<int>('s') || userInput == 80)
         {
-            if (CursorY + 1 < (*GameBoard).BoardSize)
+            if (GameBoard -> CursorY != GameBoard -> BoardSize - 1)
             {
-                (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
-                CursorY++;
-                madeValidMove = true;
-                continue;
+                GameBoard -> CursorY++;
             }
         }
 
         else if (userInput == static_cast<int>('a') || userInput == 75)
         {
-            if (CursorX - 1 >= 0)
+            if (GameBoard -> CursorX != 0)
             {
-                (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
-                CursorX--;
-                madeValidMove = true;
-                continue;
+                GameBoard -> CursorX--;
             }
         }
 
         else if (userInput == static_cast<int>('d') || userInput == 77)
         {
-            if (CursorX + 1 < (*GameBoard).BoardSize)
+            if (GameBoard -> CursorX != GameBoard -> BoardSize - 1)
             {
-                (*GameBoard).displayGrid[CursorY][CursorX] = charCursorReplaced;
-                CursorX++;
-                madeValidMove = true;
-                continue;
+                GameBoard -> CursorX++;
             }
         }
 
         else if (userInput == 13)
         {
-            if ((*GameBoard).displayGrid[CursorY][CursorX] == 'O')
+            if ( (*GameBoard).validMovesGrid[GameBoard -> CursorY][GameBoard -> CursorX] == 'O')
             {
-                (*GameBoard).putPiece(CursorX, CursorY, CurrentTurnColor);
+                (*GameBoard).putPiece(GameBoard -> CursorX, GameBoard -> CursorY, CurrentTurnColor);
                 changeTurn();
                 (*GameBoard).prepareBoardForMove(CurrentTurnColor);
                 this -> save();
@@ -124,7 +99,7 @@ void MultiPlayerGame::start()
                     (*GameBoard).prepareBoardForMove(CurrentTurnColor);
                     this -> save();
 
-                    if ((*GameBoard).countValidMoves() == 0)
+                    if ( (*GameBoard).countValidMoves() == 0)
                     {
                         end();
                     }
@@ -136,36 +111,52 @@ void MultiPlayerGame::start()
 
 
 void MultiPlayerGame::end()
-// called when there is no valid moves remaining, the game is over
-// Game decides the winner, declares the winner and saves the game for the last time
 {
-    int blackCount = (*GameBoard).countBlack();
-    int whiteCount = (*GameBoard).countWhite();
-
-    if (blackCount > whiteCount) 
-    {
-        Winner = (Player1 -> color == 'W' ? 1:2);
-    }
-    else if (whiteCount > blackCount)
-    {
-        Winner = (Player1 -> color == 'B' ? 1:2);
-    }
-    else
-    {
-        Winner == 3; // draw
-    }
-
-    this -> save();
+    int blackCount =  (*GameBoard).countBlack();
+    int whiteCount =  (*GameBoard).countWhite();
 
     system("cls");
     (*GameBoard).display();
 
-    std::cout << std::endl
-        << (Winner == 1 ? 
-            "Congratulations " + Player1 -> name + "!" + "\nYou won!\n":
-            "Congratulations " + Player2 -> name + "!" + "\nYou won!\n"
-        )
-        << std::endl;
+    std::cout << "\nFinal Score: Black: " << blackCount 
+        << " | White: " << whiteCount << "\n\n";
+
+    if (blackCount > whiteCount) 
+    {
+
+        if (Player1->color == 'B') 
+        {
+            Winner = 1;  
+            std::cout << "Congratulations " << Player1->name << "! You won!\n";
+        } 
+        else 
+        {
+            Winner = 2;
+            std::cout << "Congratulations " << Player2->name << "! You won!\n";
+        }
+    }
+
+    else if (whiteCount > blackCount) 
+    {
+        if (Player1->color == 'W') 
+        {
+            Winner = 1;
+            std::cout << "Congratulations " << Player1->name << "! You won!\n";
+        } 
+        else 
+        {
+            Winner = 2;
+            std::cout << "You lost. The bot won.\n";
+        }
+    }
+
+    else 
+    {
+        Winner = 3;  // Draw
+        std::cout << "It's a draw!\n";
+    }
+
+    this->save();
 }
 
 
