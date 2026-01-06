@@ -46,6 +46,7 @@ void handleLoadGame()
     {
         std::cout << "\n There are no games inside game history\n Press any key to continue";
         getch();
+        return;
     }
 
     for (int i = 0; i <= lastGameId; i++)
