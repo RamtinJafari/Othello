@@ -134,8 +134,8 @@ void handleNewGame()
     {
         system("cls");
 
-        std::cout << (chosenOption == 0 ? " >":" ") << " Single Player" << std::endl
-            << (chosenOption == 1 ? " >":" ") << " MultiPlayer" << std::endl;
+        std::cout << (chosenOption == 0 ? " > ":" ") << " Single Player" << std::endl
+            << (chosenOption == 1 ? " > ":" ") << " MultiPlayer" << std::endl;
 
         int userInput = getch();
 
@@ -184,9 +184,9 @@ void handleSinglePlayerNewGame()
         system("cls");
 
         std::cout << "Please choose the difficulty: \n"
-            << (chosenOption == 0 ? " >":" ") << " Easy" << std::endl
-            << (chosenOption == 1 ? " >":" ") << " Medium" << std::endl
-            << (chosenOption == 2 ? " >":" ") << " Hard" << std::endl;
+            << (chosenOption == 0 ? " > ":" ") << " Easy" << std::endl
+            << (chosenOption == 1 ? " > ":" ") << " Medium" << std::endl
+            << (chosenOption == 2 ? " > ":" ") << " Hard" << std::endl;
 
         int userInput = getch();
 
@@ -270,8 +270,8 @@ void handleSinglePlayerNewGame()
         system("cls");
 
         std::cout << "Please choose your color\n"
-            << (chosenOption == 0 ? " >":" ") << " Black" << std::endl
-            << (chosenOption == 1 ? " >":" ") << " White" << std::endl;
+            << (chosenOption == 0 ? " > ":" ") << " Black" << std::endl
+            << (chosenOption == 1 ? " > ":" ") << " White" << std::endl;
 
         int userInput = getch();
 
@@ -375,8 +375,8 @@ void handleMultiPlayerNewGame()
         system("cls");
 
         std::cout << "Player1, please choose your color\n"
-            << (chosenOption == 0 ? " >":" ") << " Black" << std::endl
-            << (chosenOption == 1 ? " >":" ") << " White" << std::endl;
+            << (chosenOption == 0 ? " > ":" ") << " Black" << std::endl
+            << (chosenOption == 1 ? " > ":" ") << " White" << std::endl;
 
         int userInput = getch();
 
