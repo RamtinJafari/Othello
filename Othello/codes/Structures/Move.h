@@ -10,6 +10,7 @@ struct Move
 
 public:
     Move(int x, int y, char color);
+    Move();
     std::string retrieveMove();
     void loadMove(std::string move);
 };

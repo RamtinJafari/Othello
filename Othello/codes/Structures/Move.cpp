@@ -6,6 +6,14 @@
 #include <string>
 
 
+Move::Move()
+{
+    this -> x = 0;
+    this -> y = 0;
+    this -> color = 'B';
+}
+
+
 Move::Move(int x, int y, char color)
 {
     this -> x = x;
