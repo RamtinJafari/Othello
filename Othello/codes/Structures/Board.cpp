@@ -2,20 +2,16 @@
 #include "Board.h"
 #include "Move.h"
 #include "../Database/GameLogManager.h"
-#include "../Utilities/Print.h"
 #include "../Utilities/SymbolToStr.h"
 #include <iostream>
-#include <string>
-#include <windows.h>
 
 
 //------------------------------- Constructor & deconstructor ----------------------------------------
 
-Board::Board(int boardSize) 
-// gets BoardSize from Config and allocates memort for matrixes
-// intializes ValidMoves only, since grid will be intializes by GameMaster
-// using newGameSetup or loadBoard methods
-// also displayGrid is updated with grid before being diplayed
+Board::Board(int boardSize)
+// grid holds the matrix used for game logic
+// validMovesGrid is only used to show valid moves
+// display grid is used to potentially combine grid and validMovesGrid for displaying the board
 {
     BoardSize = boardSize;
 
@@ -47,7 +43,9 @@ Board::Board(int boardSize)
 
 
 void Board::deleteBoardMemory()
-// when the game is over, this method has to be called to free up memory
+// when the game is over and maybe GameReviewer was executed
+// this method has to be called to free up the allocated memory
+// a destructor could do the job too
 {
     for (int i = 0; i < BoardSize; ++i) 
     {
@@ -96,7 +94,8 @@ std::string Board::retrieveBoard()
 
 
 void Board::newGameSetup()
-// sets all grid elements to white-space except the four in center
+// grid represents the starting state of the board when playing a new game
+// called for board before passing its pointer for creating a SinglePlayerGame/MultiPlayerGame instance
 {
     for (int y = 0; y < BoardSize; y++)
     {
@@ -141,7 +140,7 @@ void Board::prepareBoardForMove(char thisTurnColor)
 // updated displayGrid with the latest changes in grid
 // validMovesGrid will find valid moves based on the new grid
 // if user has chosen to see valid moves inside the board (SHOW_AVAILABLE_PLACES_FOR_PIECES is set to true)
-// then they are putted inside the displayGrid
+// then they are putted inside the displayGrid (combining grid and validMovesGrid)
 {
     updateDisplayGrid();
     prepareValidMovesGrid(thisTurnColor);
@@ -150,8 +149,8 @@ void Board::prepareBoardForMove(char thisTurnColor)
 } 
 
 
-// Simple flip a single piece
 void Board::flip(int x, int y)
+// changes the color of the piece inside the given coordinates
 {
     if (grid[y][x] == 'B')
         grid[y][x] = 'W';
@@ -159,50 +158,66 @@ void Board::flip(int x, int y)
         grid[y][x] = 'B';
 }
 
-// Main function: place a piece and flip all surrounded opponent pieces
+
 void Board::putPiece(int x, int y, char color)
 {
-    // Place the new piece
     grid[y][x] = color;
 
-    // Log the move
     Move move(x, y, color);
     addLog(move);
 
-    // Directions: left, up, right, down, and diagonals
+    // each comnination of coresponding elements represent a diraction
+    // left-up & left & left-down & up & down & right-uo & right & right-down
     const int dx[] = {-1, -1, -1,  0, 0,  1, 1, 1};
     const int dy[] = {-1,  0,  1, -1, 1, -1, 0, 1};
 
-    // For each of the 8 directions
-    for (int d = 0; d < 8; ++d) {
+    for (int d = 0; d < 8; ++d) 
+    {
         int flips = countFlipsInDirection(x, y, dx[d], dy[d], color);
-        if (flips > 0) {
-            // Flip all opponent pieces in this direction
-            int nx = x + dx[d];
-            int ny = y + dy[d];
-            for (int step = 0; step < flips; ++step) {
-                flip(nx, ny);
-                nx += dx[d];
-                ny += dy[d];
+
+        if (flips > 0) 
+        {
+            int xc = x + dx[d];
+            int yc = y + dy[d];
+
+            for (int step = 0; step < flips; ++step) 
+            {
+                flip(xc, yc);
+                xc += dx[d];
+                yc += dy[d];
             }
         }
     }
 }
 
 
-int Board::countBlack() {
+int Board::countBlack() 
+// counts the black pieces of the Board
+{
     int count = 0;
     for (int y = 0; y < BoardSize; y++)
+    {
         for (int x = 0; x < BoardSize; x++)
+        {
             if (grid[y][x] == 'B') count++;
+        }
+    }
+
     return count;
 }
 
-int Board::countWhite() {
+int Board::countWhite() 
+// counts the white pieces of the Board
+{    
     int count = 0;
     for (int y = 0; y < BoardSize; y++)
+    {
         for (int x = 0; x < BoardSize; x++)
+        {
             if (grid[y][x] == 'W') count++;
+        }
+    }
+
     return count;
 }
 
@@ -211,9 +226,9 @@ int Board::countWhite() {
 
 int Board::countValidMoves()
 // returns the number of valid moves that can be made for the current turn
-// should be called when validMovesGrid is created for the round
-// in a nutshell, after preparedBoardForMove method is called
-// used to see if the player has a move to make
+// should be called when validMovesGrid is created for the turn
+// in a nutshell, after prepareBoardForMove method is called
+// used to decide of a game has to end
 {
     int count = 0;
 
@@ -231,53 +246,59 @@ int Board::countValidMoves()
 
 
 int Board::isValid(int x, int y, char color)
+// returns the number of gains (opponent pieces fliped) if a piece with the given color is put in the given coords
+// if it returns 0, then the move is inValid
+// used as the primary parameter for the medium bot
 {
-    // Must be empty
-    if (grid[y][x] != '.')
-        return 0;
+    if (grid[y][x] != '.') return 0;
 
-    // Must flip at least one opponent piece in at least one direction
     int totalFlips = 0;
 
-    // Check all 8 directions
+    // each comnination of coresponding elements represent a diraction
+    // left-up & left & left-down & up & down & right-uo & right & right-down
     const int dx[] = {-1, -1, -1,  0, 0,  1, 1, 1};
     const int dy[] = {-1,  0,  1, -1, 1, -1, 0, 1};
 
-    for (int d = 0; d < 8; ++d) {
+    for (int d = 0; d < 8; ++d) 
+    {
         totalFlips += countFlipsInDirection(x, y, dx[d], dy[d], color);
     }
 
-    return totalFlips;  // > 0 means valid move, value is how many pieces flipped
+    return totalFlips; 
 }
 
 
 int Board::countFlipsInDirection(int x, int y, int dx, int dy, char color)
+// counts the number of flips happened by putting a piece with the given color inside the given coordinates
+// dx and dy represent the direction and more specificly, the steps of x and y
 {
-    char opp = (color == 'B' ? 'W' : 'B');
+    char oppColor = (color == 'B' ? 'W' : 'B');
 
     int flips = 0;
-    int nx = x + dx;
-    int ny = y + dy;
+    int xc = x + dx;
+    int yc = y + dy;
 
-    // Walk in the direction, counting opponent pieces
-    while (nx >= 0 && nx < BoardSize && ny >= 0 && ny < BoardSize && grid[ny][nx] == opp) {
+    
+    while ((xc >= 0 && xc < BoardSize) && (yc >= 0 && yc < BoardSize) && grid[yc][xc] == oppColor) 
+    {
         flips++;
-        nx += dx;
-        ny += dy;
+        xc += dx;
+        yc += dy;
     }
 
-    // If we didn't reach our own color at the end, this direction gives no valid flips
-    if (nx < 0 || nx >= BoardSize || ny < 0 || ny >= BoardSize || grid[ny][nx] != color) {
+    // if loop doesn't meet a same colored piece, one of x coords or y coords will get out of bond
+    // or the element loop breaked for is whether a '.' (empty place)
+    if ((xc < 0 || xc == BoardSize) || (yc < 0 || yc == BoardSize) || grid[yc][xc] != color) 
+    {
         return 0;
     }
 
-    // Otherwise, all the opponent pieces we passed will be flipped
     return flips;
 }
 
 
 void Board::resetValidMovesGrid()
-// clears validGrid elements to white-space
+// clears validGrid elements to empty places
 {
     for (int y = 0; y < BoardSize; y++)
     {
@@ -291,7 +312,7 @@ void Board::resetValidMovesGrid()
 
 void Board::prepareValidMovesGrid(char color)
 // first ValidMovesGrid resets itself so previous data won't interupt the process
-// then check each place in grid, if it's valid, it'll put O inside the coresponding coordinations inside itself
+// then check each place in grid, if it's valid, it'll put O inside the coresponding coordinates inside itself
 {
     resetValidMovesGrid();
 
@@ -307,21 +328,8 @@ void Board::prepareValidMovesGrid(char color)
 
 
 //----------------------------------- display and displayGrid operations -----------------------------------------
-
-char Board::placeCursor(int x, int y)
-// puts X as the cursor regardless of the element inside displayGrid
-// returns the element that was in the coordination, so when the cursor
-// moves, the previous element can be recovered
-{
-    char curElement = displayGrid[y][x];
-    displayGrid[y][x] = 'X';
-    return curElement;
-}
-
-
 void Board::updateDisplayGrid()
 // displayGrid be copied based on the elements (pieces) inside grid
-// displayGrid will be a copy of grid, in a nutshell
 {
     for (int y = 0; y < BoardSize; y++)
     {
@@ -334,7 +342,7 @@ void Board::updateDisplayGrid()
 
 
 void Board::putValidMoves()
-// validMovesGrid has the valid moves coordinations inside itself
+// validMovesGrid has the valid moves coordinates inside itself
 // by calling this method, displayGrid will mark valid moves which
 // validMovesGrid marks
 {
@@ -354,14 +362,61 @@ void Board::putValidMoves()
 void Board::display()
 // outputs displayGrid with viasual decorations
 {
+    std::cout << "    ";
+    for (int i = 1; i <= BoardSize; i++)
+    {
+        std::cout << i << "  ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "  ";
+    std::cout << (char)201;
+    for (int i = 0; i < BoardSize; i++)
+    {
+        std::cout << (char)205 << (char)205 << (char)205;
+    }
+    std::cout << (char)187 << std::endl;
+
     for (int y = 0; y < BoardSize; y++)
     {
-        std::cout << "|";
+        std::cout << y + 1 << " " << (char)186;
         for (int x = 0; x < BoardSize; x++)
         {
-            std::cout << symbolToStr(displayGrid[y][x]) << "|";
-        }
+            if (y == CursorY && x == CursorX) std::cout << "[";
+            else std::cout << " ";
 
-        std::cout << std::endl;
+            char element = displayGrid[y][x];
+            if (element == 'W') // white piece
+            {
+                std::cout << 'X';
+            }
+            else if (element == 'B') // black piece
+            {
+                std::cout << 'O';
+            }
+            else if (element == '.') // empty space
+            {
+                std::cout << ' ';
+            }
+            else if (element == 'O') // valid move
+            {
+                std::cout << (char)249; // ∙
+            }
+
+            if (y == CursorY && x == CursorX) std::cout << "]";
+            else std::cout << " ";
+        }
+        std::cout << (char)186 << std::endl;
     }
+
+    std::cout << "  ";
+    std::cout << (char)200;
+    for (int i = 0; i < BoardSize; i++)
+    {
+        std::cout << (char)205 << (char)205 << (char)205;
+    }
+    std::cout << (char)188 << std::endl;
 }
+// (char)186 = ║  (char)200 = ╚  (char)188 = ╝  (char)205 = ═  (char)206 = ╦  (char)202 = ╩  (char)187 =  ╗  (char)201 = ╔
+// (char)79 = O
+// (char)254 = ■

@@ -8,6 +8,8 @@ struct Board
     char** grid;
     char** validMovesGrid;
     char** displayGrid;
+    int CursorX = 0;
+    int CursorY = 0;
 
 public:
     Board(int boardSize);
@@ -22,7 +24,6 @@ public:
     int isValid(int x, int y, char color);
     int countValidMoves();
     void display();
-    char placeCursor(int x, int y);
 
 public:
     void flip(int x, int y);
