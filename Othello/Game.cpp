@@ -16,7 +16,6 @@ int main()
     Config::initialize();
     syncGameHistoryWithLimit();
 
-
     int chosenOption = 0;
 
     while (true)
@@ -24,12 +23,12 @@ int main()
         system("cls");
 
         std::cout << "Welcome to Othello game!" << std::endl
-            << (chosenOption == 0 ? ">":" ") << " new game" << std::endl
-            << (chosenOption == 1 ? ">":" ") << " load game" << std::endl
-            << (chosenOption == 2 ? ">":" ") << " help" << std::endl
-            << (chosenOption == 3 ? ">":" ") << " games history" << std::endl
-            << (chosenOption == 4 ? ">":" ") << " settings" << std::endl
-            << (chosenOption == 5 ? ">":" ") << " exit" << std::endl;
+            << (chosenOption == 0 ? " > ":" ") << " new game" << std::endl
+            << (chosenOption == 1 ? " > ":" ") << " load game" << std::endl
+            << (chosenOption == 2 ? " > ":" ") << " help" << std::endl
+            << (chosenOption == 3 ? " > ":" ") << " games history" << std::endl
+            << (chosenOption == 4 ? " > ":" ") << " settings" << std::endl
+            << (chosenOption == 5 ? " > ":" ") << " exit" << std::endl;
 
         int userInput = getch();
 
