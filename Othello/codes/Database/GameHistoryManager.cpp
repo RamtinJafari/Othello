@@ -126,7 +126,7 @@ void updateLine(int lineIndex, std::string str)
 
 void addLine(std::string str)
 {
-    std::ofstream GameHistory("GameHistory.txt", std::ios::app);
+    std::ofstream GameHistory("codes/Database/GameHistory.txt", std::ios::app);
 
     GameHistory << str << "\n";
 
