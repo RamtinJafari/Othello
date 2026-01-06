@@ -259,7 +259,7 @@ int Board::isValid(int x, int y, char color)
     const int dx[] = {-1, -1, -1,  0, 0,  1, 1, 1};
     const int dy[] = {-1,  0,  1, -1, 1, -1, 0, 1};
 
-    for (int d = 0; d < 8; ++d) 
+    for (int d = 0; d < 8; d++) 
     {
         totalFlips += countFlipsInDirection(x, y, dx[d], dy[d], color);
     }

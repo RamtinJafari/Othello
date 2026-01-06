@@ -25,7 +25,7 @@ void clearGameLog()
 
 void addLog(Move move)
 {
-    std::ofstream file("codes/Database/GameLog.txt");
+    std::ofstream file("codes/Database/GameLog.txt", std::ios::app);
     if (!file.is_open())
     {
         throw 1; // failed to read file

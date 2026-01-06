@@ -8,6 +8,9 @@
 
 void executeGameReviewer(Board board)
 {
+    board.CursorX = -1;
+    board.CursorY = -1;
+
     int logsCount = countLogs();
 
     int logId = -1;
@@ -16,8 +19,9 @@ void executeGameReviewer(Board board)
     {
         system("cls");
 
-        std::cout << "Press escape key to exit review mode \nPress any other key to see the next move \n\n";
+        std::cout << "Press any key for next move, ESC to exit...\n";
 
+        
         if (logId == -1)
         {
             board.newGameSetup();
@@ -39,7 +43,7 @@ void executeGameReviewer(Board board)
 
         board.display();
 
-        int userInput = getch();
+        int userInput = _getch();
 
         if(userInput == 27)
         {

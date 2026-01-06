@@ -9,7 +9,7 @@
 
 void executeGameReporter()
 {
-    system("clr");
+    system("cls");
 
     std::cout << "Here is the history of the last "
         << Config::getInstance() -> GAME_HISTORY_LIMIT

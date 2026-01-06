@@ -14,6 +14,7 @@
 #include "Structures/Config.h"
 #include "Utilities/outputDecoratedSavedGame.h"
 #include "Utilities/GetSavedBoardSize.h"
+#include <fstream>
 
 void handleLoadGame();
 void handleNewGame();
@@ -51,7 +52,10 @@ void handleLoadGame()
 
     for (int i = startingGameId; i <= lastGameId; i++)
     {
-        outputDecoratedSavedGame(getGameById(i));
+        if (getProperty(6, getGameById(i)) == "0")
+        {
+            outputDecoratedSavedGame(getGameById(i));
+        }
     }
 
     int gameId;
@@ -71,6 +75,7 @@ void handleLoadGame()
         }
 
         wantedGame = savedGame;
+        break;
     }
 
     if (getProperty(2, wantedGame) == "1Player")
@@ -87,19 +92,22 @@ void handleLoadGame()
 
 void loadSinglePlayerGame(int gameId)
 {
-    SinglePlayerGame game = getSinglePlayerGame(gameId);
+    int id = getSinglePlayerGame(gameId).id;
+    Board board = *(getSinglePlayerGame(gameId).GameBoard);
+    Player player = *(getSinglePlayerGame(gameId).Player1);
+    Bot bot = *(getSinglePlayerGame(gameId).GameBot);
+    char CurrentTurnColor = getSinglePlayerGame(gameId).CurrentTurnColor;
+
+    SinglePlayerGame game {&board, &player, &bot, CurrentTurnColor};
+    game.id = id;
+    game.Winner = 0;
+    game.mode = "1Player";
 
     game.start();
 
-    std::cout << "\n The game has finished, would you like to see the replay? [Y/N]" << std::endl;
+    std::cout << "\n The game has finished, Press any key to continue" << std::endl;
 
-    char procceded;
-    std::cin >> procceded;
-    
-    if (procceded == 'Y' || procceded == 'y')
-    {
-        executeGameReviewer(*game.GameBoard);
-    }
+    getch();
 
     game.GameBoard -> deleteBoardMemory();
 } 
@@ -108,19 +116,22 @@ void loadSinglePlayerGame(int gameId)
 
 void loadMultiPlayerGame(int gameId)
 {
-    MultiPlayerGame game = getMultiPlayerGame(gameId);
+    int id = getMultiPlayerGame(gameId).id;
+    Board board = *(getMultiPlayerGame(gameId).GameBoard);
+    Player player1 = *(getMultiPlayerGame(gameId).Player1);
+    Player player2 = *(getMultiPlayerGame(gameId).Player2);
+    char CurrentTurnColor = getMultiPlayerGame(gameId).CurrentTurnColor;
+
+    MultiPlayerGame game {&board, &player1, &player2, CurrentTurnColor};
+    game.id = id;
+    game.Winner = 0;
+    game.mode = "2Player";
 
     game.start();
 
-    std::cout << "\n The game has finished, would you like to see the replay? [Y/N]" << std::endl;
+    std::cout << "\n The game has finished, Press any key to continue" << std::endl;
 
-    char procceded;
-    std::cin >> procceded;
-    
-    if (procceded == 'Y' || procceded == 'y')
-    {
-        executeGameReviewer(*game.GameBoard);
-    }
+    getch();
 
     game.GameBoard -> deleteBoardMemory();
 }
@@ -402,11 +413,11 @@ void handleMultiPlayerNewGame()
         {
             if (chosenOption == 0)
             {
-                player1.color = 'W';
+                player1.color = 'B';
             }
             else if (chosenOption == 1)
             {
-                player1.color = 'B';
+                player1.color = 'W';
             }
             break;
         }
@@ -442,6 +453,7 @@ void handleMultiPlayerNewGame()
         }
 
         player2.name = name;
+        player2.color = (player1.color == 'W' ? 'B':'W');
 
         system("cls");
         break;

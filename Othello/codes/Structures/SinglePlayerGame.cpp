@@ -65,6 +65,7 @@ void SinglePlayerGame::start()
                 if ( (*GameBoard).countValidMoves() == 0)
                 {
                     end();
+                    return;
                 }
             }
         }
@@ -125,6 +126,7 @@ void SinglePlayerGame::start()
                     if ( (*GameBoard).countValidMoves() == 0)
                     {
                         end();
+                        return;
                     }
                 }
             }

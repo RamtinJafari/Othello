@@ -35,9 +35,22 @@ void outputDecoratedSavedGame(std::string savedGame)
 
 void outputDecoratedSavedSinglePlayerGame(std::string savedGame)
 {
-    SinglePlayerGame game = getSinglePlayerGame(getGameId(savedGame));
+    int id = getGameId(savedGame);
+    Board board = *(getSinglePlayerGame(id).GameBoard);
+    Player player = *(getSinglePlayerGame(id).Player1);
+    Bot bot = *(getSinglePlayerGame(id).GameBot);
+    char CurrentTurnColor = getSinglePlayerGame(id).CurrentTurnColor;
+    int Winner = getSinglePlayerGame(id).Winner;
 
-    std::cout << "{\n    id = " << game.id << "\n";
+    SinglePlayerGame game {&board, &player, &bot, CurrentTurnColor};
+    game.id = id;
+    game.Winner = Winner;
+    game.mode = "1Player";
+    game.GameBoard -> CursorX = -1;
+    game.GameBoard -> CursorY = -1;
+
+
+    std::cout << "{\n    id = " << intToStr(game.id) << "\n";
 
     std::cout << "    game board = { \n";
     game.GameBoard -> display();
@@ -74,9 +87,21 @@ void outputDecoratedSavedSinglePlayerGame(std::string savedGame)
 
 void outputDecoratedSavedMultiPlayerGame(std::string savedGame)
 {
-    MultiPlayerGame game = getMultiPlayerGame(getGameId(savedGame));
+    int id = getGameId(savedGame);
+    Board board = *(getMultiPlayerGame(id).GameBoard);
+    Player player1 = *(getMultiPlayerGame(id).Player1);
+    Player player2 = *(getMultiPlayerGame(id).Player2);
+    char CurrentTurnColor = getMultiPlayerGame(id).CurrentTurnColor;
+    int Winner = getMultiPlayerGame(id).Winner;
 
-    std::cout << "{\n    id = " << game.id << "\n";
+    MultiPlayerGame game {&board, &player1, &player2, CurrentTurnColor};
+    game.id = id;
+    game.Winner = Winner;
+    game.mode = "2Player";
+    game.GameBoard -> CursorX = -1;
+    game.GameBoard -> CursorY = -1;
+
+    std::cout << "{\n    id = " << intToStr(game.id) << "\n";
 
     std::cout << "    game board = { \n";
     game.GameBoard -> display();
@@ -97,8 +122,8 @@ void outputDecoratedSavedMultiPlayerGame(std::string savedGame)
     std::string winnerToOutput = (
         winner == 0 ?
             "The game is unfinished" : winner == 1 ?
-                "Player has won this game" : winner == 2 ?
-                    "Bot has won this game" : "The game resulted in a draw"
+                "Player1 has won this game" : winner == 2 ?
+                    "Player2 has won this game" : "The game resulted in a draw"
     );
     std::cout << "    " << winnerToOutput << "\n}\n";
 }
